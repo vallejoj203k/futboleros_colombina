@@ -139,14 +139,12 @@
       inset: 0;
       pointer-events: none;
       opacity: 0.06;
-      font-size: 2.5rem;
-      line-height: 3.2rem;
-      letter-spacing: 0.5rem;
-      word-break: break-all;
       overflow: hidden;
       color: var(--yellow);
-      padding: 1rem;
       user-select: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23F9B700' fill-opacity='0.08'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3Ccircle cx='30' cy='30' r='12'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      background-size: 60px 60px;
+      font-size: 0;
     }
 
     /* Decorative circles */
@@ -201,13 +199,17 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 72px; height: 72px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--red) 0%, var(--yellow) 100%);
-      font-size: 2.2rem;
+      width: 100px;
+      height: 100px;
       margin-bottom: 1rem;
-      box-shadow: 0 8px 24px rgba(227,6,19,0.4);
       animation: float 3s ease-in-out infinite;
+    }
+
+    .login-logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 16px rgba(0,0,0,0.4));
     }
 
     .login-brand {
@@ -259,22 +261,12 @@
       position: relative;
     }
 
-    .input-icon {
-      position: absolute;
-      left: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.1rem;
-      pointer-events: none;
-      opacity: 0.6;
-    }
-
     .form-input {
       width: 100%;
       background: rgba(255,255,255,0.07);
       border: 1.5px solid rgba(255,255,255,0.12);
       border-radius: var(--radius-sm);
-      padding: 0.85rem 1rem 0.85rem 2.8rem;
+      padding: 0.85rem 1rem;
       font-size: 0.95rem;
       font-weight: 500;
       color: #fff;
@@ -371,13 +363,10 @@
       flex-shrink: 0;
     }
 
-    .nav-brand-icon {
-      width: 36px; height: 36px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--red) 0%, var(--yellow) 100%);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem;
-      box-shadow: 0 2px 8px rgba(227,6,19,0.3);
+    .nav-logo-img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
     }
 
     .nav-brand-text {
@@ -423,8 +412,6 @@
       transition: all 0.2s ease;
       border: 1.5px solid transparent;
     }
-
-    .tab-btn .tab-icon { font-size: 1rem; }
 
     .tab-btn:hover {
       background: var(--gray-100);
@@ -517,7 +504,31 @@
       white-space: nowrap;
     }
 
-    .pts-badge-icon { font-size: 1.1rem; }
+    /* =============================================
+       TEAM FLAGS
+    ============================================= */
+    .team-flag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 40px;
+      border-radius: 6px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .flag-COL { background: linear-gradient(160deg, #FCD116 0%, #003087 55%, #CE1126 100%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
+    .flag-ARG { background: linear-gradient(160deg, #74ACDF 0%, #fff 50%, #74ACDF 100%); color: #003087; }
+    .flag-BRA { background: #009C3B; color: #FFDF00; }
+    .flag-ECU { background: linear-gradient(160deg, #FFD100 0%, #003082 55%, #EF3340 100%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
+    .flag-URY { background: linear-gradient(160deg, #75AADB 0%, #fff 50%, #75AADB 100%); color: #003087; }
+    .flag-PER { background: linear-gradient(90deg, #D91023 35%, #fff 35%, #fff 65%, #D91023 65%); color: #D91023; }
+    .flag-VEN { background: linear-gradient(160deg, #CF142B 0%, #003087 50%, #009A44 100%); }
+    .flag-BOL { background: linear-gradient(160deg, #D52B1E 0%, #F9E300 50%, #007A33 100%); }
+    .flag-CHI { background: linear-gradient(160deg, #D52B1E 0%, #fff 50%, #0032A0 100%); }
 
     /* =============================================
        MATCH CARDS
@@ -566,8 +577,6 @@
       font-weight: 500;
     }
 
-    .match-meta-icon { opacity: 0.7; }
-
     .status-badge {
       display: inline-flex;
       align-items: center;
@@ -610,12 +619,6 @@
       gap: 0.35rem;
       flex: 1;
       min-width: 0;
-    }
-
-    .team-flag {
-      font-size: 2.4rem;
-      line-height: 1;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
     }
 
     .team-name {
@@ -895,13 +898,6 @@
       box-shadow: 0 4px 16px rgba(0,0,0,0.2);
     }
 
-    .podium-crown {
-      position: absolute;
-      top: -14px;
-      font-size: 1.2rem;
-      animation: float 2.5s ease-in-out infinite;
-    }
-
     .podium-name {
       font-size: 0.75rem;
       font-weight: 700;
@@ -924,7 +920,7 @@
       justify-content: center;
       font-size: 1.3rem;
       font-weight: 900;
-      color: rgba(255,255,255,0.7);
+      color: rgba(255,255,255,0.9);
     }
 
     .podium-block.h-1 {
@@ -1098,8 +1094,6 @@
     .stat-card:nth-child(2) { animation-delay: 0.05s; }
     .stat-card:nth-child(3) { animation-delay: 0.1s; }
     .stat-card:nth-child(4) { animation-delay: 0.15s; }
-
-    .stat-icon { font-size: 1.3rem; margin-bottom: 0.2rem; }
 
     .stat-value {
       font-size: 1.6rem;
@@ -1285,16 +1279,13 @@
       .nav-brand-text { font-size: 0.95rem; }
       .nav-brand-sub { display: none; }
 
-      .tab-btn .tab-label { display: none; }
       .tab-btn { padding: 0.55rem 0.75rem; }
-      .tab-btn .tab-icon { font-size: 1.2rem; }
 
       .main-content { padding-top: calc(var(--nav-h) + 1rem); }
 
       .greeting { font-size: 1.35rem; }
 
       .teams-row { gap: 0.5rem; }
-      .team-flag { font-size: 2rem; }
       .team-name { font-size: 0.78rem; }
 
       .score-input { width: 50px; height: 50px; font-size: 1.2rem; }
@@ -1360,9 +1351,7 @@
 ============================================= -->
 <div id="view-login" class="view active">
   <!-- Background pattern -->
-  <div class="login-bg-pattern" aria-hidden="true">
-    ⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭⚽🍬⚽🍭
-  </div>
+  <div class="login-bg-pattern" aria-hidden="true"></div>
 
   <!-- Decorative circles -->
   <div class="login-circle login-circle-1" aria-hidden="true"></div>
@@ -1371,21 +1360,22 @@
 
   <div class="login-card">
     <div class="login-logo-wrap">
-      <div class="login-logo-icon" aria-hidden="true">⚽</div>
+      <div class="login-logo-icon" aria-hidden="true">
+        <img src="logo.png" alt="Colombina" class="login-logo-img" />
+      </div>
       <span class="login-brand">Colombina</span>
       <p class="login-subtitle">Empresa Colombina S.A.</p>
-      <p class="login-tagline">🏆 Polla Mundialista 2026</p>
+      <p class="login-tagline">Polla Mundialista 2026</p>
     </div>
 
     <form class="login-form" id="login-form" novalidate>
       <div class="login-error" id="login-error">
-        🚫 Credenciales inválidas. Intenta de nuevo.
+        Credenciales inválidas. Intenta de nuevo.
       </div>
 
       <div class="form-group">
         <label class="form-label" for="cedula">Número de Cédula</label>
         <div class="input-wrap">
-          <span class="input-icon">🪪</span>
           <input
             class="form-input"
             type="text"
@@ -1401,7 +1391,6 @@
       <div class="form-group">
         <label class="form-label" for="employee-id">ID de Empleado</label>
         <div class="input-wrap">
-          <span class="input-icon">👤</span>
           <input
             class="form-input"
             type="text"
@@ -1414,7 +1403,7 @@
       </div>
 
       <button type="submit" class="btn-login">
-        <span>Ingresar al torneo ⚡</span>
+        <span>Ingresar al torneo</span>
       </button>
     </form>
 
@@ -1432,7 +1421,7 @@
   <!-- TOP NAV -->
   <nav class="top-nav" role="navigation" aria-label="Navegación principal">
     <div class="nav-brand">
-      <div class="nav-brand-icon" aria-hidden="true">⚽</div>
+      <img src="logo.png" alt="Colombina" class="nav-logo-img" aria-hidden="true" />
       <div>
         <div class="nav-brand-text">Colombina</div>
         <div class="nav-brand-sub">Polla 2026</div>
@@ -1441,15 +1430,12 @@
 
     <div class="tab-bar" role="tablist">
       <button class="tab-btn active" role="tab" aria-selected="true"  data-tab="partidos"       aria-controls="tab-partidos">
-        <span class="tab-icon" aria-hidden="true">🏟️</span>
         <span class="tab-label">Partidos</span>
       </button>
       <button class="tab-btn" role="tab" aria-selected="false" data-tab="clasificacion"   aria-controls="tab-clasificacion">
-        <span class="tab-icon" aria-hidden="true">🏆</span>
         <span class="tab-label">Clasificación</span>
       </button>
       <button class="tab-btn" role="tab" aria-selected="false" data-tab="historial"       aria-controls="tab-historial">
-        <span class="tab-icon" aria-hidden="true">📋</span>
         <span class="tab-label">Mi Historial</span>
       </button>
     </div>
@@ -1468,11 +1454,10 @@
         <header class="page-header">
           <div class="page-header-row">
             <div>
-              <h1 class="greeting">¡Hola, <span id="user-name">Ana</span>! 👋</h1>
+              <h1 class="greeting">Hola, <span id="user-name">Ana</span>!</h1>
               <p class="page-subtitle">Predicciones del Mundial 2026 &mdash; FIFA World Cup USA/México/Canadá</p>
             </div>
             <div class="pts-badge">
-              <span class="pts-badge-icon">⭐</span>
               <span id="user-pts">182 pts</span>
             </div>
           </div>
@@ -1492,7 +1477,6 @@
             <div class="card-stripe"></div>
             <div class="match-card-header">
               <div class="match-meta">
-                <span class="match-meta-icon">📅</span>
                 <span>Jun 15, 2026 &nbsp;·&nbsp; 3:00 PM</span>
               </div>
               <span class="status-badge status-abierto">Abierto</span>
@@ -1500,7 +1484,7 @@
             <div class="match-card-body">
               <div class="teams-row">
                 <div class="team">
-                  <span class="team-flag" role="img" aria-label="Colombia">🇨🇴</span>
+                  <span class="team-flag flag-COL" aria-label="Colombia">COL</span>
                   <span class="team-name">Colombia</span>
                 </div>
                 <div class="vs-divider" aria-hidden="true">
@@ -1509,7 +1493,7 @@
                   <div class="vs-line"></div>
                 </div>
                 <div class="team">
-                  <span class="team-flag" role="img" aria-label="Argentina">🇦🇷</span>
+                  <span class="team-flag flag-ARG" aria-label="Argentina">ARG</span>
                   <span class="team-name">Argentina</span>
                 </div>
               </div>
@@ -1521,10 +1505,10 @@
               </div>
 
               <div class="save-feedback" id="m1-feedback">
-                ✅ ¡Predicción guardada!
+                ¡Predicción guardada!
               </div>
               <button class="btn-save" onclick="saveMatch(1)" id="m1-btn">
-                💾 Guardar predicción
+                Guardar predicción
               </button>
             </div>
           </article>
@@ -1534,7 +1518,6 @@
             <div class="card-stripe"></div>
             <div class="match-card-header">
               <div class="match-meta">
-                <span class="match-meta-icon">📅</span>
                 <span>Jun 20, 2026 &nbsp;·&nbsp; 6:00 PM</span>
               </div>
               <span class="status-badge status-abierto">Abierto</span>
@@ -1542,7 +1525,7 @@
             <div class="match-card-body">
               <div class="teams-row">
                 <div class="team">
-                  <span class="team-flag" role="img" aria-label="Colombia">🇨🇴</span>
+                  <span class="team-flag flag-COL" aria-label="Colombia">COL</span>
                   <span class="team-name">Colombia</span>
                 </div>
                 <div class="vs-divider" aria-hidden="true">
@@ -1551,7 +1534,7 @@
                   <div class="vs-line"></div>
                 </div>
                 <div class="team">
-                  <span class="team-flag" role="img" aria-label="Brasil">🇧🇷</span>
+                  <span class="team-flag flag-BRA" aria-label="Brasil">BRA</span>
                   <span class="team-name">Brasil</span>
                 </div>
               </div>
@@ -1563,10 +1546,10 @@
               </div>
 
               <div class="save-feedback" id="m2-feedback">
-                ✅ ¡Predicción guardada!
+                ¡Predicción guardada!
               </div>
               <button class="btn-save" onclick="saveMatch(2)" id="m2-btn">
-                💾 Guardar predicción
+                Guardar predicción
               </button>
             </div>
           </article>
@@ -1576,7 +1559,6 @@
             <div class="card-stripe"></div>
             <div class="match-card-header">
               <div class="match-meta">
-                <span class="match-meta-icon">📅</span>
                 <span>Jun 25, 2026 &nbsp;·&nbsp; 3:00 PM</span>
               </div>
               <span class="status-badge status-cerrado">Cerrado</span>
@@ -1584,7 +1566,7 @@
             <div class="match-card-body">
               <div class="teams-row">
                 <div class="team">
-                  <span class="team-flag" role="img" aria-label="Colombia">🇨🇴</span>
+                  <span class="team-flag flag-COL" aria-label="Colombia">COL</span>
                   <span class="team-name">Colombia</span>
                 </div>
                 <div class="vs-divider" aria-hidden="true">
@@ -1593,13 +1575,12 @@
                   <div class="vs-line"></div>
                 </div>
                 <div class="team">
-                  <span class="team-flag" role="img" aria-label="Ecuador">🇪🇨</span>
+                  <span class="team-flag flag-ECU" aria-label="Ecuador">ECU</span>
                   <span class="team-name">Ecuador</span>
                 </div>
               </div>
 
               <div class="saved-pred">
-                <span>🔒</span>
                 <span class="saved-pred-label">Tu predicción guardada</span>
                 <span class="saved-pred-score">2 — 1</span>
               </div>
@@ -1610,7 +1591,7 @@
                 <input class="score-input" type="number" min="0" max="20" value="1" disabled aria-label="Goles Ecuador" />
               </div>
 
-              <button class="btn-save" disabled>💾 Guardar predicción</button>
+              <button class="btn-save" disabled>Guardar predicción</button>
             </div>
           </article>
 
@@ -1619,7 +1600,6 @@
             <div class="card-stripe"></div>
             <div class="match-card-header">
               <div class="match-meta">
-                <span class="match-meta-icon">📅</span>
                 <span>Jun 30, 2026 &nbsp;·&nbsp; 6:00 PM</span>
               </div>
               <span class="status-badge status-finalizado">Finalizado</span>
@@ -1627,7 +1607,7 @@
             <div class="match-card-body">
               <div class="teams-row">
                 <div class="team">
-                  <span class="team-flag" role="img" aria-label="Colombia">🇨🇴</span>
+                  <span class="team-flag flag-COL" aria-label="Colombia">COL</span>
                   <span class="team-name">Colombia</span>
                 </div>
                 <div class="vs-divider" aria-hidden="true">
@@ -1636,7 +1616,7 @@
                   <div class="vs-line"></div>
                 </div>
                 <div class="team">
-                  <span class="team-flag" role="img" aria-label="Uruguay">🇺🇾</span>
+                  <span class="team-flag flag-URY" aria-label="Uruguay">URY</span>
                   <span class="team-name">Uruguay</span>
                 </div>
               </div>
@@ -1646,7 +1626,7 @@
                 <div class="result-scores">
                   <div class="result-item">
                     <div class="result-item-label">Resultado oficial</div>
-                    <div class="result-item-score">🇨🇴 1 — 0 🇺🇾</div>
+                    <div class="result-item-score">COL 1 — 0 URY</div>
                   </div>
                   <div class="result-item">
                     <div class="result-item-label">Tu predicción</div>
@@ -1656,11 +1636,11 @@
               </div>
 
               <div style="display:flex; align-items:center; gap:0.5rem;">
-                <span class="points-earned">✅ +10 pts EXACTO</span>
+                <span class="points-earned">+10 pts EXACTO</span>
                 <span style="font-size:0.78rem; color:var(--gray-400);">¡Predicción perfecta!</span>
               </div>
 
-              <button class="btn-save" disabled>💾 Guardar predicción</button>
+              <button class="btn-save" disabled>Guardar predicción</button>
             </div>
           </article>
 
@@ -1673,7 +1653,7 @@
       <div class="tab-panel" id="tab-clasificacion" role="tabpanel">
 
         <header class="leaderboard-header">
-          <h1 class="section-title">Tabla de Clasificación 🏆</h1>
+          <h1 class="section-title">Tabla de Clasificación</h1>
           <p class="section-subtitle">Top empleados de la semana &mdash; Mundial 2026</p>
         </header>
 
@@ -1685,18 +1665,17 @@
             <div class="podium-avatar rank-2" aria-label="2do lugar">CJ</div>
             <div class="podium-name">Carlos<br>Jiménez</div>
             <div class="podium-pts">260 pts</div>
-            <div class="podium-block h-2">🥈</div>
+            <div class="podium-block h-2">2</div>
           </div>
 
           <!-- 1st place -->
           <div class="podium-item">
             <div class="podium-avatar rank-1" aria-label="1er lugar">
-              <span class="podium-crown" aria-hidden="true">👑</span>
               MR
             </div>
             <div class="podium-name">María<br>Rodríguez</div>
             <div class="podium-pts">285 pts</div>
-            <div class="podium-block h-1">🥇</div>
+            <div class="podium-block h-1">1</div>
           </div>
 
           <!-- 3rd place -->
@@ -1704,7 +1683,7 @@
             <div class="podium-avatar rank-3" aria-label="3er lugar">LG</div>
             <div class="podium-name">Laura<br>García</div>
             <div class="podium-pts">241 pts</div>
-            <div class="podium-block h-3">🥉</div>
+            <div class="podium-block h-3">3</div>
           </div>
 
         </div>
@@ -1713,7 +1692,7 @@
         <div class="lb-list" role="list" aria-label="Clasificación completa">
 
           <div class="lb-row" role="listitem">
-            <div class="lb-rank" aria-label="Posición 1">👑</div>
+            <div class="lb-rank" aria-label="Posición 1">1</div>
             <div class="lb-avatar" aria-hidden="true">MR</div>
             <div class="lb-info">
               <div class="lb-name">María Rodríguez</div>
@@ -1726,7 +1705,7 @@
           </div>
 
           <div class="lb-row" role="listitem">
-            <div class="lb-rank" aria-label="Posición 2">🥈</div>
+            <div class="lb-rank" aria-label="Posición 2">2</div>
             <div class="lb-avatar" style="background:linear-gradient(135deg,#616161,#9e9e9e)" aria-hidden="true">CJ</div>
             <div class="lb-info">
               <div class="lb-name">Carlos Jiménez</div>
@@ -1739,7 +1718,7 @@
           </div>
 
           <div class="lb-row" role="listitem">
-            <div class="lb-rank" aria-label="Posición 3">🥉</div>
+            <div class="lb-rank" aria-label="Posición 3">3</div>
             <div class="lb-avatar" style="background:linear-gradient(135deg,#cd7f32,#a05c1a)" aria-hidden="true">LG</div>
             <div class="lb-info">
               <div class="lb-name">Laura García</div>
@@ -1855,29 +1834,25 @@
       <div class="tab-panel" id="tab-historial" role="tabpanel">
 
         <header class="leaderboard-header">
-          <h1 class="section-title">Mi Historial 📋</h1>
+          <h1 class="section-title">Mi Historial</h1>
           <p class="section-subtitle">Registro de todas tus predicciones anteriores</p>
         </header>
 
         <!-- Summary stats -->
         <div class="stats-row" role="list" aria-label="Resumen estadístico">
           <div class="stat-card" role="listitem">
-            <div class="stat-icon">⚽</div>
             <div class="stat-value">5</div>
             <div class="stat-label">Partidos jugados</div>
           </div>
           <div class="stat-card" role="listitem">
-            <div class="stat-icon">✅</div>
             <div class="stat-value" style="color:var(--green)">2</div>
             <div class="stat-label">Predicciones exactas</div>
           </div>
           <div class="stat-card" role="listitem">
-            <div class="stat-icon">🟡</div>
             <div class="stat-value" style="color:#b8860b">2</div>
             <div class="stat-label">Predicciones parciales</div>
           </div>
           <div class="stat-card" role="listitem">
-            <div class="stat-icon">⭐</div>
             <div class="stat-value">35</div>
             <div class="stat-label">Puntos en historial</div>
           </div>
@@ -1890,10 +1865,10 @@
           <article class="hist-card">
             <div class="hist-card-header">
               <div>
-                <div class="hist-match-name">🇨🇴 Colombia vs Ecuador 🇪🇨</div>
+                <div class="hist-match-name">Colombia vs Ecuador</div>
                 <div class="hist-match-date">Jun 10, 2026</div>
               </div>
-              <span class="outcome-badge outcome-exacto">✅ 10 pts &mdash; EXACTO</span>
+              <span class="outcome-badge outcome-exacto">10 pts &mdash; EXACTO</span>
             </div>
             <div class="hist-scores">
               <div class="hist-score-item">
@@ -1911,10 +1886,10 @@
           <article class="hist-card">
             <div class="hist-card-header">
               <div>
-                <div class="hist-match-name">🇨🇴 Colombia vs Perú 🇵🇪</div>
+                <div class="hist-match-name">Colombia vs Perú</div>
                 <div class="hist-match-date">Jun 5, 2026</div>
               </div>
-              <span class="outcome-badge outcome-parcial">🟡 5 pts &mdash; PARCIAL</span>
+              <span class="outcome-badge outcome-parcial">5 pts &mdash; PARCIAL</span>
             </div>
             <div class="hist-scores">
               <div class="hist-score-item">
@@ -1932,10 +1907,10 @@
           <article class="hist-card">
             <div class="hist-card-header">
               <div>
-                <div class="hist-match-name">🇨🇴 Colombia vs Venezuela 🇻🇪</div>
+                <div class="hist-match-name">Colombia vs Venezuela</div>
                 <div class="hist-match-date">May 30, 2026</div>
               </div>
-              <span class="outcome-badge outcome-fallo">⚪ 0 pts &mdash; FALLÓ</span>
+              <span class="outcome-badge outcome-fallo">0 pts &mdash; FALLÓ</span>
             </div>
             <div class="hist-scores">
               <div class="hist-score-item">
@@ -1953,10 +1928,10 @@
           <article class="hist-card">
             <div class="hist-card-header">
               <div>
-                <div class="hist-match-name">🇨🇴 Colombia vs Bolivia 🇧🇴</div>
+                <div class="hist-match-name">Colombia vs Bolivia</div>
                 <div class="hist-match-date">May 25, 2026</div>
               </div>
-              <span class="outcome-badge outcome-exacto">✅ 10 pts &mdash; EXACTO</span>
+              <span class="outcome-badge outcome-exacto">10 pts &mdash; EXACTO</span>
             </div>
             <div class="hist-scores">
               <div class="hist-score-item">
@@ -1974,10 +1949,10 @@
           <article class="hist-card">
             <div class="hist-card-header">
               <div>
-                <div class="hist-match-name">🇨🇴 Colombia vs Chile 🇨🇱</div>
+                <div class="hist-match-name">Colombia vs Chile</div>
                 <div class="hist-match-date">May 20, 2026</div>
               </div>
-              <span class="outcome-badge outcome-parcial">🟡 5 pts &mdash; PARCIAL</span>
+              <span class="outcome-badge outcome-parcial">5 pts &mdash; PARCIAL</span>
             </div>
             <div class="hist-scores">
               <div class="hist-score-item">
@@ -2036,13 +2011,13 @@
     // Basic validation
     if (!cedula || !empId) {
       loginError.style.display = 'block';
-      loginError.textContent = '⚠️ Por favor completa todos los campos.';
+      loginError.textContent = 'Por favor completa todos los campos.';
       return;
     }
 
     if (cedula.length < 6) {
       loginError.style.display = 'block';
-      loginError.textContent = '⚠️ La cédula debe tener al menos 6 dígitos.';
+      loginError.textContent = 'La cédula debe tener al menos 6 dígitos.';
       return;
     }
 
@@ -2074,7 +2049,7 @@
       });
 
       state.loggedIn = true;
-      showToast('🎉 ¡Bienvenida al torneo, Ana!');
+      showToast('¡Bienvenida al torneo, Ana!');
     }, 400);
   }
 
@@ -2148,12 +2123,12 @@
     const vVal = visit.value;
 
     if (lVal === '' || vVal === '') {
-      showToast('⚠️ Ingresa el marcador antes de guardar.');
+      showToast('Ingresa el marcador antes de guardar.');
       return;
     }
 
     if (parseInt(lVal) < 0 || parseInt(vVal) < 0) {
-      showToast('⚠️ El marcador no puede ser negativo.');
+      showToast('El marcador no puede ser negativo.');
       return;
     }
 
@@ -2173,12 +2148,12 @@
     local.disabled = true;
     visit.disabled = true;
 
-    showToast('✅ Predicción ' + lVal + ' — ' + vVal + ' guardada correctamente');
+    showToast('Prediccion ' + lVal + ' — ' + vVal + ' guardada correctamente');
 
     // After 3s allow re-edit
     setTimeout(() => {
       btn.style.display = 'block';
-      btn.textContent = '✏️ Editar predicción';
+      btn.textContent = 'Editar predicción';
       btn.onclick = () => editMatch(matchId);
       btn.classList.remove('pulse');
     }, 3000);
@@ -2194,7 +2169,7 @@
     visit.disabled = false;
     fb.classList.remove('show');
 
-    btn.textContent = '💾 Guardar predicción';
+    btn.textContent = 'Guardar predicción';
     btn.onclick = () => saveMatch(matchId);
   }
 
