@@ -1,0 +1,11 @@
+{
+  "name": "polla-mundialista-colombina",
+  "version": "1.0.0",
+  "description": "App de predicciones del Mundial para empleados de Colombina S.A.",
+  "scripts": {
+    "start": "npx serve . --listen $PORT --no-clipboard"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
