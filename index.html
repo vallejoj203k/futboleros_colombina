@@ -301,19 +301,21 @@
       background: #fff;
       border: 1.5px solid var(--gray-200);
       border-radius: var(--radius-sm);
-      padding: 0.9rem 1rem 0.9rem 3rem;
+      padding: 0.9rem 3rem 0.9rem 3rem;
       font-size: 0.95rem;
       font-weight: 500;
       color: var(--text);
       transition: border-color 0.2s, box-shadow 0.2s;
       outline: none;
+      font-family: var(--font);
     }
 
-    .form-input::placeholder { color: var(--gray-400); }
+    .form-input::placeholder { color: var(--gray-400); font-weight: 400; }
 
     .form-input:focus {
       border-color: var(--red);
       box-shadow: 0 0 0 3px rgba(227,6,19,0.1);
+      background: #fff;
     }
 
     .input-toggle {
@@ -530,47 +532,7 @@
       margin-top: 0.5rem;
     }
 
-    /* Form */
-    .login-form { margin-top: 0.5rem; }
-
-    .form-group {
-      margin-bottom: 1.25rem;
-    }
-
-    .form-label {
-      display: block;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: rgba(255,255,255,0.5);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-    }
-
-    .input-wrap {
-      position: relative;
-    }
-
-    .form-input {
-      width: 100%;
-      background: rgba(255,255,255,0.07);
-      border: 1.5px solid rgba(255,255,255,0.12);
-      border-radius: var(--radius-sm);
-      padding: 0.85rem 1rem;
-      font-size: 0.95rem;
-      font-weight: 500;
-      color: #fff;
-      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
-      outline: none;
-    }
-
-    .form-input::placeholder { color: rgba(255,255,255,0.3); }
-
-    .form-input:focus {
-      border-color: var(--yellow);
-      background: rgba(255,255,255,0.1);
-      box-shadow: 0 0 0 3px rgba(249,183,0,0.15);
-    }
+    /* Legacy placeholder — styles now live in LOGIN VIEW block above */
 
     .btn-login {
       width: 100%;
