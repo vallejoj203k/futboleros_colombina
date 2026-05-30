@@ -616,21 +616,25 @@
     }
 
     .nav-logo-img {
-      width: 40px;
-      height: 40px;
+      height: 36px;
+      width: auto;
       object-fit: contain;
     }
 
+    .nav-brand-labels {
+      display: flex;
+      flex-direction: column;
+    }
+
     .nav-brand-text {
-      font-size: 1.05rem;
+      font-size: 0.95rem;
       font-weight: 800;
       color: var(--red);
-      letter-spacing: -0.3px;
-      line-height: 1;
+      line-height: 1.1;
     }
 
     .nav-brand-sub {
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       font-weight: 500;
       color: var(--gray-400);
       letter-spacing: 0.04em;
@@ -674,7 +678,8 @@
       background: var(--red);
       color: var(--white);
       border-color: var(--red);
-      box-shadow: 0 2px 10px rgba(227,6,19,0.3);
+      box-shadow: 0 2px 12px rgba(227,6,19,0.35);
+      transform: translateY(-1px);
     }
 
     .nav-avatar {
@@ -710,50 +715,111 @@
     .tab-panel.active { display: block; animation: fadeIn 0.3s ease; }
 
     /* =============================================
-       PAGE HEADER
+       HERO BANNER (Partidos tab)
     ============================================= */
-    .page-header {
+    .hero-banner {
+      background: linear-gradient(135deg, var(--red) 0%, #a8000e 100%);
+      border-radius: var(--radius-lg);
+      padding: 2rem 2rem 1.75rem;
       margin-bottom: 1.75rem;
-      animation: slideDown 0.4s ease both;
+      position: relative;
+      overflow: hidden;
+      animation: fadeInUp 0.5s ease both;
     }
-
-    .page-header-row {
+    .hero-accent {
+      position: absolute;
+      right: -40px; top: -40px;
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      background: rgba(249,183,0,0.12);
+      pointer-events: none;
+    }
+    .hero-accent::after {
+      content: '';
+      position: absolute;
+      right: 30px; top: 30px;
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      background: rgba(249,183,0,0.08);
+    }
+    .hero-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 0.35rem;
+    }
+    .hero-greeting {
+      font-size: 2rem;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 0.4rem;
+    }
+    .hero-greeting span { color: var(--yellow); }
+    .hero-sub {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.75);
+      font-weight: 400;
+    }
+    .hero-sub strong { color: var(--yellow); font-weight: 800; }
+    .hero-content {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: space-between;
       gap: 1rem;
       flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
     }
-
-    .greeting {
+    .hero-stats {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      background: rgba(255,255,255,0.1);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.5rem;
+      backdrop-filter: blur(4px);
+      flex-shrink: 0;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat-val {
+      display: block;
       font-size: 1.6rem;
-      font-weight: 800;
-      color: var(--text);
-      line-height: 1.2;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1;
+    }
+    .hero-stat-lbl {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 0.2rem;
+    }
+    .hero-stat-divider {
+      width: 1px;
+      height: 36px;
+      background: rgba(255,255,255,0.2);
+    }
+    @media (max-width: 600px) {
+      .hero-banner { padding: 1.5rem; }
+      .hero-greeting { font-size: 1.5rem; }
+      .hero-stats { padding: 0.75rem 1rem; gap: 0.75rem; }
+      .hero-stat-val { font-size: 1.3rem; }
     }
 
-    .greeting span { color: var(--red); }
-
+    /* =============================================
+       PAGE HEADER (other tabs — kept minimal)
+    ============================================= */
     .page-subtitle {
       font-size: 0.9rem;
       color: var(--gray-600);
       margin-top: 0.25rem;
       font-weight: 400;
-    }
-
-    .pts-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      background: linear-gradient(135deg, var(--red) 0%, #c8000d 100%);
-      color: #fff;
-      padding: 0.6rem 1.1rem;
-      border-radius: 999px;
-      font-size: 1rem;
-      font-weight: 800;
-      box-shadow: 0 4px 16px rgba(227,6,19,0.35);
-      animation: badgePop 0.4s ease both 0.3s;
-      white-space: nowrap;
     }
 
     /* =============================================
@@ -763,14 +829,14 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 56px;
-      height: 40px;
-      border-radius: 6px;
-      font-size: 0.68rem;
+      width: 64px;
+      height: 44px;
+      border-radius: 8px;
+      font-size: 0.72rem;
       font-weight: 800;
       letter-spacing: 0.06em;
       color: #fff;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.18);
     }
     .flag-COL { background: linear-gradient(160deg, #FCD116 0%, #003087 55%, #CE1126 100%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
     .flag-ARG { background: linear-gradient(160deg, #74ACDF 0%, #fff 50%, #74ACDF 100%); color: #003087; }
@@ -794,7 +860,7 @@
     .match-card {
       background: var(--white);
       border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-sm);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
       overflow: hidden;
       transition: transform 0.25s ease, box-shadow 0.25s ease;
       animation: fadeInUp 0.5s ease both;
@@ -807,8 +873,8 @@
     .match-card:nth-child(4) { animation-delay: 0.2s; }
 
     .match-card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-md);
+      transform: translateY(-5px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.13);
     }
 
     .match-card-header {
@@ -820,13 +886,20 @@
       border-bottom: 1px solid var(--gray-200);
     }
 
+    .match-group-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 0.2rem;
+    }
     .match-meta {
       display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.78rem;
+      flex-direction: column;
+      font-size: 0.82rem;
       color: var(--gray-600);
-      font-weight: 500;
+      font-weight: 600;
     }
 
     .status-badge {
@@ -916,11 +989,11 @@
     }
 
     .score-input {
-      width: 56px; height: 56px;
+      width: 60px; height: 60px;
       border: 2px solid var(--gray-200);
       border-radius: var(--radius-md);
-      font-size: 1.4rem;
-      font-weight: 800;
+      font-size: 1.6rem;
+      font-weight: 900;
       color: var(--text);
       text-align: center;
       background: var(--gray-100);
@@ -1002,9 +1075,9 @@
       color: var(--text);
       padding: 0.35rem 0.9rem;
       border-radius: 999px;
-      font-size: 0.82rem;
+      font-size: 0.88rem;
       font-weight: 800;
-      box-shadow: 0 2px 8px rgba(249,183,0,0.4);
+      box-shadow: 0 2px 12px rgba(249,183,0,0.5);
       animation: badgePop 0.3s ease both;
     }
 
@@ -1038,18 +1111,19 @@
       width: 100%;
       padding: 0.8rem;
       border-radius: var(--radius-sm);
-      background: var(--red);
+      background: linear-gradient(135deg, var(--red) 0%, #c8000d 100%);
       color: #fff;
       font-size: 0.9rem;
       font-weight: 700;
+      letter-spacing: 0.02em;
       transition: all 0.2s ease;
-      box-shadow: 0 3px 12px rgba(227,6,19,0.3);
+      box-shadow: 0 3px 14px rgba(227,6,19,0.3);
     }
 
     .btn-save:hover {
-      background: var(--red-dark);
+      background: linear-gradient(135deg, #c8000d 0%, #a00009 100%);
       transform: translateY(-1px);
-      box-shadow: 0 5px 18px rgba(227,6,19,0.4);
+      box-shadow: 0 5px 20px rgba(227,6,19,0.45);
     }
 
     .btn-save:active { transform: translateY(0); }
@@ -1087,7 +1161,7 @@
     }
 
     .section-title {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: 800;
       color: var(--text);
       line-height: 1.2;
@@ -1342,10 +1416,10 @@
       gap: 0.2rem;
     }
 
-    .stat-card:nth-child(1) { animation-delay: 0s; }
-    .stat-card:nth-child(2) { animation-delay: 0.05s; }
-    .stat-card:nth-child(3) { animation-delay: 0.1s; }
-    .stat-card:nth-child(4) { animation-delay: 0.15s; }
+    .stat-card:nth-child(1) { animation-delay: 0s; border-top: 3px solid var(--gray-400); }
+    .stat-card:nth-child(2) { animation-delay: 0.05s; border-top: 3px solid var(--green); }
+    .stat-card:nth-child(3) { animation-delay: 0.1s; border-top: 3px solid var(--yellow); }
+    .stat-card:nth-child(4) { animation-delay: 0.15s; border-top: 3px solid var(--red); }
 
     .stat-value {
       font-size: 1.6rem;
@@ -1561,6 +1635,90 @@
     .text-gray { color: var(--gray-400); }
 
     /* =============================================
+       MY RANK CARD
+    ============================================= */
+    .my-rank-card {
+      background: linear-gradient(135deg, var(--red) 0%, #b8040f 100%);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      color: #fff;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+      animation: fadeInUp 0.4s ease both;
+      position: relative;
+      overflow: hidden;
+    }
+    .my-rank-card::after {
+      content: '';
+      position: absolute;
+      right: -20px; top: -20px;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: rgba(249,183,0,0.15);
+      pointer-events: none;
+    }
+    .my-rank-left { flex: 1; }
+    .my-rank-label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 0.2rem;
+    }
+    .my-rank-pos {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--yellow);
+      line-height: 1;
+    }
+    .my-rank-right {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .my-rank-stat {
+      text-align: center;
+    }
+    .my-rank-stat span {
+      display: block;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #fff;
+    }
+    .my-rank-stat small {
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 600;
+    }
+    .my-rank-msg {
+      width: 100%;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.7);
+      padding-top: 0.5rem;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* =============================================
+       APP FOOTER
+    ============================================= */
+    .app-footer {
+      text-align: center;
+      font-size: 0.72rem;
+      color: var(--gray-400);
+      padding-top: 2rem;
+      border-top: 1px solid var(--gray-200);
+      margin-top: 2rem;
+    }
+
+    /* =============================================
        TOAST NOTIFICATION
     ============================================= */
     .toast {
@@ -1739,10 +1897,10 @@
   <!-- TOP NAV -->
   <nav class="top-nav" role="navigation" aria-label="Navegación principal">
     <div class="nav-brand">
-      <img src="logo.png" alt="Colombina" class="nav-logo-img" aria-hidden="true" />
-      <div>
-        <div class="nav-brand-text">Colombina</div>
-        <div class="nav-brand-sub">Polla 2026</div>
+      <img src="logo.png" alt="Colombina" class="nav-logo-img" />
+      <div class="nav-brand-labels">
+        <div class="nav-brand-text">Polla Mundialista</div>
+        <div class="nav-brand-sub">FIFA World Cup 2026</div>
       </div>
     </div>
 
@@ -1769,17 +1927,32 @@
            TAB: PARTIDOS / DASHBOARD
       ========================================== -->
       <div class="tab-panel active" id="tab-partidos" role="tabpanel">
-        <header class="page-header">
-          <div class="page-header-row">
+        <div class="hero-banner">
+          <div class="hero-content">
             <div>
-              <h1 class="greeting">Hola, <span id="user-name">Ana</span>!</h1>
-              <p class="page-subtitle">Predicciones del Mundial 2026 &mdash; FIFA World Cup USA/México/Canadá</p>
+              <p class="hero-eyebrow">Mundial FIFA 2026</p>
+              <h1 class="hero-greeting">Hola, <span id="user-name">Ana</span>!</h1>
+              <p class="hero-sub">Llevas <strong id="user-pts">182 pts</strong> acumulados &mdash; sigue así</p>
             </div>
-            <div class="pts-badge">
-              <span id="user-pts">182 pts</span>
+            <div class="hero-stats">
+              <div class="hero-stat">
+                <span class="hero-stat-val">7</span>
+                <span class="hero-stat-lbl">Posición</span>
+              </div>
+              <div class="hero-stat-divider"></div>
+              <div class="hero-stat">
+                <span class="hero-stat-val">18</span>
+                <span class="hero-stat-lbl">Aciertos</span>
+              </div>
+              <div class="hero-stat-divider"></div>
+              <div class="hero-stat">
+                <span class="hero-stat-val">4</span>
+                <span class="hero-stat-lbl">Partidos</span>
+              </div>
             </div>
           </div>
-        </header>
+          <div class="hero-accent" aria-hidden="true"></div>
+        </div>
 
         <div class="section-header">
           <div>
@@ -1795,6 +1968,7 @@
             <div class="card-stripe"></div>
             <div class="match-card-header">
               <div class="match-meta">
+                <div class="match-group-label">Fase de Grupos</div>
                 <span>Jun 15, 2026 &nbsp;·&nbsp; 3:00 PM</span>
               </div>
               <span class="status-badge status-abierto">Abierto</span>
@@ -1836,6 +2010,7 @@
             <div class="card-stripe"></div>
             <div class="match-card-header">
               <div class="match-meta">
+                <div class="match-group-label">Fase de Grupos</div>
                 <span>Jun 20, 2026 &nbsp;·&nbsp; 6:00 PM</span>
               </div>
               <span class="status-badge status-abierto">Abierto</span>
@@ -1877,6 +2052,7 @@
             <div class="card-stripe"></div>
             <div class="match-card-header">
               <div class="match-meta">
+                <div class="match-group-label">Fase de Grupos</div>
                 <span>Jun 25, 2026 &nbsp;·&nbsp; 3:00 PM</span>
               </div>
               <span class="status-badge status-cerrado">Cerrado</span>
@@ -1918,6 +2094,7 @@
             <div class="card-stripe"></div>
             <div class="match-card-header">
               <div class="match-meta">
+                <div class="match-group-label">Fase de Grupos</div>
                 <span>Jun 30, 2026 &nbsp;·&nbsp; 6:00 PM</span>
               </div>
               <span class="status-badge status-finalizado">Finalizado</span>
@@ -1974,6 +2151,19 @@
           <h1 class="section-title">Tabla de Clasificación</h1>
           <p class="section-subtitle">Top empleados de la semana &mdash; Mundial 2026</p>
         </header>
+
+        <!-- My rank card -->
+        <div class="my-rank-card">
+          <div class="my-rank-left">
+            <span class="my-rank-label">Tu posición actual</span>
+            <span class="my-rank-pos">#7</span>
+          </div>
+          <div class="my-rank-right">
+            <div class="my-rank-stat"><span>182</span><small>pts</small></div>
+            <div class="my-rank-stat"><span>18</span><small>aciertos</small></div>
+          </div>
+          <div class="my-rank-msg">Estás a 14 pts de Felipe Torres (6)</div>
+        </div>
 
         <!-- Podium top 3 -->
         <div class="podium" aria-label="Podio top 3">
@@ -2286,6 +2476,10 @@
 
         </div><!-- /hist-list -->
       </div><!-- /tab-historial -->
+
+      <footer class="app-footer">
+        Colombina S.A. &copy; 2026 &mdash; Uso exclusivo para empleados
+      </footer>
 
     </div><!-- /container -->
   </main>
