@@ -170,6 +170,9 @@ async function initDB() {
       console.log('Seeded 72 matches');
     }
 
+    // Make cedula nullable in case table was created with NOT NULL
+    await client.query(`ALTER TABLE users ALTER COLUMN cedula DROP NOT NULL`).catch(() => {});
+
     // Seed knockout slots
     const KNOCKOUT_SLOTS = [
       ...Array.from({length:16}, (_,i) => ['R32', i+1]),
