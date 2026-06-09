@@ -1272,10 +1272,6 @@
             <input class="admin-input" type="text" id="nm-nombre" placeholder="Ej: Juan Pérez" />
           </div>
           <div class="admin-field">
-            <label for="nm-cedula">Cédula (opcional)</label>
-            <input class="admin-input" type="text" id="nm-cedula" placeholder="Ej: 1020304050" />
-          </div>
-          <div class="admin-field">
             <label for="nm-estado">Estado</label>
             <select class="admin-select" id="nm-estado">
               <option value="Activo">Activo</option>
@@ -2152,14 +2148,12 @@ $('#btn-add-member').addEventListener('click', function() {
 });
 $('#btn-cancel-member').addEventListener('click', function() {
   $('#add-member-form').classList.add('hidden');
-  $('#nm-nombre').value = ''; $('#nm-cedula').value = ''; $('#nm-estado').value = 'Activo';
+  $('#nm-nombre').value = ''; $('#nm-estado').value = 'Activo';
 });
 $('#btn-save-member').addEventListener('click', function() {
   var nombre = $('#nm-nombre').value.trim();
-  var cedula = $('#nm-cedula').value.trim();
   if (nombre.length < 3) { toast('Ingresa un nombre válido'); return; }
-  if (!cedula) { toast('Ingresa la cédula'); return; }
-  api.post('/api/admin/users', { nombre: nombre, cedula: cedula, estado: $('#nm-estado').value })
+  api.post('/api/admin/users', { nombre: nombre, estado: $('#nm-estado').value })
     .then(function(res) {
       if (!res.ok) { toast(res.data.error || 'Error al agregar'); return; }
       renderMembers();

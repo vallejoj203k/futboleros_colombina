@@ -302,15 +302,19 @@ app.get('/api/admin/users', async (req, res) => {
 
 app.post('/api/admin/users', async (req, res) => {
   const { nombre, cedula, estado } = req.body;
-  if (!nombre || !cedula) return res.status(400).json({ error: 'Nombre y cédula requeridos' });
+  if (!nombre || nombre.trim().length < 3) return res.status(400).json({ error: 'Nombre requerido' });
+  const cedFinal = cedula ? cedula.trim() : null;
   try {
+    // Check duplicate name
+    const dup = await pool.query('SELECT id FROM users WHERE LOWER(nombre) = LOWER($1)', [nombre.trim()]);
+    if (dup.rows.length) return res.status(400).json({ error: 'Ya existe un usuario con ese nombre' });
     const { rows } = await pool.query(
       'INSERT INTO users (nombre, cedula, estado) VALUES ($1, $2, $3) RETURNING *',
-      [nombre.trim(), cedula.trim(), estado || 'Activo']
+      [nombre.trim(), cedFinal, estado || 'Activo']
     );
     res.json(rows[0]);
   } catch (e) {
-    if (e.code === '23505') return res.status(400).json({ error: 'Esa cédula ya está registrada' });
+    if (e.code === '23505') return res.status(400).json({ error: 'Ese nombre o cédula ya está registrado' });
     res.status(500).json({ error: e.message });
   }
 });
