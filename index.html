@@ -129,148 +129,88 @@
     .view.active { display: block; }
 
     /* =============================================
-       LOGIN VIEW — Rediseño con login.png
+       LOGIN VIEW — Full background + card centrada
     ============================================= */
     #view-login {
       min-height: 100vh;
       display: none;
-      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: #0d0d0d url('login.png') center center / cover no-repeat;
     }
 
     #view-login.active { display: flex; }
 
-    /* ---- LEFT PANEL: imagen de fondo ---- */
-    .login-left {
-      width: 52%;
-      position: relative;
-      overflow: hidden;
-      flex-shrink: 0;
-      background: #0a0a0a url('login.png') center center / cover no-repeat;
-    }
-
-    /* Overlay degradado sobre la imagen */
+    /* Overlay oscuro */
     .login-left-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(
-        160deg,
-        rgba(0,0,0,0.65) 0%,
-        rgba(0,0,0,0.35) 50%,
-        rgba(227,6,19,0.25) 100%
-      );
+      background: linear-gradient(135deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.45) 60%, rgba(20,0,0,0.65) 100%);
+      z-index: 0;
     }
 
-    /* Contenido encima de la imagen */
-    .login-left-content {
+    /* Card glassmorphism */
+    .login-card {
       position: relative;
       z-index: 2;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 3rem;
+      width: 100%;
+      max-width: 400px;
+      margin: 1.5rem;
+      background: rgba(15,15,15,0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: var(--radius-xl);
+      padding: 2.5rem 2rem 2rem;
+      animation: fadeInUp 0.6s ease both;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.04);
     }
 
-    .login-eyebrow {
-      display: inline-block;
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--yellow);
-      background: rgba(249,183,0,0.12);
-      border: 1px solid rgba(249,183,0,0.35);
-      border-radius: 999px;
-      padding: 0.3rem 0.85rem;
-      margin-bottom: 1rem;
+    .login-card-logo {
+      display: block;
+      height: 68px;
+      width: auto;
+      margin: 0 auto 1.5rem;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 14px rgba(0,0,0,0.5));
     }
 
-    .login-headline {
-      font-size: 2.8rem;
+    .login-card-title {
+      font-size: 1.6rem;
       font-weight: 900;
       color: #fff;
-      line-height: 1.1;
-      margin-bottom: 0.85rem;
-      text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+      text-align: center;
+      margin-bottom: 0.3rem;
+      letter-spacing: -0.3px;
     }
 
-    .login-desc {
-      font-size: 0.95rem;
-      color: rgba(255,255,255,0.75);
-      font-weight: 400;
-      line-height: 1.6;
-      max-width: 320px;
+    .login-card-sub {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.4);
+      text-align: center;
       margin-bottom: 2rem;
-    }
-
-    /* Logo encima */
-    .login-left-logo {
-      position: absolute;
-      top: 2rem;
-      left: 2.5rem;
-      z-index: 3;
-      height: 56px;
-      width: auto;
-      object-fit: contain;
-      filter: drop-shadow(0 2px 12px rgba(0,0,0,0.6));
-    }
-
-    /* ---- RIGHT PANEL: formulario minimalista ---- */
-    .login-right {
-      flex: 1;
-      background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 3rem 2.5rem;
-    }
-
-    .login-form-wrap {
-      width: 100%;
-      max-width: 380px;
-      animation: fadeInUp 0.5s ease both;
-    }
-
-    /* Logo pequeño en mobile (derecho) */
-    .login-right-logo {
-      display: none;
-      width: 80px;
-      margin: 0 auto 1.5rem;
-    }
-
-    .login-form-wrap h2 {
-      font-size: 2rem;
-      font-weight: 900;
-      color: var(--text);
-      margin-bottom: 0.4rem;
-      line-height: 1.1;
-    }
-
-    .login-form-tagline {
-      font-size: 0.88rem;
-      color: var(--gray-600);
-      margin-bottom: 2.5rem;
       font-weight: 400;
     }
 
-    .form-group { margin-bottom: 1.5rem; }
+    .form-group { margin-bottom: 1rem; }
 
     .form-label {
       display: block;
-      font-size: 0.82rem;
+      font-size: 0.72rem;
       font-weight: 700;
-      color: var(--gray-600);
+      color: rgba(255,255,255,0.45);
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 0.6rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.45rem;
     }
 
     .input-wrap { position: relative; display: flex; align-items: center; }
 
     .input-icon-left {
       position: absolute;
-      left: 1.1rem;
-      color: var(--gray-400);
+      left: 1rem;
+      color: rgba(255,255,255,0.3);
       display: flex;
       align-items: center;
       pointer-events: none;
@@ -278,118 +218,116 @@
 
     .form-input {
       width: 100%;
-      background: var(--gray-100);
-      border: 2px solid transparent;
-      border-radius: var(--radius-md);
-      padding: 1rem 1rem 1rem 3.2rem;
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--text);
+      background: rgba(255,255,255,0.07);
+      border: 1.5px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-sm);
+      padding: 0.9rem 1rem 0.9rem 3rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #fff;
       transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
       outline: none;
       font-family: var(--font);
     }
 
-    .form-input::placeholder { color: var(--gray-400); font-weight: 400; }
+    .form-input::placeholder { color: rgba(255,255,255,0.22); font-weight: 400; }
 
     .form-input:focus {
       border-color: var(--red);
-      background: #fff;
-      box-shadow: 0 0 0 4px rgba(227,6,19,0.08);
+      background: rgba(255,255,255,0.1);
+      box-shadow: 0 0 0 3px rgba(227,6,19,0.2);
     }
 
     .btn-jugar {
       width: 100%;
-      padding: 1.1rem;
-      border-radius: var(--radius-md);
+      padding: 1rem;
+      border-radius: var(--radius-sm);
       background: var(--red);
       color: #fff;
-      font-size: 1.05rem;
+      font-size: 0.95rem;
       font-weight: 800;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
       transition: all 0.25s ease;
-      box-shadow: 0 4px 20px rgba(227,6,19,0.35);
+      box-shadow: 0 4px 24px rgba(227,6,19,0.5);
       border: none;
       cursor: pointer;
       font-family: var(--font);
-      margin-top: 0.5rem;
-      margin-bottom: 1.5rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn-jugar::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 60%);
+      margin-top: 1.25rem;
+      margin-bottom: 1.25rem;
     }
 
     .btn-jugar:hover {
       background: var(--red-dark);
       transform: translateY(-2px);
-      box-shadow: 0 8px 28px rgba(227,6,19,0.45);
+      box-shadow: 0 8px 32px rgba(227,6,19,0.6);
     }
 
-    .btn-jugar:active { transform: translateY(0); box-shadow: 0 2px 10px rgba(227,6,19,0.3); }
+    .btn-jugar:active { transform: translateY(0); }
 
     .register-link {
       text-align: center;
-      font-size: 0.85rem;
-      color: var(--gray-400);
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.3);
     }
 
-    .register-link a {
-      color: var(--red);
-      font-weight: 700;
-      text-decoration: none;
-    }
-
+    .register-link a { color: var(--yellow); font-weight: 700; text-decoration: none; }
     .register-link a:hover { text-decoration: underline; }
 
     .login-error {
       display: none;
-      background: #fdecea;
-      border: 1px solid rgba(227,6,19,0.2);
+      background: rgba(227,6,19,0.15);
+      border: 1px solid rgba(227,6,19,0.3);
       border-radius: var(--radius-sm);
       padding: 0.65rem 1rem;
       font-size: 0.82rem;
-      color: var(--red);
+      color: #ff8087;
       margin-bottom: 1rem;
       animation: fadeIn 0.3s ease;
       font-weight: 500;
     }
 
-    .login-divider {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin: 1.5rem 0;
-      color: var(--gray-400);
-      font-size: 0.78rem;
+    /* Tag "Soccer Event" decorativo — esquina derecha */
+    .login-event-tag {
+      position: absolute;
+      bottom: 2.5rem;
+      right: 2.5rem;
+      z-index: 2;
+      text-align: right;
+      pointer-events: none;
+      animation: fadeInUp 0.8s ease both 0.3s;
     }
 
-    .login-divider::before,
-    .login-divider::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--gray-200);
+    .login-event-tag .event-label {
+      display: block;
+      font-size: 3rem;
+      font-weight: 900;
+      color: #fff;
+      line-height: 0.9;
+      text-transform: uppercase;
+      letter-spacing: -1px;
+      text-shadow: 0 2px 24px rgba(0,0,0,0.6);
     }
 
-    /* ---- Responsive ---- */
-    @media (max-width: 767px) {
-      #view-login.active { flex-direction: column; }
-      .login-left { width: 100%; min-height: 240px; }
-      .login-left-content { padding: 2rem; }
-      .login-headline { font-size: 1.9rem; }
-      .login-desc { display: none; }
-      .login-left-logo { height: 44px; top: 1.25rem; left: 1.5rem; }
-      .login-right { padding: 2rem 1.5rem; }
-      .login-right-logo { display: block; }
+    .login-event-tag .event-highlight {
+      display: inline-block;
+      background: var(--red);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.25rem 0.7rem;
+      margin-top: 0.5rem;
     }
 
-    /* Legacy placeholder — merged above */
+    @media (max-width: 600px) {
+      .login-event-tag { display: none; }
+      .login-card { padding: 2rem 1.25rem 1.5rem; }
+      .login-card-title { font-size: 1.35rem; }
+    }
+
+    /* Legacy placeholder */
     .login-bg-pattern {
       position: absolute;
       inset: 0;
@@ -1725,55 +1663,44 @@
 ============================================= -->
 <div id="view-login" class="view active">
 
-  <!-- ===== LEFT PANEL: login.png background ===== -->
-  <div class="login-left">
-    <div class="login-left-overlay" aria-hidden="true"></div>
+  <!-- Overlay oscuro sobre login.png -->
+  <div class="login-left-overlay" aria-hidden="true"></div>
 
-    <img src="logo.png" alt="Mega Vital" class="login-left-logo" />
+  <!-- Card centrada -->
+  <div class="login-card">
+    <img src="logo.png" alt="Mega Vital" class="login-card-logo" />
+    <h1 class="login-card-title">Mega Mundial 2026</h1>
+    <p class="login-card-sub">Predice, compite y gana en Gimnasio Mega Vital</p>
 
-    <div class="login-left-content">
-      <span class="login-eyebrow">Mega Mundial 2026</span>
-      <h1 class="login-headline">Tu pronóstico<br>vale oro</h1>
-      <p class="login-desc">Predice los partidos del Mundial, suma puntos y gana premios en Gimnasio Mega Vital.</p>
-    </div>
+    <form id="login-form" novalidate>
+      <div class="login-error" id="login-error">
+        Ingresa tu nombre completo para continuar.
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="full-name">Nombre completo</label>
+        <div class="input-wrap">
+          <span class="input-icon-left">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+          </span>
+          <input class="form-input" type="text" id="full-name" name="full-name"
+            placeholder="Ej: Carlos Rodríguez" autocomplete="name" autocapitalize="words" />
+        </div>
+      </div>
+
+      <button type="submit" class="btn-jugar">Entrar al torneo</button>
+
+      <p class="register-link">¿No estás inscrito? <a href="#">Regístrate aquí</a></p>
+    </form>
   </div>
 
-  <!-- ===== RIGHT PANEL: solo nombre ===== -->
-  <div class="login-right">
-    <div class="login-form-wrap">
-
-      <!-- Logo visible en mobile -->
-      <img src="logo.png" alt="Mega Vital" class="login-right-logo" />
-
-      <h2>Bienvenido</h2>
-      <p class="login-form-tagline">Ingresa tu nombre para comenzar a jugar</p>
-
-      <form id="login-form" novalidate>
-        <div class="login-error" id="login-error">
-          Ingresa tu nombre completo para continuar.
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="full-name">Nombre completo</label>
-          <div class="input-wrap">
-            <span class="input-icon-left">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                <circle cx="12" cy="7" r="4"/>
-              </svg>
-            </span>
-            <input class="form-input" type="text" id="full-name" name="full-name"
-              placeholder="Ej: Carlos Rodríguez" autocomplete="name" autocapitalize="words" />
-          </div>
-        </div>
-
-        <button type="submit" class="btn-jugar">Entrar al torneo &nbsp;&rarr;</button>
-
-        <div class="login-divider">o</div>
-
-        <p class="register-link">¿No estás inscrito? <a href="#">Regístrate aquí</a></p>
-      </form>
-    </div>
+  <!-- Tag decorativo esquina derecha (estilo imagen referencia) -->
+  <div class="login-event-tag" aria-hidden="true">
+    <span class="event-label">MEGA<br>MUNDIAL</span>
+    <span class="event-highlight">FIFA WORLD CUP 2026</span>
   </div>
 
 </div>
