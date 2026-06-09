@@ -339,6 +339,19 @@
     .flag-TUN { background: radial-gradient(circle, #fff 30%, #E70013 30%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
     .flag-QAT { background: linear-gradient(90deg, #fff 25%, #8A1538 25%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
     .flag-ROM { background: linear-gradient(90deg, #002B7F 33%, #FCD116 33%, #FCD116 66%, #CE1126 66%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
+    .flag-CZE { background: linear-gradient(160deg, #D7141A 0%, #fff 50%, #11457E 100%); color: #11457E; }
+    .flag-BIH { background: linear-gradient(160deg, #002395 0%, #FFCD00 100%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
+    .flag-HAI { background: linear-gradient(180deg, #00209F 50%, #D21034 50%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
+    .flag-CUW { background: linear-gradient(160deg, #002B7F 0%, #F9E814 50%, #fff 100%); color: #002B7F; }
+    .flag-SWE { background: #006AA7; color: #FECC02; }
+    .flag-NZL { background: linear-gradient(160deg, #00247D 0%, #CC142B 100%); color: #fff; }
+    .flag-CPV { background: linear-gradient(160deg, #003893 0%, #fff 50%, #CF2027 100%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
+    .flag-NOR { background: linear-gradient(180deg, #EF2B2D 33%, #fff 33%, #fff 66%, #EF2B2D 66%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
+    .flag-IRQ { background: linear-gradient(180deg, #CE1126 33%, #fff 33%, #fff 66%, #007A3D 66%); color: #000; }
+    .flag-ALG { background: linear-gradient(90deg, #006233 50%, #fff 50%); color: #D21034; }
+    .flag-JOR { background: linear-gradient(180deg, #007A3D 33%, #fff 33%, #fff 66%, #CE1126 66%); color: #007A3D; }
+    .flag-UZB { background: linear-gradient(180deg, #1EB53A 33%, #fff 33%, #fff 66%, #CE1126 66%); color: #1EB53A; }
+    .flag-COD { background: linear-gradient(160deg, #007FFF 0%, #F7D918 50%, #CE1021 100%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
 
     /* MATCH CARDS */
     .cards-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
@@ -1100,90 +1113,90 @@ var MAX_PTS = 285;
    WORLD CUP 2026 MATCH DATASET (72 group matches)
 ============================================= */
 var MATCHES = [
-  // GROUP A
-  { id:1,  group:'A', home:'USA',    away:'Panama',   homeCls:'flag-USA', awayCls:'flag-PAN', date:'Jun 11', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:2,  group:'A', home:'Morocco',away:'Belgium',  homeCls:'flag-MAR', awayCls:'flag-BEL', date:'Jun 11', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:3,  group:'A', home:'USA',    away:'Morocco',  homeCls:'flag-USA', awayCls:'flag-MAR', date:'Jun 15', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:4,  group:'A', home:'Panama', away:'Belgium',  homeCls:'flag-PAN', awayCls:'flag-BEL', date:'Jun 15', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:5,  group:'A', home:'USA',    away:'Belgium',  homeCls:'flag-USA', awayCls:'flag-BEL', date:'Jun 19', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:6,  group:'A', home:'Panama', away:'Morocco',  homeCls:'flag-PAN', awayCls:'flag-MAR', date:'Jun 19', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  // GROUP B
-  { id:7,  group:'B', home:'Mexico', away:'Jamaica',  homeCls:'flag-MEX', awayCls:'flag-JAM', date:'Jun 12', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:8,  group:'B', home:'Poland', away:'Croatia',  homeCls:'flag-POL', awayCls:'flag-CRO', date:'Jun 12', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:9,  group:'B', home:'Mexico', away:'Poland',   homeCls:'flag-MEX', awayCls:'flag-POL', date:'Jun 16', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:10, group:'B', home:'Jamaica',away:'Croatia',  homeCls:'flag-JAM', awayCls:'flag-CRO', date:'Jun 16', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:11, group:'B', home:'Mexico', away:'Croatia',  homeCls:'flag-MEX', awayCls:'flag-CRO', date:'Jun 20', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:12, group:'B', home:'Jamaica',away:'Poland',   homeCls:'flag-JAM', awayCls:'flag-POL', date:'Jun 20', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  // GROUP C
-  { id:13, group:'C', home:'Canada', away:'Honduras', homeCls:'flag-CAN', awayCls:'flag-HON', date:'Jun 12', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:14, group:'C', home:'France', away:'Australia',homeCls:'flag-FRA', awayCls:'flag-AUS', date:'Jun 12', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:15, group:'C', home:'Canada', away:'France',   homeCls:'flag-CAN', awayCls:'flag-FRA', date:'Jun 16', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:16, group:'C', home:'Honduras',away:'Australia',homeCls:'flag-HON',awayCls:'flag-AUS', date:'Jun 16', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:17, group:'C', home:'Canada', away:'Australia',homeCls:'flag-CAN', awayCls:'flag-AUS', date:'Jun 20', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:18, group:'C', home:'Honduras',away:'France',  homeCls:'flag-HON', awayCls:'flag-FRA', date:'Jun 20', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  // GROUP D
-  { id:19, group:'D', home:'Brazil', away:'Bolivia',  homeCls:'flag-BRA', awayCls:'flag-BOL', date:'Jun 13', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:20, group:'D', home:'Serbia', away:'Switzerland',homeCls:'flag-SRB',awayCls:'flag-SUI',date:'Jun 13', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:21, group:'D', home:'Brazil', away:'Serbia',   homeCls:'flag-BRA', awayCls:'flag-SRB', date:'Jun 17', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:22, group:'D', home:'Bolivia',away:'Switzerland',homeCls:'flag-BOL',awayCls:'flag-SUI',date:'Jun 17', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:23, group:'D', home:'Brazil', away:'Switzerland',homeCls:'flag-BRA',awayCls:'flag-SUI',date:'Jun 21', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:24, group:'D', home:'Bolivia',away:'Serbia',   homeCls:'flag-BOL', awayCls:'flag-SRB', date:'Jun 21', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  // GROUP E
-  { id:25, group:'E', home:'Argentina',away:'Chile',  homeCls:'flag-ARG', awayCls:'flag-CHI', date:'Jun 13', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:26, group:'E', home:'Japan',  away:'Spain',    homeCls:'flag-JPN', awayCls:'flag-ESP', date:'Jun 13', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:27, group:'E', home:'Argentina',away:'Japan',  homeCls:'flag-ARG', awayCls:'flag-JPN', date:'Jun 17', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:28, group:'E', home:'Chile',  away:'Spain',    homeCls:'flag-CHI', awayCls:'flag-ESP', date:'Jun 17', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:29, group:'E', home:'Argentina',away:'Spain',  homeCls:'flag-ARG', awayCls:'flag-ESP', date:'Jun 21', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:30, group:'E', home:'Chile',  away:'Japan',    homeCls:'flag-CHI', awayCls:'flag-JPN', date:'Jun 21', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  // GROUP F
-  { id:31, group:'F', home:'Colombia',away:'Paraguay',homeCls:'flag-COL', awayCls:'flag-PAR', date:'Jun 14', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:32, group:'F', home:'South Korea',away:'Germany',homeCls:'flag-KOR',awayCls:'flag-GER',date:'Jun 14', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:33, group:'F', home:'Colombia',away:'South Korea',homeCls:'flag-COL',awayCls:'flag-KOR',date:'Jun 18', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:34, group:'F', home:'Paraguay',away:'Germany', homeCls:'flag-PAR', awayCls:'flag-GER', date:'Jun 18', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:35, group:'F', home:'Colombia',away:'Germany', homeCls:'flag-COL', awayCls:'flag-GER', date:'Jun 22', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:36, group:'F', home:'Paraguay',away:'South Korea',homeCls:'flag-PAR',awayCls:'flag-KOR',date:'Jun 22', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  // GROUP G
-  { id:37, group:'G', home:'Uruguay', away:'Venezuela',homeCls:'flag-URY', awayCls:'flag-VEN', date:'Jun 14', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:38, group:'G', home:'Iran',   away:'Portugal', homeCls:'flag-IRN', awayCls:'flag-POR', date:'Jun 14', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:39, group:'G', home:'Uruguay', away:'Iran',    homeCls:'flag-URY', awayCls:'flag-IRN', date:'Jun 18', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:40, group:'G', home:'Venezuela',away:'Portugal',homeCls:'flag-VEN',awayCls:'flag-POR', date:'Jun 18', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:41, group:'G', home:'Uruguay', away:'Portugal',homeCls:'flag-URY', awayCls:'flag-POR', date:'Jun 22', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:42, group:'G', home:'Venezuela',away:'Iran',   homeCls:'flag-VEN', awayCls:'flag-IRN', date:'Jun 22', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  // GROUP H
-  { id:43, group:'H', home:'Ecuador', away:'Peru',    homeCls:'flag-ECU', awayCls:'flag-PER', date:'Jun 15', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:44, group:'H', home:'Saudi Arabia',away:'England',homeCls:'flag-KSA',awayCls:'flag-ENG',date:'Jun 15', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:45, group:'H', home:'Ecuador', away:'Saudi Arabia',homeCls:'flag-ECU',awayCls:'flag-KSA',date:'Jun 19', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:46, group:'H', home:'Peru',   away:'England',  homeCls:'flag-PER', awayCls:'flag-ENG', date:'Jun 19', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:47, group:'H', home:'Ecuador', away:'England', homeCls:'flag-ECU', awayCls:'flag-ENG', date:'Jun 23', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:48, group:'H', home:'Peru',   away:'Saudi Arabia',homeCls:'flag-PER',awayCls:'flag-KSA',date:'Jun 23', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  // GROUP I
-  { id:49, group:'I', home:'Senegal', away:'Nigeria', homeCls:'flag-SEN', awayCls:'flag-NGA', date:'Jun 15', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:50, group:'I', home:'Netherlands',away:'Denmark',homeCls:'flag-NED',awayCls:'flag-DEN',date:'Jun 15', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:51, group:'I', home:'Senegal', away:'Netherlands',homeCls:'flag-SEN',awayCls:'flag-NED',date:'Jun 19', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:52, group:'I', home:'Nigeria', away:'Denmark', homeCls:'flag-NGA', awayCls:'flag-DEN', date:'Jun 19', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:53, group:'I', home:'Senegal', away:'Denmark', homeCls:'flag-SEN', awayCls:'flag-DEN', date:'Jun 23', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:54, group:'I', home:'Nigeria', away:'Netherlands',homeCls:'flag-NGA',awayCls:'flag-NED',date:'Jun 23', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  // GROUP J
-  { id:55, group:'J', home:'Cameroon',away:'Ivory Coast',homeCls:'flag-CMR',awayCls:'flag-CIV',date:'Jun 16', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:56, group:'J', home:'Austria', away:'Turkey',  homeCls:'flag-AUT', awayCls:'flag-TUR', date:'Jun 16', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:57, group:'J', home:'Cameroon',away:'Austria', homeCls:'flag-CMR', awayCls:'flag-AUT', date:'Jun 20', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:58, group:'J', home:'Ivory Coast',away:'Turkey',homeCls:'flag-CIV',awayCls:'flag-TUR', date:'Jun 20', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:59, group:'J', home:'Cameroon',away:'Turkey',  homeCls:'flag-CMR', awayCls:'flag-TUR', date:'Jun 24', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:60, group:'J', home:'Ivory Coast',away:'Austria',homeCls:'flag-CIV',awayCls:'flag-AUT',date:'Jun 24', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  // GROUP K
-  { id:61, group:'K', home:'Ghana',  away:'Egypt',    homeCls:'flag-GHA', awayCls:'flag-EGY', date:'Jun 16', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:62, group:'K', home:'Ukraine',away:'Scotland', homeCls:'flag-UKR', awayCls:'flag-SCO', date:'Jun 16', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:63, group:'K', home:'Ghana',  away:'Ukraine',  homeCls:'flag-GHA', awayCls:'flag-UKR', date:'Jun 20', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:64, group:'K', home:'Egypt',  away:'Scotland', homeCls:'flag-EGY', awayCls:'flag-SCO', date:'Jun 20', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:65, group:'K', home:'Ghana',  away:'Scotland', homeCls:'flag-GHA', awayCls:'flag-SCO', date:'Jun 24', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:66, group:'K', home:'Egypt',  away:'Ukraine',  homeCls:'flag-EGY', awayCls:'flag-UKR', date:'Jun 24', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  // GROUP L (Netherlands B replaced with Romania)
-  { id:67, group:'L', home:'South Africa',away:'Tunisia',homeCls:'flag-RSA',awayCls:'flag-TUN',date:'Jun 17', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:68, group:'L', home:'Qatar',  away:'Romania',  homeCls:'flag-QAT', awayCls:'flag-ROM', date:'Jun 17', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:69, group:'L', home:'South Africa',away:'Qatar',homeCls:'flag-RSA',awayCls:'flag-QAT', date:'Jun 21', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:70, group:'L', home:'Tunisia',away:'Romania',  homeCls:'flag-TUN', awayCls:'flag-ROM', date:'Jun 21', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:71, group:'L', home:'South Africa',away:'Romania',homeCls:'flag-RSA',awayCls:'flag-ROM',date:'Jun 25', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:72, group:'L', home:'Tunisia',away:'Qatar',    homeCls:'flag-TUN', awayCls:'flag-QAT', date:'Jun 25', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null }
+  // GROUP A — México, Sudáfrica, Corea del Sur, Chequia
+  { id:1,  group:'A', home:'México',    away:'Sudáfrica',   homeCls:'flag-MEX', awayCls:'flag-RSA', date:'Jun 11', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:2,  group:'A', home:'Corea del Sur', away:'Chequia', homeCls:'flag-KOR', awayCls:'flag-CZE', date:'Jun 11', time:'22:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:3,  group:'A', home:'Chequia',   away:'Sudáfrica',   homeCls:'flag-CZE', awayCls:'flag-RSA', date:'Jun 18', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:4,  group:'A', home:'México',    away:'Corea del Sur',homeCls:'flag-MEX',awayCls:'flag-KOR', date:'Jun 18', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:5,  group:'A', home:'Chequia',   away:'México',      homeCls:'flag-CZE', awayCls:'flag-MEX', date:'Jun 24', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:6,  group:'A', home:'Sudáfrica', away:'Corea del Sur',homeCls:'flag-RSA',awayCls:'flag-KOR', date:'Jun 24', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  // GROUP B — Canadá, Bosnia y Herzegovina, Qatar, Suiza
+  { id:7,  group:'B', home:'Canadá',    away:'Bosnia',      homeCls:'flag-CAN', awayCls:'flag-BIH', date:'Jun 12', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:8,  group:'B', home:'Qatar',     away:'Suiza',       homeCls:'flag-QAT', awayCls:'flag-SUI', date:'Jun 13', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:9,  group:'B', home:'Suiza',     away:'Bosnia',      homeCls:'flag-SUI', awayCls:'flag-BIH', date:'Jun 18', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:10, group:'B', home:'Canadá',    away:'Qatar',       homeCls:'flag-CAN', awayCls:'flag-QAT', date:'Jun 18', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:11, group:'B', home:'Suiza',     away:'Canadá',      homeCls:'flag-SUI', awayCls:'flag-CAN', date:'Jun 24', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:12, group:'B', home:'Bosnia',    away:'Qatar',       homeCls:'flag-BIH', awayCls:'flag-QAT', date:'Jun 24', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  // GROUP C — Brasil, Marruecos, Haití, Escocia
+  { id:13, group:'C', home:'Haití',     away:'Escocia',     homeCls:'flag-HAI', awayCls:'flag-SCO', date:'Jun 13', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:14, group:'C', home:'Brasil',    away:'Marruecos',   homeCls:'flag-BRA', awayCls:'flag-MAR', date:'Jun 13', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:15, group:'C', home:'Brasil',    away:'Haití',       homeCls:'flag-BRA', awayCls:'flag-HAI', date:'Jun 19', time:'20:30', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:16, group:'C', home:'Escocia',   away:'Marruecos',   homeCls:'flag-SCO', awayCls:'flag-MAR', date:'Jun 19', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:17, group:'C', home:'Escocia',   away:'Brasil',      homeCls:'flag-SCO', awayCls:'flag-BRA', date:'Jun 24', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:18, group:'C', home:'Marruecos', away:'Haití',       homeCls:'flag-MAR', awayCls:'flag-HAI', date:'Jun 24', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  // GROUP D — USA, Paraguay, Australia, Turquía
+  { id:19, group:'D', home:'USA',       away:'Paraguay',    homeCls:'flag-USA', awayCls:'flag-PAR', date:'Jun 12', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:20, group:'D', home:'Australia', away:'Turquía',     homeCls:'flag-AUS', awayCls:'flag-TUR', date:'Jun 14', time:'00:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:21, group:'D', home:'Turquía',   away:'Paraguay',    homeCls:'flag-TUR', awayCls:'flag-PAR', date:'Jun 19', time:'23:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:22, group:'D', home:'USA',       away:'Australia',   homeCls:'flag-USA', awayCls:'flag-AUS', date:'Jun 19', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:23, group:'D', home:'Turquía',   away:'USA',         homeCls:'flag-TUR', awayCls:'flag-USA', date:'Jun 25', time:'22:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:24, group:'D', home:'Paraguay',  away:'Australia',   homeCls:'flag-PAR', awayCls:'flag-AUS', date:'Jun 25', time:'22:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  // GROUP E — Alemania, Curazao, Costa de Marfil, Ecuador
+  { id:25, group:'E', home:'Costa de Marfil',away:'Ecuador',homeCls:'flag-CIV', awayCls:'flag-ECU', date:'Jun 14', time:'19:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:26, group:'E', home:'Alemania',  away:'Curazao',     homeCls:'flag-GER', awayCls:'flag-CUW', date:'Jun 14', time:'13:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:27, group:'E', home:'Alemania',  away:'Costa de Marfil',homeCls:'flag-GER',awayCls:'flag-CIV',date:'Jun 20', time:'16:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:28, group:'E', home:'Ecuador',   away:'Curazao',     homeCls:'flag-ECU', awayCls:'flag-CUW', date:'Jun 20', time:'20:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:29, group:'E', home:'Curazao',   away:'Costa de Marfil',homeCls:'flag-CUW',awayCls:'flag-CIV',date:'Jun 25', time:'16:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:30, group:'E', home:'Ecuador',   away:'Alemania',    homeCls:'flag-ECU', awayCls:'flag-GER', date:'Jun 25', time:'16:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  // GROUP F — Países Bajos, Japón, Túnez, Suecia
+  { id:31, group:'F', home:'Países Bajos',away:'Japón',     homeCls:'flag-NED', awayCls:'flag-JPN', date:'Jun 14', time:'16:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:32, group:'F', home:'Suecia',    away:'Túnez',       homeCls:'flag-SWE', awayCls:'flag-TUN', date:'Jun 14', time:'22:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:33, group:'F', home:'Países Bajos',away:'Suecia',    homeCls:'flag-NED', awayCls:'flag-SWE', date:'Jun 20', time:'13:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:34, group:'F', home:'Túnez',     away:'Japón',       homeCls:'flag-TUN', awayCls:'flag-JPN', date:'Jun 21', time:'00:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:35, group:'F', home:'Japón',     away:'Suecia',      homeCls:'flag-JPN', awayCls:'flag-SWE', date:'Jun 25', time:'19:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:36, group:'F', home:'Túnez',     away:'Países Bajos',homeCls:'flag-TUN', awayCls:'flag-NED', date:'Jun 25', time:'19:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  // GROUP G — Bélgica, Egipto, Irán, Nueva Zelanda
+  { id:37, group:'G', home:'Irán',      away:'Nueva Zelanda',homeCls:'flag-IRN',awayCls:'flag-NZL', date:'Jun 15', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:38, group:'G', home:'Bélgica',   away:'Egipto',      homeCls:'flag-BEL', awayCls:'flag-EGY', date:'Jun 15', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:39, group:'G', home:'Bélgica',   away:'Irán',        homeCls:'flag-BEL', awayCls:'flag-IRN', date:'Jun 21', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:40, group:'G', home:'Nueva Zelanda',away:'Egipto',   homeCls:'flag-NZL', awayCls:'flag-EGY', date:'Jun 21', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:41, group:'G', home:'Egipto',    away:'Irán',        homeCls:'flag-EGY', awayCls:'flag-IRN', date:'Jun 26', time:'23:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:42, group:'G', home:'Nueva Zelanda',away:'Bélgica',  homeCls:'flag-NZL', awayCls:'flag-BEL', date:'Jun 26', time:'23:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  // GROUP H — España, Cabo Verde, Arabia Saudita, Uruguay
+  { id:43, group:'H', home:'Arabia Saudita',away:'Uruguay', homeCls:'flag-KSA', awayCls:'flag-URY', date:'Jun 15', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:44, group:'H', home:'España',    away:'Cabo Verde',  homeCls:'flag-ESP', awayCls:'flag-CPV', date:'Jun 15', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:45, group:'H', home:'Uruguay',   away:'Cabo Verde',  homeCls:'flag-URY', awayCls:'flag-CPV', date:'Jun 21', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:46, group:'H', home:'España',    away:'Arabia Saudita',homeCls:'flag-ESP',awayCls:'flag-KSA',date:'Jun 21', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:47, group:'H', home:'Cabo Verde',away:'Arabia Saudita',homeCls:'flag-CPV',awayCls:'flag-KSA',date:'Jun 26', time:'20:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:48, group:'H', home:'Uruguay',   away:'España',      homeCls:'flag-URY', awayCls:'flag-ESP', date:'Jun 26', time:'20:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  // GROUP I — Francia, Senegal, Noruega, Iraq
+  { id:49, group:'I', home:'Francia',   away:'Senegal',     homeCls:'flag-FRA', awayCls:'flag-SEN', date:'Jun 16', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:50, group:'I', home:'Iraq',      away:'Noruega',     homeCls:'flag-IRQ', awayCls:'flag-NOR', date:'Jun 16', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:51, group:'I', home:'Noruega',   away:'Senegal',     homeCls:'flag-NOR', awayCls:'flag-SEN', date:'Jun 22', time:'20:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:52, group:'I', home:'Francia',   away:'Iraq',        homeCls:'flag-FRA', awayCls:'flag-IRQ', date:'Jun 22', time:'17:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:53, group:'I', home:'Noruega',   away:'Francia',     homeCls:'flag-NOR', awayCls:'flag-FRA', date:'Jun 26', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:54, group:'I', home:'Senegal',   away:'Iraq',        homeCls:'flag-SEN', awayCls:'flag-IRQ', date:'Jun 26', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  // GROUP J — Argentina, Argelia, Austria, Jordania
+  { id:55, group:'J', home:'Argentina', away:'Argelia',     homeCls:'flag-ARG', awayCls:'flag-ALG', date:'Jun 16', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:56, group:'J', home:'Austria',   away:'Jordania',    homeCls:'flag-AUT', awayCls:'flag-JOR', date:'Jun 17', time:'00:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:57, group:'J', home:'Argentina', away:'Austria',     homeCls:'flag-ARG', awayCls:'flag-AUT', date:'Jun 22', time:'13:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:58, group:'J', home:'Jordania',  away:'Argelia',     homeCls:'flag-JOR', awayCls:'flag-ALG', date:'Jun 22', time:'23:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:59, group:'J', home:'Argelia',   away:'Austria',     homeCls:'flag-ALG', awayCls:'flag-AUT', date:'Jun 27', time:'22:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:60, group:'J', home:'Jordania',  away:'Argentina',   homeCls:'flag-JOR', awayCls:'flag-ARG', date:'Jun 27', time:'22:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  // GROUP K — Portugal, Colombia, Uzbekistán, DR Congo
+  { id:61, group:'K', home:'Portugal',  away:'DR Congo',    homeCls:'flag-POR', awayCls:'flag-COD', date:'Jun 17', time:'13:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:62, group:'K', home:'Uzbekistán',away:'Colombia',    homeCls:'flag-UZB', awayCls:'flag-COL', date:'Jun 17', time:'22:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:63, group:'K', home:'Portugal',  away:'Uzbekistán',  homeCls:'flag-POR', awayCls:'flag-UZB', date:'Jun 23', time:'13:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:64, group:'K', home:'Colombia',  away:'DR Congo',    homeCls:'flag-COL', awayCls:'flag-COD', date:'Jun 23', time:'22:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:65, group:'K', home:'Colombia',  away:'Portugal',    homeCls:'flag-COL', awayCls:'flag-POR', date:'Jun 27', time:'19:30', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:66, group:'K', home:'DR Congo',  away:'Uzbekistán',  homeCls:'flag-COD', awayCls:'flag-UZB', date:'Jun 27', time:'19:30', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  // GROUP L — Inglaterra, Croacia, Ghana, Panamá
+  { id:67, group:'L', home:'Ghana',     away:'Panamá',      homeCls:'flag-GHA', awayCls:'flag-PAN', date:'Jun 17', time:'19:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:68, group:'L', home:'Inglaterra',away:'Croacia',     homeCls:'flag-ENG', awayCls:'flag-CRO', date:'Jun 17', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:69, group:'L', home:'Inglaterra',away:'Ghana',       homeCls:'flag-ENG', awayCls:'flag-GHA', date:'Jun 23', time:'19:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:70, group:'L', home:'Croacia',   away:'Panamá',      homeCls:'flag-CRO', awayCls:'flag-PAN', date:'Jun 23', time:'22:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:71, group:'L', home:'Croacia',   away:'Ghana',       homeCls:'flag-CRO', awayCls:'flag-GHA', date:'Jun 27', time:'22:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:72, group:'L', home:'Panamá',    away:'Inglaterra',  homeCls:'flag-PAN', awayCls:'flag-ENG', date:'Jun 27', time:'22:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null }
 ];
 
 var currentGroupFilter = 'all';
@@ -1417,7 +1430,31 @@ function matchCardHTML(m) {
 }
 
 function abbr(name) {
-  var map = { 'USA':'USA','Panama':'PAN','Morocco':'MAR','Belgium':'BEL','Mexico':'MEX','Jamaica':'JAM','Poland':'POL','Croatia':'CRO','Canada':'CAN','Honduras':'HON','France':'FRA','Australia':'AUS','Brazil':'BRA','Bolivia':'BOL','Serbia':'SRB','Switzerland':'SUI','Argentina':'ARG','Chile':'CHI','Japan':'JPN','Spain':'ESP','Colombia':'COL','Paraguay':'PAR','South Korea':'KOR','Germany':'GER','Uruguay':'URY','Venezuela':'VEN','Iran':'IRN','Portugal':'POR','Ecuador':'ECU','Peru':'PER','Saudi Arabia':'KSA','England':'ENG','Senegal':'SEN','Nigeria':'NGA','Netherlands':'NED','Denmark':'DEN','Cameroon':'CMR','Ivory Coast':'CIV','Austria':'AUT','Turkey':'TUR','Ghana':'GHA','Egypt':'EGY','Ukraine':'UKR','Scotland':'SCO','South Africa':'RSA','Tunisia':'TUN','Qatar':'QAT','Romania':'ROM' };
+  var map = {
+    'México':'MEX','Sudáfrica':'RSA','Corea del Sur':'KOR','Chequia':'CZE',
+    'Canadá':'CAN','Bosnia':'BOS','Qatar':'QAT','Suiza':'SUI',
+    'Brasil':'BRA','Marruecos':'MAR','Haití':'HAI','Escocia':'SCO',
+    'USA':'USA','Paraguay':'PAR','Australia':'AUS','Turquía':'TUR',
+    'Alemania':'GER','Curazao':'CUW','Costa de Marfil':'CIV','Ecuador':'ECU',
+    'Países Bajos':'NED','Japón':'JPN','Túnez':'TUN','Suecia':'SWE',
+    'Bélgica':'BEL','Egipto':'EGY','Irán':'IRN','Nueva Zelanda':'NZL',
+    'España':'ESP','Cabo Verde':'CPV','Arabia Saudita':'KSA','Uruguay':'URY',
+    'Francia':'FRA','Senegal':'SEN','Noruega':'NOR','Iraq':'IRQ',
+    'Argentina':'ARG','Argelia':'ALG','Austria':'AUT','Jordania':'JOR',
+    'Portugal':'POR','Colombia':'COL','Uzbekistán':'UZB','DR Congo':'COD',
+    'Inglaterra':'ENG','Croacia':'CRO','Ghana':'GHA','Panamá':'PAN',
+    /* fallbacks English names */
+    'Mexico':'MEX','South Africa':'RSA','South Korea':'KOR','Czechia':'CZE',
+    'Canada':'CAN','Bosnia and Herzegovina':'BOS','Switzerland':'SUI',
+    'Brazil':'BRA','Morocco':'MAR','Haiti':'HAI','Scotland':'SCO',
+    'Turkey':'TUR','Germany':'GER','Curacao':'CUW','Ivory Coast':'CIV',
+    'Netherlands':'NED','Japan':'JPN','Tunisia':'TUN','Sweden':'SWE',
+    'Belgium':'BEL','Egypt':'EGY','Iran':'IRN','New Zealand':'NZL',
+    'Spain':'ESP','Cape Verde':'CPV','Saudi Arabia':'KSA',
+    'France':'FRA','Norway':'NOR','Iraq':'IRQ',
+    'Algeria':'ALG','Jordan':'JOR','Uzbekistan':'UZB','DR Congo':'COD',
+    'England':'ENG','Croatia':'CRO','Panama':'PAN','Peru':'PER','Uruguay':'URY'
+  };
   return map[name] || name.substring(0, 3).toUpperCase();
 }
 
