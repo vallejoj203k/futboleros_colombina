@@ -1220,72 +1220,17 @@
       <div class="tab-panel" id="tab-historial" role="tabpanel">
         <header class="leaderboard-header">
           <h1 class="section-title">Mi Historial</h1>
-          <p class="section-subtitle">Tus predicciones y puntos obtenidos</p>
+          <p class="section-subtitle">Tus predicciones y puntos acumulados</p>
         </header>
 
-        <div class="stats-row">
-          <div class="stat-card"><div class="stat-value">0</div><div class="stat-label">Partidos jugados</div></div>
-          <div class="stat-card"><div class="stat-value green">0</div><div class="stat-label">Exactas</div></div>
-          <div class="stat-card"><div class="stat-value yellow">0</div><div class="stat-label">Parciales</div></div>
-          <div class="stat-card"><div class="stat-value">0</div><div class="stat-label">Puntos</div></div>
+        <div class="stats-row" id="hist-stats-row">
+          <div class="stat-card"><div class="stat-value" id="hstat-total">0</div><div class="stat-label">Predicciones</div></div>
+          <div class="stat-card"><div class="stat-value green" id="hstat-exactas">0</div><div class="stat-label">Exactas (10 pts)</div></div>
+          <div class="stat-card"><div class="stat-value yellow" id="hstat-resultados">0</div><div class="stat-label">Resultado (3 pts)</div></div>
+          <div class="stat-card"><div class="stat-value" id="hstat-pts">0</div><div class="stat-label">Puntos totales</div></div>
         </div>
 
-        <div class="hist-list">
-          <div class="hist-card">
-            <div class="hist-card-header">
-              <div><div class="hist-match-name">Colombia vs Ecuador</div><div class="hist-match-date">Jun 10, 2026</div></div>
-              <span class="outcome-badge outcome-exacto">EXACTO +10 pts</span>
-            </div>
-            <div class="hist-scores">
-              <div class="hist-score-item"><div class="hist-score-label">Tu predicción</div><div class="hist-score-val">2 &mdash; 1</div></div>
-              <div class="hist-score-item"><div class="hist-score-label">Resultado real</div><div class="hist-score-val">2 &mdash; 1</div></div>
-            </div>
-          </div>
-
-          <div class="hist-card">
-            <div class="hist-card-header">
-              <div><div class="hist-match-name">Colombia vs Perú</div><div class="hist-match-date">Jun 5, 2026</div></div>
-              <span class="outcome-badge outcome-parcial">PARCIAL +5 pts</span>
-            </div>
-            <div class="hist-scores">
-              <div class="hist-score-item"><div class="hist-score-label">Tu predicción</div><div class="hist-score-val">1 &mdash; 0</div></div>
-              <div class="hist-score-item"><div class="hist-score-label">Resultado real</div><div class="hist-score-val">2 &mdash; 0</div></div>
-            </div>
-          </div>
-
-          <div class="hist-card">
-            <div class="hist-card-header">
-              <div><div class="hist-match-name">Colombia vs Venezuela</div><div class="hist-match-date">May 30, 2026</div></div>
-              <span class="outcome-badge outcome-fallo">FALLÓ +0 pts</span>
-            </div>
-            <div class="hist-scores">
-              <div class="hist-score-item"><div class="hist-score-label">Tu predicción</div><div class="hist-score-val">3 &mdash; 0</div></div>
-              <div class="hist-score-item"><div class="hist-score-label">Resultado real</div><div class="hist-score-val">1 &mdash; 1</div></div>
-            </div>
-          </div>
-
-          <div class="hist-card">
-            <div class="hist-card-header">
-              <div><div class="hist-match-name">Colombia vs Bolivia</div><div class="hist-match-date">May 25, 2026</div></div>
-              <span class="outcome-badge outcome-exacto">EXACTO +10 pts</span>
-            </div>
-            <div class="hist-scores">
-              <div class="hist-score-item"><div class="hist-score-label">Tu predicción</div><div class="hist-score-val">2 &mdash; 0</div></div>
-              <div class="hist-score-item"><div class="hist-score-label">Resultado real</div><div class="hist-score-val">2 &mdash; 0</div></div>
-            </div>
-          </div>
-
-          <div class="hist-card">
-            <div class="hist-card-header">
-              <div><div class="hist-match-name">Colombia vs Chile</div><div class="hist-match-date">May 20, 2026</div></div>
-              <span class="outcome-badge outcome-parcial">PARCIAL +5 pts</span>
-            </div>
-            <div class="hist-scores">
-              <div class="hist-score-item"><div class="hist-score-label">Tu predicción</div><div class="hist-score-val">1 &mdash; 1</div></div>
-              <div class="hist-score-item"><div class="hist-score-label">Resultado real</div><div class="hist-score-val">1 &mdash; 0</div></div>
-            </div>
-          </div>
-        </div>
+        <div class="hist-list" id="hist-list"></div>
 
         <footer class="app-footer">Gimnasio Mega Vital &copy; 2026 &mdash; Uso exclusivo para miembros</footer>
       </div>
@@ -1661,6 +1606,9 @@ function switchTab(tab) {
     renderLeaderboard();
     setTimeout(animateBars, 60);
   }
+  if (tab === 'historial') {
+    renderHistorial();
+  }
 }
 $all('.tab-btn').forEach(function(b) {
   b.addEventListener('click', function() { switchTab(b.getAttribute('data-tab')); });
@@ -1713,6 +1661,85 @@ function predPoints(m) {
   // Result-only prediction: 3 pts
   if (m.resultPred !== null) return m.resultPred === realRes ? 3 : 0;
   return 0;
+}
+
+/* =============================================
+   HISTORIAL — DYNAMIC RENDER
+============================================= */
+function renderHistorial() {
+  var predicted = MATCHES.filter(function(m) {
+    return m.homePred !== null || m.awayPred !== null || m.resultPred !== null;
+  });
+  var totalPts = 0, exactas = 0, resultados = 0;
+  predicted.forEach(function(m) {
+    var pts = predPoints(m);
+    if (m.homeReal !== null && m.awayReal !== null) {
+      totalPts += pts;
+      if (pts === 10) exactas++;
+      else if (pts === 3) resultados++;
+    }
+  });
+
+  var totEl = document.getElementById('hstat-total');
+  var exEl  = document.getElementById('hstat-exactas');
+  var reEl  = document.getElementById('hstat-resultados');
+  var ptEl  = document.getElementById('hstat-pts');
+  if (totEl) totEl.textContent = predicted.length;
+  if (exEl)  exEl.textContent  = exactas;
+  if (reEl)  reEl.textContent  = resultados;
+  if (ptEl)  ptEl.textContent  = totalPts;
+
+  var listEl = document.getElementById('hist-list');
+  if (!listEl) return;
+
+  if (predicted.length === 0) {
+    listEl.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--gray-500);">Aún no has hecho predicciones.<br>Ve a <strong>Partidos</strong> para empezar.</div>';
+    return;
+  }
+
+  listEl.innerHTML = predicted.map(function(m) {
+    var finished = (m.homeReal !== null && m.awayReal !== null);
+    var pts = predPoints(m);
+    var ptsClass = pts === 10 ? 'green' : (pts === 3 ? 'yellow' : '');
+    var badge = '';
+    if (finished) {
+      badge = pts === 10
+        ? '<span style="background:rgba(29,185,84,.15);color:var(--green);border-radius:8px;padding:2px 10px;font-size:.8rem;font-weight:700;">+10 pts Exacta</span>'
+        : pts === 3
+        ? '<span style="background:rgba(249,183,0,.18);color:var(--yellow-dark);border-radius:8px;padding:2px 10px;font-size:.8rem;font-weight:700;">+3 pts Resultado</span>'
+        : '<span style="background:var(--gray-100);color:var(--gray-500);border-radius:8px;padding:2px 10px;font-size:.8rem;font-weight:700;">0 pts</span>';
+    } else {
+      badge = '<span style="background:rgba(0,120,255,.12);color:#0078ff;border-radius:8px;padding:2px 10px;font-size:.8rem;font-weight:700;">Pendiente</span>';
+    }
+
+    var predStr = '';
+    if (m.homePred !== null && m.awayPred !== null) {
+      predStr = 'Marcador: ' + m.homePred + ' - ' + m.awayPred;
+    } else if (m.resultPred) {
+      var rl = m.resultPred === '1' ? 'Local (1)' : (m.resultPred === 'X' ? 'Empate (X)' : 'Visitante (2)');
+      predStr = 'Resultado: ' + rl;
+    }
+
+    var realStr = finished
+      ? '<span style="color:var(--gray-600);font-size:.82rem;">Real: ' + m.homeReal + ' - ' + m.awayReal + '</span>'
+      : '';
+
+    return '<div class="hist-card">'
+      + '<div style="display:flex;justify-content:space-between;align-items:center;gap:.5rem;flex-wrap:wrap;">'
+      +   '<div style="display:flex;align-items:center;gap:.5rem;">'
+      +     '<span class="flag-badge ' + m.homeCls + '">' + abbr(m.home) + '</span>'
+      +     '<strong style="font-size:.95rem;">' + m.home + ' vs ' + m.away + '</strong>'
+      +     '<span class="flag-badge ' + m.awayCls + '">' + abbr(m.away) + '</span>'
+      +   '</div>'
+      +   badge
+      + '</div>'
+      + '<div style="display:flex;gap:1rem;align-items:center;font-size:.88rem;color:var(--gray-600);">'
+      +   '<span>' + m.date + ' &middot; Grupo ' + m.group + '</span>'
+      +   '<span>' + predStr + '</span>'
+      +   realStr
+      + '</div>'
+      + '</div>';
+  }).join('');
 }
 
 function matchRowHTML(m) {
