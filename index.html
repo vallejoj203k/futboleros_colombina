@@ -393,6 +393,64 @@
       .match-score-input { width: 38px; height: 38px; font-size: 1.1rem; }
     }
 
+    /* MONTHLY CALENDAR WIDGET */
+    .month-calendar {
+      background: var(--white); border-radius: var(--radius-lg); border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow-sm); padding: 1.25rem 1rem 1rem; margin-bottom: 1.25rem;
+      animation: fadeInUp 0.35s ease both;
+    }
+    .month-cal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1rem; gap: 0.5rem;
+    }
+    .month-cal-title { font-size: 1rem; font-weight: 800; color: var(--text); }
+    .month-cal-subtitle { font-size: 0.72rem; color: var(--gray-400); font-weight: 500; }
+    .month-cal-clear {
+      font-size: 0.7rem; font-weight: 700; color: var(--red); background: #fdecea;
+      border: none; border-radius: 999px; padding: 0.3rem 0.75rem; cursor: pointer;
+      font-family: var(--font); transition: all 0.15s; display: none;
+    }
+    .month-cal-clear.visible { display: inline-block; }
+    .month-cal-clear:hover { background: var(--red); color: #fff; }
+    .month-cal-grid {
+      display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px;
+    }
+    .cal-weekday {
+      text-align: center; font-size: 0.6rem; font-weight: 700; color: var(--gray-400);
+      text-transform: uppercase; letter-spacing: 0.04em; padding: 0.3rem 0 0.5rem;
+    }
+    .cal-cell {
+      aspect-ratio: 1; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; border-radius: 8px; font-size: 0.78rem; font-weight: 500;
+      color: var(--gray-400); cursor: default; position: relative; gap: 2px;
+      min-height: 34px;
+    }
+    .cal-cell.other-month { opacity: 0; pointer-events: none; }
+    .cal-cell.has-matches {
+      background: rgba(227,6,19,0.07); color: var(--text); cursor: pointer;
+      font-weight: 700; transition: background 0.15s, transform 0.15s;
+    }
+    .cal-cell.has-matches:hover { background: rgba(227,6,19,0.14); transform: scale(1.06); }
+    .cal-cell.active-day {
+      background: var(--red) !important; color: #fff !important;
+      box-shadow: 0 4px 14px rgba(227,6,19,0.45); transform: scale(1.08);
+    }
+    .cal-cell.today-mark { box-shadow: inset 0 0 0 2px var(--yellow); border-radius: 8px; }
+    .cal-cell.today-mark.has-matches { box-shadow: inset 0 0 0 2px var(--yellow), 0 4px 14px rgba(249,183,0,0.25); }
+    .cal-day-num { line-height: 1; }
+    .cal-match-dot {
+      font-size: 0.5rem; font-weight: 800; background: var(--red); color: #fff;
+      border-radius: 999px; padding: 1px 4px; min-width: 14px; text-align: center;
+      line-height: 1.5;
+    }
+    .cal-cell.active-day .cal-match-dot { background: rgba(255,255,255,0.35); }
+    .cal-legend {
+      display: flex; align-items: center; gap: 1rem; margin-top: 0.9rem;
+      padding-top: 0.75rem; border-top: 1px solid var(--gray-100); flex-wrap: wrap;
+    }
+    .cal-legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.62rem; font-weight: 600; color: var(--gray-600); }
+    .cal-legend-swatch { width: 12px; height: 12px; border-radius: 4px; flex-shrink: 0; }
+
     .status-badge { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.3rem 0.75rem; border-radius: 999px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
     .status-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
     .status-abierto { background: var(--green-bg); color: var(--green); }
@@ -874,6 +932,23 @@
             </div>
           </div>
           <div class="hero-accent" aria-hidden="true"></div>
+        </div>
+
+        <!-- MONTHLY CALENDAR WIDGET -->
+        <div class="month-calendar">
+          <div class="month-cal-header">
+            <div>
+              <div class="month-cal-title">Junio 2026</div>
+              <div class="month-cal-subtitle">Toca un día para filtrar partidos</div>
+            </div>
+            <button class="month-cal-clear" id="cal-clear-btn" onclick="clearDayFilter()">Limpiar filtro</button>
+          </div>
+          <div class="month-cal-grid" id="month-cal-grid"></div>
+          <div class="cal-legend">
+            <div class="cal-legend-item"><div class="cal-legend-swatch" style="background:rgba(227,6,19,0.1)"></div> Con partidos</div>
+            <div class="cal-legend-item"><div class="cal-legend-swatch" style="background:var(--red)"></div> Día activo</div>
+            <div class="cal-legend-item"><div class="cal-legend-swatch" style="background:var(--white); box-shadow: inset 0 0 0 2px var(--yellow)"></div> Hoy (Jun 9)</div>
+          </div>
         </div>
 
         <div class="group-filter" id="group-filter">
@@ -1437,6 +1512,7 @@ var MATCHES = [
 
 var currentGroupFilter = 'all';
 var adminGroupFilter = 'all';
+var currentDayFilter = null;
 var STATUS_ES = { abierto: 'Abierto', cerrado: 'Cerrado', finalizado: 'Finalizado' };
 
 /* =============================================
@@ -1692,10 +1768,75 @@ var DATE_LABELS = {
   'Jun 27':'Sáb 27 Jun'
 };
 
+/* =============================================
+   MONTHLY CALENDAR WIDGET — June 2026
+   June 1 = Monday (firstDayOfWeek = 0)
+============================================= */
+function renderMonthCalendar() {
+  var container = $('#month-cal-grid');
+  if (!container) return;
+
+  // Count matches per day for current group filter
+  var matchesByDay = {};
+  MATCHES.forEach(function(m) {
+    if (currentGroupFilter !== 'all' && m.group !== currentGroupFilter) return;
+    var day = parseInt(m.date.split(' ')[1], 10);
+    matchesByDay[day] = (matchesByDay[day] || 0) + 1;
+  });
+
+  var today = 9; // June 9, 2026 (current date from context)
+  var html = '';
+
+  // Weekday headers (Mon–Sun in Spanish)
+  ['Lu','Ma','Mi','Ju','Vi','Sá','Do'].forEach(function(d) {
+    html += '<div class="cal-weekday">' + d + '</div>';
+  });
+
+  // June 1, 2026 = Monday → offset 0
+  var firstDayOffset = 0;
+  for (var e = 0; e < firstDayOffset; e++) {
+    html += '<div class="cal-cell other-month"></div>';
+  }
+
+  for (var day = 1; day <= 30; day++) {
+    var cnt = matchesByDay[day] || 0;
+    var cls = 'cal-cell';
+    if (cnt > 0) cls += ' has-matches';
+    if (day === today) cls += ' today-mark';
+    if (day === currentDayFilter) cls += ' active-day';
+
+    html += '<div class="' + cls + '"' + (cnt > 0 ? ' onclick="filterByDay(' + day + ')" title="' + cnt + ' partido' + (cnt > 1 ? 's' : '') + '"' : '') + '>' +
+      '<span class="cal-day-num">' + day + '</span>' +
+      (cnt > 0 ? '<span class="cal-match-dot">' + cnt + '</span>' : '') +
+    '</div>';
+  }
+
+  container.innerHTML = html;
+
+  var clearBtn = $('#cal-clear-btn');
+  if (clearBtn) clearBtn.classList.toggle('visible', currentDayFilter !== null);
+}
+
+function filterByDay(day) {
+  currentDayFilter = (currentDayFilter === day) ? null : day;
+  renderMatches(currentGroupFilter);
+}
+
+function clearDayFilter() {
+  currentDayFilter = null;
+  renderMatches(currentGroupFilter);
+}
+
 function renderMatches(groupFilter) {
   currentGroupFilter = groupFilter || 'all';
+
   var list = MATCHES.filter(function(m) {
-    return currentGroupFilter === 'all' || m.group === currentGroupFilter;
+    if (currentGroupFilter !== 'all' && m.group !== currentGroupFilter) return false;
+    if (currentDayFilter !== null) {
+      var day = parseInt(m.date.split(' ')[1], 10);
+      if (day !== currentDayFilter) return false;
+    }
+    return true;
   });
 
   var byDate = {};
@@ -1706,21 +1847,30 @@ function renderMatches(groupFilter) {
   });
 
   var html = '';
-  dateOrder.forEach(function(date, idx) {
-    var matches = byDate[date];
-    var label = DATE_LABELS[date] || date;
-    html += '<div class="calendar-day" style="animation-delay:' + (idx * 0.05) + 's">' +
-      '<div class="calendar-day-header">' +
-        '<span class="cal-date-text">' + label + ' &bull; 2026</span>' +
-        '<span class="cal-day-count">' + matches.length + ' partido' + (matches.length > 1 ? 's' : '') + '</span>' +
-      '</div>' +
-      '<div class="calendar-matches">' + matches.map(matchRowHTML).join('') + '</div>' +
-    '</div>';
-  });
+  if (list.length === 0) {
+    html = '<div style="text-align:center;padding:2rem;color:var(--gray-400);font-weight:600">Sin partidos para este filtro</div>';
+  } else {
+    dateOrder.forEach(function(date, idx) {
+      var matches = byDate[date];
+      var label = DATE_LABELS[date] || date;
+      html += '<div class="calendar-day" style="animation-delay:' + (idx * 0.05) + 's">' +
+        '<div class="calendar-day-header">' +
+          '<span class="cal-date-text">' + label + ' &bull; 2026</span>' +
+          '<span class="cal-day-count">' + matches.length + ' partido' + (matches.length > 1 ? 's' : '') + '</span>' +
+        '</div>' +
+        '<div class="calendar-matches">' + matches.map(matchRowHTML).join('') + '</div>' +
+      '</div>';
+    });
+  }
 
   $('#matches-grid').innerHTML = html;
+
   var lbl = currentGroupFilter === 'all' ? 'Fase de Grupos' : 'Grupo ' + currentGroupFilter;
-  $('#matches-count').textContent = list.length + ' partidos — ' + lbl;
+  if (currentDayFilter) lbl += ' &bull; ' + DATE_LABELS['Jun ' + currentDayFilter];
+  $('#matches-count').textContent = list.length + ' partidos — ';
+  $('#matches-count').innerHTML = list.length + ' partidos &mdash; ' + lbl;
+
+  renderMonthCalendar();
 }
 
 function saveMatch(id) {
