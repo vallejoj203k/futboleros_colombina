@@ -4,6 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mega Mundial 2026 &mdash; Gimnasio Mega Vital</title>
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#E30613" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Mundial 2026" />
+  <link rel="apple-touch-icon" href="/logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -1063,6 +1069,7 @@
           <div>
             <h2 class="section-title">Partidos del Mundial</h2>
             <p class="section-subtitle" id="matches-count">72 partidos — Fase de Grupos</p>
+            <button id="btn-unpredicted" onclick="toggleUnpredicted()" style="margin-top:.4rem;padding:.3rem .85rem;border-radius:20px;font-size:.78rem;font-weight:700;border:2px solid var(--gray-200);background:var(--white);color:var(--gray-600);cursor:pointer;transition:all .2s">⚡ Sin predecir: <span id="unpredicted-count">0</span></button>
           </div>
         </div>
 
@@ -1075,6 +1082,10 @@
         <header class="leaderboard-header">
           <h1 class="section-title">Tabla de Clasificación</h1>
           <p class="section-subtitle">Top miembros &mdash; Mundial FIFA 2026</p>
+          <button onclick="shareWhatsApp()" style="margin-top:.75rem;display:inline-flex;align-items:center;gap:.4rem;padding:.45rem 1rem;border-radius:20px;background:#25D366;color:#fff;font-size:.82rem;font-weight:700;box-shadow:0 2px 10px rgba(37,211,102,.35);transition:all .2s">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.549 4.122 1.516 5.862L.044 23.25a.75.75 0 00.951.938l5.596-1.762A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.653-.518-5.17-1.42l-.36-.215-3.738 1.177 1.107-3.647-.234-.374A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            Compartir ranking
+          </button>
         </header>
 
         <div class="my-rank-card">
@@ -1650,6 +1661,7 @@ MATCHES.forEach(function(m) { m.resultPred = null; });
 var currentGroupFilter = 'all';
 var adminGroupFilter = 'all';
 var currentDayFilter = { month: null, day: null };
+var showUnpredictedOnly = false;
 var STATUS_ES = { abierto: 'Abierto', cerrado: 'Cerrado', finalizado: 'Finalizado' };
 
 /* =============================================
@@ -1694,6 +1706,13 @@ $('#show-user').addEventListener('click', function() {
   $('#login-user-form').style.display = 'block';
   $('#admin-error').classList.remove('show');
 });
+
+/* =============================================
+   PWA — SERVICE WORKER
+============================================= */
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch(function() {});
+}
 
 /* =============================================
    LOADER
@@ -2233,8 +2252,25 @@ function renderMatches(groupFilter) {
       var parts = m.date.split(' ');
       if (parts[0] !== currentDayFilter.month || parseInt(parts[1], 10) !== currentDayFilter.day) return false;
     }
+    if (showUnpredictedOnly) {
+      if (m.status !== 'abierto') return false;
+      if (m.homePred !== null || m.awayPred !== null || m.resultPred !== null) return false;
+    }
     return true;
   });
+
+  // Update unpredicted counter (always from full open matches)
+  var unpredCount = MATCHES.filter(function(m) {
+    return m.status === 'abierto' && m.homePred === null && m.awayPred === null && m.resultPred === null;
+  }).length;
+  var ucEl = document.getElementById('unpredicted-count');
+  if (ucEl) ucEl.textContent = unpredCount;
+  var ubtn = document.getElementById('btn-unpredicted');
+  if (ubtn) {
+    ubtn.style.borderColor = showUnpredictedOnly ? 'var(--red)' : 'var(--gray-200)';
+    ubtn.style.color = showUnpredictedOnly ? 'var(--red)' : 'var(--gray-600)';
+    ubtn.style.background = showUnpredictedOnly ? 'rgba(227,6,19,.07)' : 'var(--white)';
+  }
 
   var byDate = {};
   var dateOrder = [];
@@ -2313,6 +2349,24 @@ function saveMatch(id) {
   toast('Marcador guardado: ' + m.homePred + ' - ' + m.awayPred + ' (+10 pts si aciertas!)');
   api.post('/api/predictions', { userId: state.user.id, matchId: id, homePred: m.homePred, awayPred: m.awayPred, resultPred: m.resultPred })
     .then(function(r) { if (!r.ok) toast('Error al guardar: ' + (r.data.error || 'intenta de nuevo')); });
+}
+
+function toggleUnpredicted() {
+  showUnpredictedOnly = !showUnpredictedOnly;
+  renderMatches(currentGroupFilter);
+}
+
+function shareWhatsApp() {
+  var lines = ['🏆 *Ranking Mega Mundial 2026* 🏆', ''];
+  var medals = ['🥇','🥈','🥉'];
+  leaderboard.slice(0, 10).forEach(function(u, i) {
+    var medal = medals[i] || (i + 1) + '.';
+    lines.push(medal + ' ' + u.name + ' — ' + u.pts + ' pts');
+  });
+  lines.push('');
+  lines.push('¡Predice tus partidos en Mega Vital! ⚽');
+  var text = encodeURIComponent(lines.join('\n'));
+  window.open('https://wa.me/?text=' + text, '_blank');
 }
 
 /* group filter buttons */
@@ -2698,7 +2752,8 @@ function renderAdminPredictions() {
           else { pts = 0; ptsClass = 'pred-pts-0'; ptsLabel = '0 pts'; }
         }
         return '<tr><td>' + p.nombre + '</td><td>' + predStr + '</td>' +
-          '<td><span class="pred-pts-badge ' + ptsClass + '">' + ptsLabel + '</span></td></tr>';
+          '<td><span class="pred-pts-badge ' + ptsClass + '">' + ptsLabel + '</span></td>' +
+          '<td><button class="btn-sm btn-delete" onclick="adminDeletePred(' + p.user_id + ',' + id + ')" title="Borrar predicción">×</button></td></tr>';
       }).join('');
 
       var realStr = finished ? (' &bull; Real: <strong>' + m.homeReal + '-' + m.awayReal + '</strong>') : '';
@@ -2707,7 +2762,7 @@ function renderAdminPredictions() {
           '<span class="pred-match-title">Partido ' + id + ': ' + m.home + ' vs ' + m.away + '</span>' +
           '<span class="pred-match-meta">' + (m.date || '') + realStr + '</span>' +
         '</div>' +
-        '<table class="pred-table"><thead><tr><th>Usuario</th><th>Predicción</th><th>Puntos</th></tr></thead>' +
+        '<table class="pred-table"><thead><tr><th>Usuario</th><th>Predicción</th><th>Puntos</th><th></th></tr></thead>' +
         '<tbody>' + (rows || '<tr><td colspan="3" style="color:var(--gray-400);text-align:center">Sin predicciones</td></tr>') + '</tbody>' +
         '</table></div>';
     }).join('');
@@ -2718,6 +2773,14 @@ document.getElementById('pred-match-search').addEventListener('input', function(
   predSearchFilter = this.value;
   renderAdminPredictions();
 });
+
+function adminDeletePred(userId, matchId) {
+  if (!window.confirm('¿Borrar esta predicción?')) return;
+  api.del('/api/admin/predictions?userId=' + userId + '&matchId=' + matchId).then(function(res) {
+    if (res.ok) { toast('Predicción eliminada'); renderAdminPredictions(); }
+    else toast(res.data.error || 'Error al eliminar');
+  });
+}
 
 /* =============================================
    ADMIN: ELIMINATORIAS
