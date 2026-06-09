@@ -1955,7 +1955,7 @@ $('#register-form').addEventListener('submit', function(e) {
   btn.disabled = true;
   btn.textContent = 'Creando cuenta...';
 
-  api.post('/api/users', { nombre: nombre, estado: 'Activo' }).then(function(res) {
+  api.post('/api/admin/users', { nombre: nombre, estado: 'Activo' }).then(function(res) {
     btn.disabled = false;
     btn.textContent = 'Crear mi cuenta';
     if (!res.ok) {
