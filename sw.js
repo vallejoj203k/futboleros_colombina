@@ -1,4 +1,4 @@
-const CACHE = 'mv2026-v1';
+const CACHE = 'mv2026-v2';
 const STATIC = ['/', '/index.html', '/logo.png', '/login.jpg'];
 
 self.addEventListener('install', function(e) {
