@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mega Mundial 2026 &mdash; Gimnasio Mega Vital</title>
   <link rel="manifest" href="/manifest.json" />
-  <meta name="theme-color" content="#E30613" />
+  <meta name="theme-color" content="#00A650" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Mundial 2026" />
@@ -18,22 +18,22 @@
        CSS CUSTOM PROPERTIES
     ============================================= */
     :root {
-      --red:        #E30613;
-      --red-dark:   #b8040f;
-      --red-light:  #ff3341;
-      --yellow:     #F9B700;
-      --yellow-dark:#d49a00;
+      --red:        #00A650;
+      --red-dark:   #007A3C;
+      --red-light:  #2ECC71;
+      --yellow:     #A8CF45;
+      --yellow-dark:#7FA832;
       --white:      #FFFFFF;
-      --text:       #1A1A1A;
-      --bg:         #F5F5F5;
-      --gray-100:   #f0f0f0;
-      --gray-200:   #e0e0e0;
-      --gray-400:   #9e9e9e;
-      --gray-600:   #616161;
-      --green:      #1db954;
-      --green-bg:   #e6f9ee;
-      --yellow-bg:  #fff8e1;
-      --gray-bg:    #f0f0f0;
+      --text:       #2D2D2D;
+      --bg:         #F2F4F3;
+      --gray-100:   #EAECEB;
+      --gray-200:   #D8DBD9;
+      --gray-400:   #9AA39D;
+      --gray-600:   #5C6860;
+      --green:      #00A650;
+      --green-bg:   #E6F5EE;
+      --yellow-bg:  #F3F9E6;
+      --gray-bg:    #EAECEB;
       --shadow-sm:  0 2px 8px rgba(0,0,0,0.08);
       --shadow-md:  0 4px 20px rgba(0,0,0,0.12);
       --shadow-lg:  0 8px 40px rgba(0,0,0,0.16);
@@ -69,18 +69,18 @@
     @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
     @keyframes slideDown { from {opacity:0; transform: translateY(-16px);} to {opacity:1; transform: translateY(0);} }
     @keyframes pulse {
-      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(227,6,19,0.5); }
-      50% { transform: scale(1.04); box-shadow: 0 0 0 12px rgba(227,6,19,0); }
-      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(227,6,19,0); }
+      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0,166,80,0.5); }
+      50% { transform: scale(1.04); box-shadow: 0 0 0 12px rgba(0,166,80,0); }
+      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0,166,80,0); }
     }
     @keyframes float { 0%,100% {transform: translateY(0);} 50% {transform: translateY(-10px);} }
     @keyframes badgePop { 0% {transform: scale(0.7); opacity:0;} 70% {transform: scale(1.1);} 100% {transform: scale(1); opacity:1;} }
     @keyframes ptsFloat { 0% {opacity:1;transform:translateY(0) scale(1);} 80% {opacity:1;} 100% {opacity:0;transform:translateY(-52px) scale(1.15);} }
     .pts-float-badge {
       position:fixed; pointer-events:none; z-index:9999;
-      background:linear-gradient(135deg,#E30613,#f5a623); color:#fff;
+      background:linear-gradient(135deg,#00A650,#f5a623); color:#fff;
       font-size:1.1rem; font-weight:800; padding:.3rem .75rem;
-      border-radius:999px; box-shadow:0 4px 18px rgba(227,6,19,.45);
+      border-radius:999px; box-shadow:0 4px 18px rgba(0,166,80,.45);
       animation: ptsFloat 1.4s ease forwards;
     }
     .tab-badge {
@@ -99,7 +99,7 @@
     .error-icon { font-size:3.5rem; margin-bottom:1rem; }
     .error-title { font-size:1.4rem; font-weight:800; color:var(--text); margin-bottom:.5rem; }
     .error-sub { color:var(--gray-500); font-size:.9rem; margin-bottom:1.5rem; max-width:320px; }
-    .error-retry-btn { background:var(--red); color:#fff; font-weight:700; padding:.6rem 1.4rem; border-radius:999px; font-size:.9rem; box-shadow:0 2px 10px rgba(227,6,19,.3); }
+    .error-retry-btn { background:var(--red); color:#fff; font-weight:700; padding:.6rem 1.4rem; border-radius:999px; font-size:.9rem; box-shadow:0 2px 10px rgba(0,166,80,.3); }
 
     /* =============================================
        VIEWS SYSTEM
@@ -182,7 +182,7 @@
     .form-input:focus {
       border-color: var(--red);
       background: rgba(255,255,255,0.1);
-      box-shadow: 0 0 0 3px rgba(227,6,19,0.2);
+      box-shadow: 0 0 0 3px rgba(0,166,80,0.2);
     }
 
     .btn-jugar {
@@ -190,10 +190,10 @@
       background: var(--red); color: #fff;
       font-size: 0.95rem; font-weight: 800; letter-spacing: 0.08em;
       text-transform: uppercase; transition: all 0.25s ease;
-      box-shadow: 0 4px 24px rgba(227,6,19,0.5);
+      box-shadow: 0 4px 24px rgba(0,166,80,0.5);
       margin-top: 1.25rem; margin-bottom: 1.25rem;
     }
-    .btn-jugar:hover { background: var(--red-dark); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(227,6,19,0.6); }
+    .btn-jugar:hover { background: var(--red-dark); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,166,80,0.6); }
     .btn-jugar:active { transform: translateY(0); }
 
     .register-link { text-align: center; font-size: 0.82rem; color: rgba(255,255,255,0.3); }
@@ -202,8 +202,8 @@
 
     .login-error {
       display: none;
-      background: rgba(227,6,19,0.15);
-      border: 1px solid rgba(227,6,19,0.3);
+      background: rgba(0,166,80,0.15);
+      border: 1px solid rgba(0,166,80,0.3);
       border-radius: var(--radius-sm);
       padding: 0.65rem 1rem; font-size: 0.82rem; color: #ff8087;
       margin-bottom: 1rem; animation: fadeIn 0.3s ease; font-weight: 500;
@@ -266,7 +266,7 @@
     .tab-btn:hover { background: var(--gray-100); color: var(--text); }
     .tab-btn.active {
       background: var(--red); color: var(--white); border-color: var(--red);
-      box-shadow: 0 2px 12px rgba(227,6,19,0.35); transform: translateY(-1px);
+      box-shadow: 0 2px 12px rgba(0,166,80,0.35); transform: translateY(-1px);
     }
 
     .nav-right { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
@@ -287,14 +287,14 @@
 
     /* HERO */
     .hero-banner {
-      background: linear-gradient(135deg, var(--red) 0%, #a8000e 100%);
+      background: linear-gradient(135deg, var(--red) 0%, #007A3C 100%);
       border-radius: var(--radius-lg); padding: 2rem 2rem 1.75rem;
       margin-bottom: 1.75rem; position: relative; overflow: hidden;
       animation: fadeInUp 0.5s ease both;
     }
     .hero-accent {
       position: absolute; right: -40px; top: -40px; width: 220px; height: 220px;
-      border-radius: 50%; background: rgba(249,183,0,0.12); pointer-events: none;
+      border-radius: 50%; background: rgba(168,207,69,0.12); pointer-events: none;
     }
     .hero-eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 0.35rem; }
     .hero-greeting { font-size: 2rem; font-weight: 900; color: #fff; line-height: 1.15; margin-bottom: 0.4rem; }
@@ -387,7 +387,7 @@
     /* CALENDAR */
     .cards-grid { display: flex; flex-direction: column; gap: 1rem; }
     .calendar-day { background: var(--white); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--gray-200); animation: fadeInUp 0.5s ease both; }
-    .calendar-day-header { background: linear-gradient(135deg, var(--red) 0%, #b8040f 100%); color: #fff; padding: 0.7rem 1.25rem; display: flex; align-items: center; justify-content: space-between; }
+    .calendar-day-header { background: linear-gradient(135deg, var(--red) 0%, #007A3C 100%); color: #fff; padding: 0.7rem 1.25rem; display: flex; align-items: center; justify-content: space-between; }
     .cal-date-text { font-size: 0.9rem; font-weight: 800; letter-spacing: 0.01em; }
     .cal-day-count { font-size: 0.72rem; font-weight: 600; opacity: 0.75; }
     .match-row { display: grid; grid-template-columns: 64px 1fr auto; align-items: center; padding: 0.9rem 1.25rem; gap: 1rem; border-bottom: 1px solid var(--gray-100); transition: background 0.15s; }
@@ -405,12 +405,12 @@
     .match-inputs { display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
     .match-score-input { width: 46px; height: 46px; border: 2px solid var(--gray-200); border-radius: 10px; font-size: 1.3rem; font-weight: 900; color: var(--text); text-align: center; background: var(--gray-100); transition: border-color 0.2s, box-shadow 0.2s, background 0.2s; outline: none; -moz-appearance: textfield; appearance: textfield; font-family: var(--font); }
     .match-score-input::-webkit-inner-spin-button, .match-score-input::-webkit-outer-spin-button { -webkit-appearance: none; }
-    .match-score-input:focus { border-color: var(--red); background: #fff; box-shadow: 0 0 0 3px rgba(227,6,19,0.1); }
+    .match-score-input:focus { border-color: var(--red); background: #fff; box-shadow: 0 0 0 3px rgba(0,166,80,0.1); }
     .match-score-input:disabled { opacity: 0.6; cursor: not-allowed; }
     .match-score-dash { font-size: 1.3rem; font-weight: 800; color: var(--gray-400); }
     .match-right-col { display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; flex-shrink: 0; min-width: 80px; }
-    .match-save-btn { padding: 0.45rem 0.85rem; border-radius: 999px; background: linear-gradient(135deg, var(--red) 0%, #b8040f 100%); color: #fff; font-size: 0.7rem; font-weight: 700; transition: all 0.2s; box-shadow: 0 2px 8px rgba(227,6,19,0.3); white-space: nowrap; font-family: var(--font); }
-    .match-save-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(227,6,19,0.4); }
+    .match-save-btn { padding: 0.45rem 0.85rem; border-radius: 999px; background: linear-gradient(135deg, var(--red) 0%, #007A3C 100%); color: #fff; font-size: 0.7rem; font-weight: 700; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,166,80,0.3); white-space: nowrap; font-family: var(--font); }
+    .match-save-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,166,80,0.4); }
     .match-save-btn.pulse { animation: pulse 0.5s ease; }
     .match-save-feedback { font-size: 0.68rem; font-weight: 600; color: var(--green); display: none; text-align: right; }
     .match-save-feedback.show { display: block; }
@@ -458,16 +458,16 @@
     }
     .cal-cell.other-month { opacity: 0; pointer-events: none; }
     .cal-cell.has-matches {
-      background: rgba(227,6,19,0.07); color: var(--text); cursor: pointer;
+      background: rgba(0,166,80,0.07); color: var(--text); cursor: pointer;
       font-weight: 700; transition: background 0.15s, transform 0.15s;
     }
-    .cal-cell.has-matches:hover { background: rgba(227,6,19,0.14); transform: scale(1.06); }
+    .cal-cell.has-matches:hover { background: rgba(0,166,80,0.14); transform: scale(1.06); }
     .cal-cell.active-day {
       background: var(--red) !important; color: #fff !important;
-      box-shadow: 0 4px 14px rgba(227,6,19,0.45); transform: scale(1.08);
+      box-shadow: 0 4px 14px rgba(0,166,80,0.45); transform: scale(1.08);
     }
     .cal-cell.today-mark { box-shadow: inset 0 0 0 2px var(--yellow); border-radius: 8px; }
-    .cal-cell.today-mark.has-matches { box-shadow: inset 0 0 0 2px var(--yellow), 0 4px 14px rgba(249,183,0,0.25); }
+    .cal-cell.today-mark.has-matches { box-shadow: inset 0 0 0 2px var(--yellow), 0 4px 14px rgba(168,207,69,0.25); }
     .cal-day-num { line-height: 1; }
     .cal-match-dot {
       font-size: 0.5rem; font-weight: 800; background: var(--red); color: #fff;
@@ -493,7 +493,7 @@
       display: flex; flex-direction: column; align-items: center; gap: 1px;
     }
     .result-btn:hover:not(:disabled) { border-color: var(--red); color: var(--red); background: #fdecea; }
-    .result-btn.selected { background: var(--red); border-color: var(--red); color: #fff; box-shadow: 0 2px 10px rgba(227,6,19,0.3); }
+    .result-btn.selected { background: var(--red); border-color: var(--red); color: #fff; box-shadow: 0 2px 10px rgba(0,166,80,0.3); }
     .result-btn:disabled { opacity: 0.55; cursor: not-allowed; }
     .result-btn-num { font-size: 1rem; font-weight: 900; line-height: 1; }
     .result-btn-lbl { font-size: 0.55rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; line-height: 1; }
@@ -501,7 +501,7 @@
     .pts-scheme { display: flex; align-items: center; justify-content: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
     .pts-badge { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.6rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 999px; }
     .pts-badge-result { background: rgba(29,185,84,0.12); color: var(--green); }
-    .pts-badge-exact  { background: rgba(249,183,0,0.2); color: var(--yellow-dark); }
+    .pts-badge-exact  { background: rgba(168,207,69,0.2); color: var(--yellow-dark); }
 
     .status-badge { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.3rem 0.75rem; border-radius: 999px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
     .status-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
@@ -513,17 +513,17 @@
       display: inline-flex; align-items: center; gap: 0.3rem;
       background: linear-gradient(135deg, var(--yellow) 0%, var(--yellow-dark) 100%);
       color: var(--text); padding: 0.35rem 0.9rem; border-radius: 999px;
-      font-size: 0.88rem; font-weight: 800; box-shadow: 0 2px 12px rgba(249,183,0,0.5);
+      font-size: 0.88rem; font-weight: 800; box-shadow: 0 2px 12px rgba(168,207,69,0.5);
       animation: badgePop 0.3s ease both;
     }
 
     .btn-save {
       width: 100%; padding: 0.8rem; border-radius: var(--radius-sm);
-      background: linear-gradient(135deg, var(--red) 0%, #c8000d 100%);
+      background: linear-gradient(135deg, var(--red) 0%, #007A3C 100%);
       color: #fff; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.02em;
-      transition: all 0.2s ease; box-shadow: 0 3px 14px rgba(227,6,19,0.3);
+      transition: all 0.2s ease; box-shadow: 0 3px 14px rgba(0,166,80,0.3);
     }
-    .btn-save:hover { background: linear-gradient(135deg, #c8000d 0%, #a00009 100%); transform: translateY(-1px); box-shadow: 0 5px 20px rgba(227,6,19,0.45); }
+    .btn-save:hover { background: linear-gradient(135deg, #007A3C 0%, #a00009 100%); transform: translateY(-1px); box-shadow: 0 5px 20px rgba(0,166,80,0.45); }
     .btn-save:active { transform: translateY(0); }
     .btn-save.pulse { animation: pulse 0.5s ease; }
     .btn-save:disabled { opacity: 0.55; cursor: not-allowed; box-shadow: none; }
@@ -538,12 +538,12 @@
     .section-subtitle { font-size: 0.9rem; color: var(--gray-600); margin-top: 0.2rem; }
 
     .my-rank-card {
-      background: linear-gradient(135deg, var(--red) 0%, #b8040f 100%);
+      background: linear-gradient(135deg, var(--red) 0%, #007A3C 100%);
       border-radius: var(--radius-lg); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem;
       color: #fff; display: flex; flex-wrap: wrap; align-items: center; gap: 1rem;
       animation: fadeInUp 0.4s ease both; position: relative; overflow: hidden;
     }
-    .my-rank-card::after { content: ''; position: absolute; right: -20px; top: -20px; width: 120px; height: 120px; border-radius: 50%; background: rgba(249,183,0,0.15); pointer-events: none; }
+    .my-rank-card::after { content: ''; position: absolute; right: -20px; top: -20px; width: 120px; height: 120px; border-radius: 50%; background: rgba(168,207,69,0.15); pointer-events: none; }
     .my-rank-left { flex: 1; }
     .my-rank-label { display: block; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.65); margin-bottom: 0.2rem; }
     .my-rank-pos { font-size: 2.5rem; font-weight: 900; color: var(--yellow); line-height: 1; }
@@ -557,15 +557,15 @@
     .podium-item:nth-child(1){animation-delay:.1s}
     .podium-item:nth-child(2){animation-delay:0s}
     .podium-item:nth-child(3){animation-delay:.2s}
-    .podium-crown { color: var(--yellow); margin-bottom: -0.25rem; filter: drop-shadow(0 2px 6px rgba(249,183,0,0.5)); }
+    .podium-crown { color: var(--yellow); margin-bottom: -0.25rem; filter: drop-shadow(0 2px 6px rgba(168,207,69,0.5)); }
     .podium-avatar { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 800; color: #fff; box-shadow: var(--shadow-md); position: relative; }
-    .podium-avatar.rank-1 { width: 64px; height: 64px; background: linear-gradient(135deg, #f9b700 0%, #e8a000 100%); box-shadow: 0 6px 24px rgba(249,183,0,0.5); }
+    .podium-avatar.rank-1 { width: 64px; height: 64px; background: linear-gradient(135deg, #A8CF45 0%, #7FA832 100%); box-shadow: 0 6px 24px rgba(168,207,69,0.5); }
     .podium-avatar.rank-2 { background: linear-gradient(135deg, #9e9e9e 0%, #757575 100%); }
     .podium-avatar.rank-3 { background: linear-gradient(135deg, #cd7f32 0%, #a05c1a 100%); }
     .podium-name { font-size: 0.75rem; font-weight: 700; text-align: center; color: var(--text); line-height: 1.2; }
     .podium-pts { font-size: 0.82rem; font-weight: 800; color: var(--red); }
     .podium-block { border-radius: var(--radius-sm) var(--radius-sm) 0 0; width: 100%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 900; color: rgba(255,255,255,0.9); }
-    .podium-block.h-1 { height: 70px; background: linear-gradient(180deg, #f9b700 0%, #e0a000 100%); }
+    .podium-block.h-1 { height: 70px; background: linear-gradient(180deg, #A8CF45 0%, #7FA832 100%); }
     .podium-block.h-2 { height: 50px; background: linear-gradient(180deg, #bdbdbd 0%, #9e9e9e 100%); }
     .podium-block.h-3 { height: 36px; background: linear-gradient(180deg, #cd7f32 0%, #a86520 100%); }
 
@@ -573,7 +573,7 @@
     .lb-row { display: flex; align-items: center; gap: 0.75rem; padding: 0.9rem 1.25rem; border-bottom: 1px solid var(--gray-100); transition: background 0.15s; animation: fadeInUp 0.4s ease both; }
     .lb-row:last-child { border-bottom: none; }
     .lb-row:hover { background: var(--gray-100); }
-    .lb-row.current-user { background: linear-gradient(90deg, rgba(227,6,19,0.05) 0%, rgba(249,183,0,0.05) 100%); border-left: 3px solid var(--red); }
+    .lb-row.current-user { background: linear-gradient(90deg, rgba(0,166,80,0.05) 0%, rgba(168,207,69,0.05) 100%); border-left: 3px solid var(--red); }
     .lb-rank { font-size: 0.9rem; font-weight: 800; color: var(--gray-400); width: 28px; text-align: center; flex-shrink: 0; }
     .lb-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--red) 0%, var(--yellow) 100%); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; color: #fff; flex-shrink: 0; }
     .lb-info { flex: 1; min-width: 0; }
@@ -631,7 +631,7 @@
       background: var(--red);
       color: #fff;
       border-color: var(--red);
-      box-shadow: 0 2px 8px rgba(227,6,19,0.3);
+      box-shadow: 0 2px 8px rgba(0,166,80,0.3);
     }
 
     .hist-list { display: flex; flex-direction: column; gap: 0.75rem; }
@@ -648,7 +648,7 @@
     .bp-stage { display: flex; align-items: center; gap: 0; flex-shrink: 0; }
     .bp-node { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; cursor: pointer; padding: 0.5rem 0.9rem; border-radius: var(--radius-sm); transition: background 0.2s; }
     .bp-node:hover { background: var(--gray-100); }
-    .bp-node.active { background: rgba(227,6,19,0.08); }
+    .bp-node.active { background: rgba(0,166,80,0.08); }
     .bp-dot { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 800; border: 2px solid var(--gray-200); color: var(--gray-500); transition: all 0.3s; }
     .bp-dot.done  { background: var(--green); border-color: var(--green); color: #fff; }
     .bp-dot.live  { background: var(--red); border-color: var(--red); color: #fff; animation: pulseDot 1.5s infinite; }
@@ -657,7 +657,7 @@
     .bp-label { font-size: 0.65rem; font-weight: 700; color: var(--gray-500); text-align: center; white-space: nowrap; }
     .bp-node.active .bp-label { color: var(--red); }
     .bp-arrow { color: var(--gray-300); font-size: 0.8rem; padding: 0 0.1rem; flex-shrink: 0; }
-    @keyframes pulseDot { 0%,100%{box-shadow:0 0 0 0 rgba(227,6,19,.4)} 50%{box-shadow:0 0 0 6px rgba(227,6,19,0)} }
+    @keyframes pulseDot { 0%,100%{box-shadow:0 0 0 0 rgba(0,166,80,.4)} 50%{box-shadow:0 0 0 6px rgba(0,166,80,0)} }
 
     .round-matches { display: flex; flex-direction: column; gap: 1rem; }
 
@@ -678,7 +678,7 @@
     .ko-tbd { font-size: 0.85rem; color: var(--gray-400); font-style: italic; padding: 0.6rem 0; }
     .ko-status-badge { font-size: 0.65rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 6px; text-transform: uppercase; }
     .ko-status-badge.pendiente { background: var(--gray-100); color: var(--gray-500); }
-    .ko-status-badge.en_juego  { background: rgba(227,6,19,0.12); color: var(--red); }
+    .ko-status-badge.en_juego  { background: rgba(0,166,80,0.12); color: var(--red); }
     .ko-status-badge.finalizado{ background: rgba(29,185,84,0.12); color: var(--green); }
 
     .round-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
@@ -692,7 +692,7 @@
     .pred-table th { background: var(--gray-100); padding: .5rem .85rem; text-align: left; font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--gray-500); }
     .pred-table td { padding: .55rem .85rem; border-top: 1px solid var(--gray-100); vertical-align: middle; }
     .pred-pts-badge { display: inline-block; border-radius: 6px; padding: .15rem .55rem; font-size: .72rem; font-weight: 800; }
-    .pred-pts-10 { background: rgba(249,183,0,.2); color: var(--yellow-dark); }
+    .pred-pts-10 { background: rgba(168,207,69,.2); color: var(--yellow-dark); }
     .pred-pts-3  { background: rgba(29,185,84,.15); color: var(--green); }
     .pred-pts-0  { background: var(--gray-100); color: var(--gray-500); }
     .pred-pts-nd { background: rgba(0,120,255,.1); color: #0078ff; }
@@ -743,7 +743,7 @@
     .cal-jornada-title {
       font-size: 0.75rem; font-weight: 800; text-transform: uppercase;
       letter-spacing: 0.14em; color: var(--white);
-      background: linear-gradient(135deg, var(--red) 0%, #a8000e 100%);
+      background: linear-gradient(135deg, var(--red) 0%, #007A3C 100%);
       display: inline-block; padding: 0.35rem 1rem; border-radius: 999px;
       margin-bottom: 1rem;
     }
@@ -841,8 +841,8 @@
     .admin-search-wrap { position: relative; flex: 1; max-width: 280px; }
     .admin-search-wrap svg { position: absolute; left: 0.7rem; top: 50%; transform: translateY(-50%); color: var(--gray-400); pointer-events: none; }
     .admin-search { width: 100%; padding: 0.55rem 0.85rem 0.55rem 2.2rem; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 0.85rem; background: #fff; color: var(--text); outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
-    .admin-search:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(227,6,19,0.1); }
-    .btn-primary { padding: 0.6rem 1.1rem; border-radius: var(--radius-sm); background: var(--red); color: #fff; font-size: 0.82rem; font-weight: 700; transition: all 0.2s; box-shadow: 0 3px 14px rgba(227,6,19,0.3); }
+    .admin-search:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(0,166,80,0.1); }
+    .btn-primary { padding: 0.6rem 1.1rem; border-radius: var(--radius-sm); background: var(--red); color: #fff; font-size: 0.82rem; font-weight: 700; transition: all 0.2s; box-shadow: 0 3px 14px rgba(0,166,80,0.3); }
     .btn-primary:hover { background: var(--red-dark); transform: translateY(-1px); }
     .btn-sm { padding: 0.4rem 0.75rem; border-radius: 6px; font-size: 0.72rem; font-weight: 600; transition: all 0.2s; }
     .btn-edit { background: var(--yellow-bg); color: #b8860b; }
@@ -858,7 +858,7 @@
     .admin-field { display: flex; flex-direction: column; gap: 0.35rem; }
     .admin-field label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gray-600); }
     .admin-input, .admin-select { padding: 0.65rem 0.85rem; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 0.88rem; background: #fff; color: var(--text); outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
-    .admin-input:focus, .admin-select:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(227,6,19,0.1); }
+    .admin-input:focus, .admin-select:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(0,166,80,0.1); }
     .admin-form-actions { display: flex; gap: 0.6rem; margin-top: 1rem; }
     .btn-ghost { padding: 0.6rem 1.1rem; border-radius: var(--radius-sm); background: #fff; border: 1.5px solid var(--gray-200); color: var(--gray-600); font-size: 0.82rem; font-weight: 600; }
     .btn-ghost:hover { border-color: var(--gray-400); }
@@ -969,7 +969,7 @@
     }
     .drawer-tab-btn:hover { background: var(--gray-100); color: var(--text); }
     .drawer-tab-btn.active {
-      color: var(--red); background: rgba(227,6,19,0.06);
+      color: var(--red); background: rgba(0,166,80,0.06);
       border-left-color: var(--red); font-weight: 700;
     }
     .drawer-tab-icon { font-size: 1.1rem; width: 22px; text-align: center; flex-shrink: 0; }
@@ -992,7 +992,7 @@
     }
     .drawer-footer-btn:hover { background: var(--gray-100); }
     .drawer-footer-btn.danger { color: var(--red); }
-    .drawer-footer-btn.danger:hover { background: rgba(227,6,19,0.06); }
+    .drawer-footer-btn.danger:hover { background: rgba(0,166,80,0.06); }
 
     @media (max-width: 480px) {
       /* NAV */
@@ -1197,28 +1197,35 @@
     </div>
     <nav class="drawer-nav">
       <button class="drawer-tab-btn active" data-tab="partidos">
-        <span class="drawer-tab-icon">⚽</span> Partidos
+        <span class="drawer-tab-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 6.88 17.1M12 2a10 10 0 0 0-6.88 17.1M4.93 7h14.14M3 12h18M4.93 17H19.07M12 2v20"/></svg></span>
+        Partidos
         <span class="drawer-badge" id="drawer-badge-partidos" style="display:none"></span>
       </button>
       <button class="drawer-tab-btn" data-tab="calendario">
-        <span class="drawer-tab-icon">📅</span> Calendario
+        <span class="drawer-tab-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+        Calendario
       </button>
       <button class="drawer-tab-btn" data-tab="torneo">
-        <span class="drawer-tab-icon">🏆</span> Torneo
+        <span class="drawer-tab-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 3 18 9"/><path d="M6 9H4a2 2 0 0 0-2 2v2a6 6 0 0 0 6 6 6 6 0 0 0 6-6V11a2 2 0 0 0-2-2h-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></span>
+        Torneo
       </button>
       <button class="drawer-tab-btn" data-tab="clasificacion">
-        <span class="drawer-tab-icon">📊</span> Clasificación
+        <span class="drawer-tab-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+        Clasificación
       </button>
       <button class="drawer-tab-btn" data-tab="historial">
-        <span class="drawer-tab-icon">📋</span> Mi Historial
+        <span class="drawer-tab-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span>
+        Mi Historial
       </button>
     </nav>
     <div class="drawer-footer">
       <button class="drawer-footer-btn" id="drawer-rules-btn">
-        <span>📜</span> Reglas del juego
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Reglas del juego
       </button>
       <button class="drawer-footer-btn danger" id="drawer-logout-btn">
-        <span>🚪</span> Cerrar sesión
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Cerrar sesión
       </button>
     </div>
   </div>
@@ -1266,7 +1273,7 @@
           <div>
             <h2 class="section-title">Partidos del Mundial</h2>
             <p class="section-subtitle" id="matches-count">72 partidos — Fase de Grupos</p>
-            <button id="btn-unpredicted" onclick="toggleUnpredicted()" style="margin-top:.4rem;padding:.3rem .85rem;border-radius:20px;font-size:.78rem;font-weight:700;border:2px solid var(--gray-200);background:var(--white);color:var(--gray-600);cursor:pointer;transition:all .2s">⚡ Sin predecir: <span id="unpredicted-count">0</span></button>
+            <button id="btn-unpredicted" onclick="toggleUnpredicted()" style="margin-top:.4rem;padding:.3rem .85rem;border-radius:20px;font-size:.78rem;font-weight:700;border:2px solid var(--gray-200);background:var(--white);color:var(--gray-600);cursor:pointer;transition:all .2s">Sin predecir: <span id="unpredicted-count">0</span></button>
           </div>
         </div>
 
@@ -1348,7 +1355,7 @@
           </div>
           <div class="month-cal-grid" id="month-cal-grid"></div>
           <div class="cal-legend">
-            <div class="cal-legend-item"><div class="cal-legend-swatch" style="background:rgba(227,6,19,0.1)"></div> Con partidos</div>
+            <div class="cal-legend-item"><div class="cal-legend-swatch" style="background:rgba(0,166,80,0.1)"></div> Con partidos</div>
             <div class="cal-legend-item"><div class="cal-legend-swatch" style="background:var(--red)"></div> Día seleccionado</div>
             <div class="cal-legend-item"><div class="cal-legend-swatch" style="background:var(--white); box-shadow: inset 0 0 0 2px var(--yellow)"></div> Hoy</div>
           </div>
@@ -1565,11 +1572,11 @@
 <div id="modal-rules" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);padding:1rem;overflow-y:auto">
   <div style="max-width:480px;margin:2rem auto;background:#fff;border-radius:20px;padding:2rem;box-shadow:0 24px 60px rgba(0,0,0,0.25)">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem">
-      <h2 style="font-size:1.2rem;font-weight:900;color:var(--text)">📋 Reglas del Juego</h2>
+      <h2 style="font-size:1.2rem;font-weight:900;color:var(--text)">Reglas del Juego</h2>
       <button onclick="document.getElementById('modal-rules').style.display='none'" style="background:var(--gray-100);border-radius:50%;width:32px;height:32px;font-size:1.1rem;font-weight:700;color:var(--gray-600)">&times;</button>
     </div>
     <div style="display:flex;flex-direction:column;gap:1rem;font-size:.9rem;color:var(--text)">
-      <div style="background:rgba(249,183,0,.12);border-radius:12px;padding:1rem">
+      <div style="background:rgba(168,207,69,.12);border-radius:12px;padding:1rem">
         <div style="font-weight:800;font-size:1rem;margin-bottom:.4rem">🥅 Marcador Exacto — 10 pts</div>
         <div style="color:var(--gray-600)">Predice el resultado exacto del partido (ej. 2-1). Si aciertas, ganas <strong>10 puntos</strong>.</div>
       </div>
@@ -1577,7 +1584,7 @@
         <div style="font-weight:800;font-size:1rem;margin-bottom:.4rem">✅ Resultado Correcto — 3 pts</div>
         <div style="color:var(--gray-600)">Si predices quién gana o que empatan (botones 1 / X / 2) y aciertas el resultado, ganas <strong>3 puntos</strong>. Al ingresar el marcador exacto, el resultado se detecta automáticamente.</div>
       </div>
-      <div style="background:rgba(227,6,19,.08);border-radius:12px;padding:1rem">
+      <div style="background:rgba(0,166,80,.08);border-radius:12px;padding:1rem">
         <div style="font-weight:800;font-size:1rem;margin-bottom:.4rem">❌ Fallo — 0 pts</div>
         <div style="color:var(--gray-600)">Si ninguna predicción acierta, no sumas puntos.</div>
       </div>
@@ -1586,7 +1593,7 @@
         <div style="color:var(--gray-600)">Las predicciones se cierran automáticamente cuando empieza el partido. No puedes cambiarlas una vez cerrado.</div>
       </div>
       <div style="background:var(--gray-100);border-radius:12px;padding:1rem">
-        <div style="font-weight:800;font-size:1rem;margin-bottom:.4rem">🏆 Máximo posible</div>
+        <div style="font-weight:800;font-size:1rem;margin-bottom:.4rem">Máximo posible</div>
         <div style="color:var(--gray-600)">Si aciertas los 72 partidos de grupos con marcador exacto = <strong>720 pts</strong>.</div>
       </div>
     </div>
@@ -1727,7 +1734,7 @@
 </div>
 
 <div id="view-error" class="view">
-  <div class="error-icon">⚡</div>
+  <div class="error-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#00A650" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
   <div class="error-title">Sin conexión con el servidor</div>
   <div class="error-sub">No pudimos comunicarnos con la base de datos. Revisa tu conexión e inténtalo de nuevo.</div>
   <button class="error-retry-btn" onclick="location.reload()">Reintentar</button>
@@ -2263,7 +2270,7 @@ function renderHistorial() {
       badge = pts === 10
         ? '<span style="background:rgba(29,185,84,.15);color:var(--green);border-radius:8px;padding:2px 10px;font-size:.8rem;font-weight:700;">+10 pts Exacta</span>'
         : pts === 3
-        ? '<span style="background:rgba(249,183,0,.18);color:var(--yellow-dark);border-radius:8px;padding:2px 10px;font-size:.8rem;font-weight:700;">+3 pts Resultado</span>'
+        ? '<span style="background:rgba(168,207,69,.18);color:var(--yellow-dark);border-radius:8px;padding:2px 10px;font-size:.8rem;font-weight:700;">+3 pts Resultado</span>'
         : '<span style="background:var(--gray-100);color:var(--gray-500);border-radius:8px;padding:2px 10px;font-size:.8rem;font-weight:700;">0 pts</span>';
     } else {
       badge = '<span style="background:rgba(0,120,255,.12);color:#0078ff;border-radius:8px;padding:2px 10px;font-size:.8rem;font-weight:700;">Pendiente</span>';
@@ -2525,7 +2532,7 @@ function renderMatches(groupFilter) {
   if (ubtn) {
     ubtn.style.borderColor = showUnpredictedOnly ? 'var(--red)' : 'var(--gray-200)';
     ubtn.style.color = showUnpredictedOnly ? 'var(--red)' : 'var(--gray-600)';
-    ubtn.style.background = showUnpredictedOnly ? 'rgba(227,6,19,.07)' : 'var(--white)';
+    ubtn.style.background = showUnpredictedOnly ? 'rgba(0,166,80,.07)' : 'var(--white)';
   }
   // Tab badge on "Partidos" (nav + drawer)
   var badge = document.getElementById('tab-badge-partidos');
@@ -2781,7 +2788,7 @@ function renderAdminMatches() {
       var ar = m.awayReal !== null ? m.awayReal : '';
       resultCell = '<input type="number" min="0" max="99" class="edit-input" style="width:46px;text-align:center" value="' + hr + '" id="ar-h-' + m.id + '" placeholder="L">' +
         ' - <input type="number" min="0" max="99" class="edit-input" style="width:46px;text-align:center" value="' + ar + '" id="ar-a-' + m.id + '" placeholder="V">' +
-        ' <button class="btn-sm btn-save-row" onclick="saveResult(' + m.id + ')">✓</button>';
+        ' <button class="btn-sm btn-save-row" onclick="saveResult(' + m.id + ')">Guardar</button>';
     } else {
       resultCell = '—';
     }
@@ -2910,7 +2917,7 @@ function koCardHTML(m) {
   var awayRow = (!m.home && !m.away) ? '' : koTeamRow(m.away, m.awayScore, m.awayPens, winner === 'away', false);
   var body = (m.home || m.away) ? homeRow + awayRow : '<div class="ko-tbd">Equipos por definir</div>';
   var advanceBanner = winnerName
-    ? '<div style="background:rgba(29,185,84,.1);border-top:1px solid rgba(29,185,84,.2);padding:.4rem 1rem;font-size:.78rem;font-weight:700;color:var(--green)">✓ Avanza: ' + winnerName + '</div>'
+    ? '<div style="background:rgba(29,185,84,.1);border-top:1px solid rgba(29,185,84,.2);padding:.4rem 1rem;font-size:.78rem;font-weight:700;color:var(--green)">Avanza: ' + winnerName + '</div>'
     : '';
   return '<div class="ko-card">' +
     '<div class="ko-card-header">' +
