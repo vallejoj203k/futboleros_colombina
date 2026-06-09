@@ -725,6 +725,10 @@
 
     .admin-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem; flex-wrap: wrap; }
     .admin-head h2 { font-size: 1.2rem; font-weight: 800; color: var(--text); }
+    .admin-search-wrap { position: relative; flex: 1; max-width: 280px; }
+    .admin-search-wrap svg { position: absolute; left: 0.7rem; top: 50%; transform: translateY(-50%); color: var(--gray-400); pointer-events: none; }
+    .admin-search { width: 100%; padding: 0.55rem 0.85rem 0.55rem 2.2rem; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 0.85rem; background: #fff; color: var(--text); outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+    .admin-search:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(227,6,19,0.1); }
     .btn-primary { padding: 0.6rem 1.1rem; border-radius: var(--radius-sm); background: var(--red); color: #fff; font-size: 0.82rem; font-weight: 700; transition: all 0.2s; box-shadow: 0 3px 14px rgba(227,6,19,0.3); }
     .btn-primary:hover { background: var(--red-dark); transform: translateY(-1px); }
     .btn-sm { padding: 0.4rem 0.75rem; border-radius: 6px; font-size: 0.72rem; font-weight: 600; transition: all 0.2s; }
@@ -1262,6 +1266,10 @@
     <div class="admin-panel active" id="apanel-usuarios">
       <div class="admin-head">
         <h2>Gestión de Miembros</h2>
+        <div class="admin-search-wrap">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="admin-search" type="text" id="member-search" placeholder="Buscar miembro..." autocomplete="off" />
+        </div>
         <button class="btn-primary" id="btn-add-member">Agregar Miembro</button>
       </div>
 
@@ -2119,12 +2127,14 @@ $all('.admin-tab-btn').forEach(function(b) {
 /* =============================================
    ADMIN: MEMBERS TABLE
 ============================================= */
-function renderMembers() {
+function renderMembers(filter) {
+  var q = filter !== undefined ? filter : ($('#member-search') ? $('#member-search').value.trim().toLowerCase() : '');
   api.get('/api/admin/users').then(function(res) {
     if (!res.ok) { toast('Error cargando miembros'); return; }
     state.members = res.data;
-    var html = '';
-    res.data.forEach(function(m, idx) {
+    var list = q ? res.data.filter(function(m) { return m.nombre.toLowerCase().includes(q); }) : res.data;
+    var html = list.length ? '' : '<tr><td colspan="5" style="text-align:center;color:var(--gray-500);padding:1.5rem">Sin resultados</td></tr>';
+    list.forEach(function(m, idx) {
       var badgeClass = m.estado === 'Activo' ? 'badge-activo' : 'badge-inactivo';
       html += '<tr data-id="' + m.id + '">' +
         '<td>' + (idx + 1) + '</td>' +
@@ -2146,6 +2156,7 @@ function renderMembers() {
 $('#btn-add-member').addEventListener('click', function() {
   $('#add-member-form').classList.remove('hidden');
 });
+$('#member-search').addEventListener('input', function() { renderMembers(); });
 $('#btn-cancel-member').addEventListener('click', function() {
   $('#add-member-form').classList.add('hidden');
   $('#nm-nombre').value = ''; $('#nm-estado').value = 'Activo';
