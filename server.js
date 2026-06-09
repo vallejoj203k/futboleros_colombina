@@ -244,6 +244,16 @@ async function autoCloseMatches() {
 /* ─────────────────────────────────────────────
    AUTH
 ───────────────────────────────────────────── */
+app.post('/api/admin/login', (req, res) => {
+  const { usuario, password } = req.body;
+  const adminUser = process.env.ADMIN_USER || 'admin';
+  const adminPass = process.env.ADMIN_PASSWORD || 'megavital2026';
+  if (usuario === adminUser && password === adminPass) {
+    return res.json({ ok: true });
+  }
+  return res.status(401).json({ error: 'Credenciales incorrectas' });
+});
+
 app.post('/api/auth/login', async (req, res) => {
   const { nombre } = req.body;
   if (!nombre || nombre.trim().length < 3) return res.status(400).json({ error: 'Nombre requerido (mínimo 3 caracteres)' });

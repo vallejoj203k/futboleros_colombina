@@ -1460,6 +1460,10 @@
             <input class="admin-input" type="text" id="nm-nombre" placeholder="Ej: Juan Pérez" />
           </div>
           <div class="admin-field">
+            <label for="nm-cedula">Cédula (opcional)</label>
+            <input class="admin-input" type="text" id="nm-cedula" placeholder="Ej: 1234567890" />
+          </div>
+          <div class="admin-field">
             <label for="nm-estado">Estado</label>
             <select class="admin-select" id="nm-estado">
               <option value="Activo">Activo</option>
@@ -1862,7 +1866,12 @@ $('#admin-form-login').addEventListener('submit', function(e) {
   var u = $('#admin-user').value.trim();
   var p = $('#admin-pass').value;
   var err = $('#admin-error');
-  if (u === 'admin' && p === 'megavital2026') {
+  api.post('/api/admin/login', { usuario: u, password: p }).then(function(res) {
+    if (!res.ok) {
+      err.textContent = res.data.error || 'Credenciales incorrectas';
+      err.classList.add('show');
+      return;
+    }
     err.classList.remove('show');
     state.loggedIn = true;
     state.isAdmin = true;
@@ -1880,9 +1889,10 @@ $('#admin-form-login').addEventListener('submit', function(e) {
       renderAdminStats();
       loadLeaderboard().then(renderChart);
     });
-  } else {
+  }).catch(function() {
+    err.textContent = 'Error de conexión. Intenta de nuevo.';
     err.classList.add('show');
-  }
+  });
 });
 
 /* =============================================
@@ -2479,12 +2489,13 @@ $('#btn-add-member').addEventListener('click', function() {
 $('#member-search').addEventListener('input', function() { renderMembers(); });
 $('#btn-cancel-member').addEventListener('click', function() {
   $('#add-member-form').classList.add('hidden');
-  $('#nm-nombre').value = ''; $('#nm-estado').value = 'Activo';
+  $('#nm-nombre').value = ''; $('#nm-cedula').value = ''; $('#nm-estado').value = 'Activo';
 });
 $('#btn-save-member').addEventListener('click', function() {
   var nombre = $('#nm-nombre').value.trim();
   if (nombre.length < 3) { toast('Ingresa un nombre válido'); return; }
-  api.post('/api/admin/users', { nombre: nombre, estado: $('#nm-estado').value })
+  var cedula = $('#nm-cedula').value.trim() || null;
+  api.post('/api/admin/users', { nombre: nombre, cedula: cedula, estado: $('#nm-estado').value })
     .then(function(res) {
       if (!res.ok) { toast(res.data.error || 'Error al agregar'); return; }
       renderMembers();
