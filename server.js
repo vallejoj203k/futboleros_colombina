@@ -177,14 +177,14 @@ function calcPoints(p, m) {
    AUTH
 ───────────────────────────────────────────── */
 app.post('/api/auth/login', async (req, res) => {
-  const { cedula } = req.body;
-  if (!cedula) return res.status(400).json({ error: 'Cédula requerida' });
+  const { nombre } = req.body;
+  if (!nombre || nombre.trim().length < 3) return res.status(400).json({ error: 'Nombre requerido (mínimo 3 caracteres)' });
   try {
     const { rows } = await pool.query(
-      'SELECT id, nombre, cedula, estado FROM users WHERE cedula = $1',
-      [cedula.trim()]
+      'SELECT id, nombre, cedula, estado FROM users WHERE LOWER(nombre) = LOWER($1)',
+      [nombre.trim()]
     );
-    if (!rows.length) return res.status(404).json({ error: 'Cédula no registrada. Contacta al administrador.' });
+    if (!rows.length) return res.status(404).json({ error: 'Nombre no registrado. Contacta al administrador.' });
     if (rows[0].estado !== 'Activo') return res.status(403).json({ error: 'Tu cuenta está inactiva. Contacta al administrador.' });
     res.json(rows[0]);
   } catch (e) {
