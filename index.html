@@ -845,21 +845,21 @@
       <h1 class="login-card-title">Mega Mundial 2026</h1>
       <p class="login-card-sub">Gimnasio Mega Vital &mdash; Mundial FIFA 2026</p>
 
-      <div class="login-error" id="login-error">Ingresa tu nombre completo (mínimo 3 caracteres).</div>
+      <div class="login-error" id="login-error">Cédula no encontrada. Contacta al administrador.</div>
 
       <form id="user-form" novalidate>
         <div class="form-group">
-          <label class="form-label" for="full-name">Nombre completo</label>
+          <label class="form-label" for="cedula-input">Número de cédula</label>
           <div class="input-wrap">
             <span class="input-icon-left">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                <rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M8 15h4"/>
               </svg>
             </span>
-            <input class="form-input" type="text" id="full-name" placeholder="Ej: Ana López" autocomplete="name" autocapitalize="words" />
+            <input class="form-input" type="text" id="cedula-input" placeholder="Ej: 1020304050" autocomplete="off" inputmode="numeric" />
           </div>
         </div>
-        <button type="submit" class="btn-jugar">Entrar al torneo</button>
+        <button type="submit" class="btn-jugar" id="btn-login-user">Entrar al torneo</button>
         <p class="register-link"><a id="show-admin">¿Eres administrador? Acceder aquí</a></p>
       </form>
     </div>
@@ -1220,72 +1220,17 @@
       <div class="tab-panel" id="tab-historial" role="tabpanel">
         <header class="leaderboard-header">
           <h1 class="section-title">Mi Historial</h1>
-          <p class="section-subtitle">Tus predicciones y puntos obtenidos</p>
+          <p class="section-subtitle">Tus predicciones y puntos acumulados</p>
         </header>
 
-        <div class="stats-row">
-          <div class="stat-card"><div class="stat-value">0</div><div class="stat-label">Partidos jugados</div></div>
-          <div class="stat-card"><div class="stat-value green">0</div><div class="stat-label">Exactas</div></div>
-          <div class="stat-card"><div class="stat-value yellow">0</div><div class="stat-label">Parciales</div></div>
-          <div class="stat-card"><div class="stat-value">0</div><div class="stat-label">Puntos</div></div>
+        <div class="stats-row" id="hist-stats-row">
+          <div class="stat-card"><div class="stat-value" id="hstat-total">0</div><div class="stat-label">Predicciones</div></div>
+          <div class="stat-card"><div class="stat-value green" id="hstat-exactas">0</div><div class="stat-label">Exactas (10 pts)</div></div>
+          <div class="stat-card"><div class="stat-value yellow" id="hstat-resultados">0</div><div class="stat-label">Resultado (3 pts)</div></div>
+          <div class="stat-card"><div class="stat-value" id="hstat-pts">0</div><div class="stat-label">Puntos totales</div></div>
         </div>
 
-        <div class="hist-list">
-          <div class="hist-card">
-            <div class="hist-card-header">
-              <div><div class="hist-match-name">Colombia vs Ecuador</div><div class="hist-match-date">Jun 10, 2026</div></div>
-              <span class="outcome-badge outcome-exacto">EXACTO +10 pts</span>
-            </div>
-            <div class="hist-scores">
-              <div class="hist-score-item"><div class="hist-score-label">Tu predicción</div><div class="hist-score-val">2 &mdash; 1</div></div>
-              <div class="hist-score-item"><div class="hist-score-label">Resultado real</div><div class="hist-score-val">2 &mdash; 1</div></div>
-            </div>
-          </div>
-
-          <div class="hist-card">
-            <div class="hist-card-header">
-              <div><div class="hist-match-name">Colombia vs Perú</div><div class="hist-match-date">Jun 5, 2026</div></div>
-              <span class="outcome-badge outcome-parcial">PARCIAL +5 pts</span>
-            </div>
-            <div class="hist-scores">
-              <div class="hist-score-item"><div class="hist-score-label">Tu predicción</div><div class="hist-score-val">1 &mdash; 0</div></div>
-              <div class="hist-score-item"><div class="hist-score-label">Resultado real</div><div class="hist-score-val">2 &mdash; 0</div></div>
-            </div>
-          </div>
-
-          <div class="hist-card">
-            <div class="hist-card-header">
-              <div><div class="hist-match-name">Colombia vs Venezuela</div><div class="hist-match-date">May 30, 2026</div></div>
-              <span class="outcome-badge outcome-fallo">FALLÓ +0 pts</span>
-            </div>
-            <div class="hist-scores">
-              <div class="hist-score-item"><div class="hist-score-label">Tu predicción</div><div class="hist-score-val">3 &mdash; 0</div></div>
-              <div class="hist-score-item"><div class="hist-score-label">Resultado real</div><div class="hist-score-val">1 &mdash; 1</div></div>
-            </div>
-          </div>
-
-          <div class="hist-card">
-            <div class="hist-card-header">
-              <div><div class="hist-match-name">Colombia vs Bolivia</div><div class="hist-match-date">May 25, 2026</div></div>
-              <span class="outcome-badge outcome-exacto">EXACTO +10 pts</span>
-            </div>
-            <div class="hist-scores">
-              <div class="hist-score-item"><div class="hist-score-label">Tu predicción</div><div class="hist-score-val">2 &mdash; 0</div></div>
-              <div class="hist-score-item"><div class="hist-score-label">Resultado real</div><div class="hist-score-val">2 &mdash; 0</div></div>
-            </div>
-          </div>
-
-          <div class="hist-card">
-            <div class="hist-card-header">
-              <div><div class="hist-match-name">Colombia vs Chile</div><div class="hist-match-date">May 20, 2026</div></div>
-              <span class="outcome-badge outcome-parcial">PARCIAL +5 pts</span>
-            </div>
-            <div class="hist-scores">
-              <div class="hist-score-item"><div class="hist-score-label">Tu predicción</div><div class="hist-score-val">1 &mdash; 1</div></div>
-              <div class="hist-score-item"><div class="hist-score-label">Resultado real</div><div class="hist-score-val">1 &mdash; 0</div></div>
-            </div>
-          </div>
-        </div>
+        <div class="hist-list" id="hist-list"></div>
 
         <footer class="app-footer">Gimnasio Mega Vital &copy; 2026 &mdash; Uso exclusivo para miembros</footer>
       </div>
@@ -1407,7 +1352,7 @@
 var state = {
   loggedIn: false,
   isAdmin: false,
-  user: { name: 'Ana', fullName: 'Ana López', initials: 'AL', pts: 0 },
+  user: { id: null, name: '', fullName: '', initials: '', pts: 0 },
   members: [
     { id: 1, nombre: 'Ana López',        cedula: '1020304050', estado: 'Activo' },
     { id: 2, nombre: 'Carlos Jiménez',   cedula: '1030405060', estado: 'Activo' },
@@ -1581,28 +1526,103 @@ $('#show-user').addEventListener('click', function() {
   $('#admin-error').classList.remove('show');
 });
 
+/* =============================================
+   API LAYER
+============================================= */
+var api = {
+  _call: function(method, url, body) {
+    var opts = { method: method, headers: { 'Content-Type': 'application/json' } };
+    if (body) opts.body = JSON.stringify(body);
+    return fetch(url, opts).then(function(r) { return r.json().then(function(d) { return { ok: r.ok, status: r.status, data: d }; }); });
+  },
+  get:  function(url)       { return this._call('GET',    url); },
+  post: function(url, body) { return this._call('POST',   url, body); },
+  put:  function(url, body) { return this._call('PUT',    url, body); },
+  del:  function(url)       { return this._call('DELETE', url); }
+};
+
+function loadAppData(userId) {
+  return Promise.all([
+    api.get('/api/matches'),
+    api.get('/api/predictions?userId=' + userId)
+  ]).then(function(results) {
+    var mRes = results[0], pRes = results[1];
+    if (!mRes.ok) throw new Error('No se pudieron cargar los partidos');
+    var matches = mRes.data;
+    var preds   = pRes.ok ? pRes.data : [];
+    // Rebuild MATCHES array in-place
+    MATCHES.length = 0;
+    matches.forEach(function(m) {
+      var pred = preds.filter(function(p) { return p.matchId === m.id; })[0] || {};
+      MATCHES.push({
+        id: m.id, group: m.group,
+        home: m.home, away: m.away,
+        homeCls: m.homeCls, awayCls: m.awayCls,
+        date: m.date, time: m.time,
+        status: m.status,
+        homeReal: m.homeReal, awayReal: m.awayReal,
+        homePred: pred.homePred !== undefined ? pred.homePred : null,
+        awayPred: pred.awayPred !== undefined ? pred.awayPred : null,
+        resultPred: pred.resultPred !== undefined ? pred.resultPred : null
+      });
+    });
+  });
+}
+
+function loadLeaderboard() {
+  return api.get('/api/leaderboard').then(function(res) {
+    if (!res.ok) return;
+    leaderboard.length = 0;
+    res.data.forEach(function(r) {
+      leaderboard.push({ rank: r.rank, name: r.name, ini: r.ini, aciertos: r.aciertos, pts: r.pts, you: r.id === state.user.id });
+    });
+  });
+}
+
 $('#user-form').addEventListener('submit', function(e) {
   e.preventDefault();
-  var name = $('#full-name').value.trim();
+  var cedula = $('#cedula-input').value.trim();
   var err = $('#login-error');
-  if (name.length < 3) { err.classList.add('show'); return; }
+  var btn = $('#btn-login-user');
+  if (!cedula) { err.classList.add('show'); return; }
   err.classList.remove('show');
+  btn.disabled = true;
+  btn.textContent = 'Verificando...';
 
-  var first = name.split(/\s+/)[0];
-  var ini = getInitials(name);
-  state.loggedIn = true;
-  state.isAdmin = false;
-  state.user.name = first;
-  state.user.fullName = name;
-  state.user.initials = ini;
+  api.post('/api/auth/login', { cedula: cedula }).then(function(res) {
+    btn.disabled = false;
+    btn.textContent = 'Entrar al torneo';
+    if (!res.ok) {
+      err.textContent = res.data.error || 'Error al iniciar sesión';
+      err.classList.add('show');
+      return;
+    }
+    var user = res.data;
+    var first = user.nombre.split(/\s+/)[0];
+    var ini = getInitials(user.nombre);
+    state.loggedIn = true;
+    state.isAdmin = false;
+    state.user = { id: user.id, name: first, fullName: user.nombre, initials: ini, pts: 0 };
 
-  $('#user-name').textContent = first;
-  $('#user-pts').textContent = state.user.pts + ' pts';
-  $('#nav-avatar').textContent = ini;
+    $('#user-name').textContent = first;
+    $('#user-pts').textContent = '0 pts';
+    $('#nav-avatar').textContent = ini;
 
-  showView('app-shell');
-  switchTab('partidos');
-  toast('Bienvenido, ' + first);
+    loadAppData(user.id).then(function() {
+      showView('app-shell');
+      switchTab('partidos');
+      toast('Bienvenido, ' + first);
+    }).catch(function(e) {
+      toast('Error cargando datos: ' + e.message);
+      showView('app-shell');
+      switchTab('partidos');
+    });
+  }).catch(function() {
+    btn.disabled = false;
+    btn.textContent = 'Entrar al torneo';
+    err.textContent = 'Error de conexión. Intenta de nuevo.';
+    err.classList.add('show');
+  });
 });
 
 $('#admin-form-login').addEventListener('submit', function(e) {
@@ -1614,10 +1634,19 @@ $('#admin-form-login').addEventListener('submit', function(e) {
     err.classList.remove('show');
     state.loggedIn = true;
     state.isAdmin = true;
-    showView('view-admin');
-    renderMembers();
-    renderAdminMatches();
-    renderChart();
+    // Load matches from DB before rendering admin
+    api.get('/api/matches').then(function(res) {
+      if (res.ok) {
+        MATCHES.length = 0;
+        res.data.forEach(function(m) {
+          MATCHES.push({ id: m.id, group: m.group, home: m.home, away: m.away, homeCls: m.homeCls, awayCls: m.awayCls, date: m.date, time: m.time, status: m.status, homeReal: m.homeReal, awayReal: m.awayReal, homePred: null, awayPred: null, resultPred: null });
+        });
+      }
+      showView('view-admin');
+      renderMembers();
+      renderAdminMatches();
+      loadLeaderboard().then(renderChart);
+    });
   } else {
     err.classList.add('show');
   }
@@ -1629,7 +1658,8 @@ $('#admin-form-login').addEventListener('submit', function(e) {
 function logout() {
   state.loggedIn = false;
   state.isAdmin = false;
-  $('#full-name').value = '';
+  state.user = { id: null, name: '', fullName: '', initials: '', pts: 0 };
+  $('#cedula-input').value = '';
   $('#admin-user').value = '';
   $('#admin-pass').value = '';
   $('#login-admin-form').style.display = 'none';
@@ -1658,8 +1688,10 @@ function switchTab(tab) {
     renderMonthCalendar();
   }
   if (tab === 'clasificacion') {
-    renderLeaderboard();
-    setTimeout(animateBars, 60);
+    loadLeaderboard().then(function() { renderLeaderboard(); setTimeout(animateBars, 60); });
+  }
+  if (tab === 'historial') {
+    renderHistorial();
   }
 }
 $all('.tab-btn').forEach(function(b) {
@@ -1713,6 +1745,85 @@ function predPoints(m) {
   // Result-only prediction: 3 pts
   if (m.resultPred !== null) return m.resultPred === realRes ? 3 : 0;
   return 0;
+}
+
+/* =============================================
+   HISTORIAL — DYNAMIC RENDER
+============================================= */
+function renderHistorial() {
+  var predicted = MATCHES.filter(function(m) {
+    return m.homePred !== null || m.awayPred !== null || m.resultPred !== null;
+  });
+  var totalPts = 0, exactas = 0, resultados = 0;
+  predicted.forEach(function(m) {
+    var pts = predPoints(m);
+    if (m.homeReal !== null && m.awayReal !== null) {
+      totalPts += pts;
+      if (pts === 10) exactas++;
+      else if (pts === 3) resultados++;
+    }
+  });
+
+  var totEl = document.getElementById('hstat-total');
+  var exEl  = document.getElementById('hstat-exactas');
+  var reEl  = document.getElementById('hstat-resultados');
+  var ptEl  = document.getElementById('hstat-pts');
+  if (totEl) totEl.textContent = predicted.length;
+  if (exEl)  exEl.textContent  = exactas;
+  if (reEl)  reEl.textContent  = resultados;
+  if (ptEl)  ptEl.textContent  = totalPts;
+
+  var listEl = document.getElementById('hist-list');
+  if (!listEl) return;
+
+  if (predicted.length === 0) {
+    listEl.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--gray-500);">Aún no has hecho predicciones.<br>Ve a <strong>Partidos</strong> para empezar.</div>';
+    return;
+  }
+
+  listEl.innerHTML = predicted.map(function(m) {
+    var finished = (m.homeReal !== null && m.awayReal !== null);
+    var pts = predPoints(m);
+    var ptsClass = pts === 10 ? 'green' : (pts === 3 ? 'yellow' : '');
+    var badge = '';
+    if (finished) {
+      badge = pts === 10
+        ? '<span style="background:rgba(29,185,84,.15);color:var(--green);border-radius:8px;padding:2px 10px;font-size:.8rem;font-weight:700;">+10 pts Exacta</span>'
+        : pts === 3
+        ? '<span style="background:rgba(249,183,0,.18);color:var(--yellow-dark);border-radius:8px;padding:2px 10px;font-size:.8rem;font-weight:700;">+3 pts Resultado</span>'
+        : '<span style="background:var(--gray-100);color:var(--gray-500);border-radius:8px;padding:2px 10px;font-size:.8rem;font-weight:700;">0 pts</span>';
+    } else {
+      badge = '<span style="background:rgba(0,120,255,.12);color:#0078ff;border-radius:8px;padding:2px 10px;font-size:.8rem;font-weight:700;">Pendiente</span>';
+    }
+
+    var predStr = '';
+    if (m.homePred !== null && m.awayPred !== null) {
+      predStr = 'Marcador: ' + m.homePred + ' - ' + m.awayPred;
+    } else if (m.resultPred) {
+      var rl = m.resultPred === '1' ? 'Local (1)' : (m.resultPred === 'X' ? 'Empate (X)' : 'Visitante (2)');
+      predStr = 'Resultado: ' + rl;
+    }
+
+    var realStr = finished
+      ? '<span style="color:var(--gray-600);font-size:.82rem;">Real: ' + m.homeReal + ' - ' + m.awayReal + '</span>'
+      : '';
+
+    return '<div class="hist-card">'
+      + '<div style="display:flex;justify-content:space-between;align-items:center;gap:.5rem;flex-wrap:wrap;">'
+      +   '<div style="display:flex;align-items:center;gap:.5rem;">'
+      +     '<span class="flag-badge ' + m.homeCls + '">' + abbr(m.home) + '</span>'
+      +     '<strong style="font-size:.95rem;">' + m.home + ' vs ' + m.away + '</strong>'
+      +     '<span class="flag-badge ' + m.awayCls + '">' + abbr(m.away) + '</span>'
+      +   '</div>'
+      +   badge
+      + '</div>'
+      + '<div style="display:flex;gap:1rem;align-items:center;font-size:.88rem;color:var(--gray-600);">'
+      +   '<span>' + m.date + ' &middot; Grupo ' + m.group + '</span>'
+      +   '<span>' + predStr + '</span>'
+      +   realStr
+      + '</div>'
+      + '</div>';
+  }).join('');
 }
 
 function matchRowHTML(m) {
@@ -1958,6 +2069,8 @@ function selectResult(id, result) {
     var label = m.resultPred === '1' ? 'Local' : (m.resultPred === 'X' ? 'Empate' : 'Visitante');
     toast('Resultado guardado: ' + m.resultPred + ' (' + label + ')');
   }
+  api.post('/api/predictions', { userId: state.user.id, matchId: id, homePred: m.homePred, awayPred: m.awayPred, resultPred: m.resultPred })
+    .then(function(r) { if (!r.ok) toast('Error al guardar: ' + (r.data.error || 'intenta de nuevo')); });
 }
 
 function saveMatch(id) {
@@ -1982,6 +2095,8 @@ function saveMatch(id) {
   if (btn) { btn.classList.add('pulse'); setTimeout(function() { btn.classList.remove('pulse'); }, 500); }
   if (fb) { fb.classList.add('show'); setTimeout(function() { fb.classList.remove('show'); }, 2600); }
   toast('Marcador guardado: ' + m.homePred + ' - ' + m.awayPred + ' (+10 pts si aciertas!)');
+  api.post('/api/predictions', { userId: state.user.id, matchId: id, homePred: m.homePred, awayPred: m.awayPred, resultPred: m.resultPred })
+    .then(function(r) { if (!r.ok) toast('Error al guardar: ' + (r.data.error || 'intenta de nuevo')); });
 }
 
 /* group filter buttons */
@@ -2009,23 +2124,27 @@ $all('.admin-tab-btn').forEach(function(b) {
    ADMIN: MEMBERS TABLE
 ============================================= */
 function renderMembers() {
-  var html = '';
-  state.members.forEach(function(m, idx) {
-    var badgeClass = m.estado === 'Activo' ? 'badge-activo' : 'badge-inactivo';
-    html += '<tr data-id="' + m.id + '">' +
-      '<td>' + (idx + 1) + '</td>' +
-      '<td class="cell-nombre">' + m.nombre + '</td>' +
-      '<td class="cell-cedula">' + (m.cedula || '—') + '</td>' +
-      '<td class="cell-estado"><span class="badge-estado ' + badgeClass + '">' + m.estado + '</span></td>' +
-      '<td><div class="row-actions">' +
-        '<button class="btn-sm btn-edit" onclick="editMember(' + m.id + ')">Editar</button>' +
-        '<button class="btn-sm btn-delete" onclick="deleteMember(' + m.id + ')">Eliminar</button>' +
-      '</div></td>' +
-    '</tr>';
+  api.get('/api/admin/users').then(function(res) {
+    if (!res.ok) { toast('Error cargando miembros'); return; }
+    state.members = res.data;
+    var html = '';
+    res.data.forEach(function(m, idx) {
+      var badgeClass = m.estado === 'Activo' ? 'badge-activo' : 'badge-inactivo';
+      html += '<tr data-id="' + m.id + '">' +
+        '<td>' + (idx + 1) + '</td>' +
+        '<td class="cell-nombre">' + m.nombre + '</td>' +
+        '<td class="cell-cedula">' + (m.cedula || '—') + '</td>' +
+        '<td class="cell-estado"><span class="badge-estado ' + badgeClass + '">' + m.estado + '</span></td>' +
+        '<td><div class="row-actions">' +
+          '<button class="btn-sm btn-edit" onclick="editMember(' + m.id + ')">Editar</button>' +
+          '<button class="btn-sm btn-delete" onclick="deleteMember(' + m.id + ')">Eliminar</button>' +
+        '</div></td>' +
+      '</tr>';
+    });
+    $('#members-tbody').innerHTML = html;
+    var st = $('#stat-total-members');
+    if (st) st.textContent = res.data.length;
   });
-  $('#members-tbody').innerHTML = html;
-  var st = $('#stat-total-members');
-  if (st) st.textContent = state.members.length;
 }
 
 $('#btn-add-member').addEventListener('click', function() {
@@ -2037,24 +2156,25 @@ $('#btn-cancel-member').addEventListener('click', function() {
 });
 $('#btn-save-member').addEventListener('click', function() {
   var nombre = $('#nm-nombre').value.trim();
+  var cedula = $('#nm-cedula').value.trim();
   if (nombre.length < 3) { toast('Ingresa un nombre válido'); return; }
-  var nextId = state.members.reduce(function(mx, m) { return Math.max(mx, m.id); }, 0) + 1;
-  state.members.push({
-    id: nextId,
-    nombre: nombre,
-    cedula: $('#nm-cedula').value.trim(),
-    estado: $('#nm-estado').value
-  });
-  renderMembers();
-  $('#btn-cancel-member').click();
-  toast('Miembro agregado');
+  if (!cedula) { toast('Ingresa la cédula'); return; }
+  api.post('/api/admin/users', { nombre: nombre, cedula: cedula, estado: $('#nm-estado').value })
+    .then(function(res) {
+      if (!res.ok) { toast(res.data.error || 'Error al agregar'); return; }
+      renderMembers();
+      $('#btn-cancel-member').click();
+      toast('Miembro agregado');
+    });
 });
 
 function deleteMember(id) {
-  if (!window.confirm('¿Eliminar este miembro?')) return;
-  state.members = state.members.filter(function(m) { return m.id !== id; });
-  renderMembers();
-  toast('Miembro eliminado');
+  if (!window.confirm('¿Eliminar este miembro? También se borrarán sus predicciones.')) return;
+  api.del('/api/admin/users/' + id).then(function(res) {
+    if (!res.ok) { toast(res.data.error || 'Error al eliminar'); return; }
+    renderMembers();
+    toast('Miembro eliminado');
+  });
 }
 
 function editMember(id) {
@@ -2074,12 +2194,15 @@ function editMember(id) {
 function saveMember(id) {
   var row = $('#members-tbody tr[data-id="' + id + '"]');
   var inputs = row.querySelectorAll('.edit-input');
-  var m = state.members.filter(function(x) { return x.id === id; })[0];
-  m.nombre = inputs[0].value.trim() || m.nombre;
-  m.cedula = inputs[1].value.trim();
-  m.estado = inputs[2].value;
-  renderMembers();
-  toast('Cambios guardados');
+  api.put('/api/admin/users/' + id, {
+    nombre: inputs[0].value.trim(),
+    cedula: inputs[1].value.trim(),
+    estado: inputs[2].value
+  }).then(function(res) {
+    if (!res.ok) { toast(res.data.error || 'Error al guardar'); return; }
+    renderMembers();
+    toast('Cambios guardados');
+  });
 }
 
 /* =============================================
@@ -2091,12 +2214,23 @@ function renderAdminMatches() {
     return adminGroupFilter === 'all' || m.group === adminGroupFilter;
   }).forEach(function(m) {
     var cls = 'status-' + m.status;
+    var resultCell = '';
+    if (m.status === 'finalizado') {
+      var hr = m.homeReal !== null ? m.homeReal : '';
+      var ar = m.awayReal !== null ? m.awayReal : '';
+      resultCell = '<input type="number" min="0" max="99" class="edit-input" style="width:46px;text-align:center" value="' + hr + '" id="ar-h-' + m.id + '" placeholder="L">' +
+        ' - <input type="number" min="0" max="99" class="edit-input" style="width:46px;text-align:center" value="' + ar + '" id="ar-a-' + m.id + '" placeholder="V">' +
+        ' <button class="btn-sm btn-save-row" onclick="saveResult(' + m.id + ')">✓</button>';
+    } else {
+      resultCell = '—';
+    }
     html += '<tr data-id="' + m.id + '">' +
       '<td>' + m.group + '</td>' +
       '<td>' + m.home + ' vs ' + m.away + '</td>' +
       '<td>' + m.date + ' &middot; ' + m.time + '</td>' +
       '<td class="cell-mstatus"><span class="status-badge ' + cls + '">' + (STATUS_ES[m.status] || m.status) + '</span></td>' +
-      '<td><button class="btn-sm btn-edit" onclick="cycleStatus(' + m.id + ')">Editar estado</button></td>' +
+      '<td>' + resultCell + '</td>' +
+      '<td><button class="btn-sm btn-edit" onclick="cycleStatus(' + m.id + ')">Cambiar estado</button></td>' +
     '</tr>';
   });
   $('#matches-tbody').innerHTML = html;
@@ -2105,10 +2239,28 @@ function renderAdminMatches() {
 function cycleStatus(id) {
   var order = ['abierto', 'cerrado', 'finalizado'];
   var m = MATCHES.filter(function(x) { return x.id === id; })[0];
-  var i = order.indexOf(m.status);
-  m.status = order[(i + 1) % order.length];
-  renderAdminMatches();
-  toast(m.home + ' vs ' + m.away + ': ' + (STATUS_ES[m.status] || m.status));
+  var next = order[(order.indexOf(m.status) + 1) % order.length];
+  api.put('/api/admin/matches/' + id, { status: next }).then(function(res) {
+    if (!res.ok) { toast(res.data.error || 'Error'); return; }
+    m.status = next;
+    renderAdminMatches();
+    toast(m.home + ' vs ' + m.away + ': ' + (STATUS_ES[next] || next));
+  });
+}
+
+function saveResult(id) {
+  var m = MATCHES.filter(function(x) { return x.id === id; })[0];
+  var hEl = document.getElementById('ar-h-' + id);
+  var aEl = document.getElementById('ar-a-' + id);
+  if (!hEl || !aEl || hEl.value === '' || aEl.value === '') { toast('Ingresa ambos marcadores'); return; }
+  var hr = parseInt(hEl.value, 10);
+  var ar = parseInt(aEl.value, 10);
+  api.put('/api/admin/matches/' + id, { homeReal: hr, awayReal: ar }).then(function(res) {
+    if (!res.ok) { toast(res.data.error || 'Error'); return; }
+    m.homeReal = hr; m.awayReal = ar;
+    renderAdminMatches();
+    toast('Resultado guardado: ' + hr + ' - ' + ar);
+  });
 }
 
 $all('#admin-group-filter .group-btn').forEach(function(b) {
