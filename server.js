@@ -417,6 +417,74 @@ app.delete('/api/admin/users/:id', async (req, res) => {
 });
 
 /* ─────────────────────────────────────────────
+   ADMIN — STATS
+───────────────────────────────────────────── */
+app.get('/api/admin/stats', async (req, res) => {
+  try {
+    const [uRes, pRes, mRes, ptRes] = await Promise.all([
+      pool.query("SELECT COUNT(*) FROM users WHERE estado = 'Activo'"),
+      pool.query("SELECT COUNT(*) FROM predictions"),
+      pool.query("SELECT COUNT(*) FROM matches WHERE status = 'abierto'"),
+      pool.query(`
+        SELECT COALESCE(SUM(
+          CASE
+            WHEN p.home_pred IS NOT NULL AND m.home_real IS NOT NULL THEN
+              CASE WHEN p.home_pred = m.home_real AND p.away_pred = m.away_real THEN 10
+                   WHEN SIGN(p.home_pred - p.away_pred) = SIGN(m.home_real - m.away_real) THEN 3
+                   ELSE 0 END
+            WHEN p.result_pred IS NOT NULL AND m.home_real IS NOT NULL THEN
+              CASE WHEN p.result_pred = CASE WHEN m.home_real > m.away_real THEN '1'
+                                             WHEN m.home_real < m.away_real THEN '2' ELSE 'X' END THEN 3
+                   ELSE 0 END
+            ELSE 0
+          END
+        ), 0) AS total_pts
+        FROM predictions p JOIN matches m ON m.id = p.match_id
+      `)
+    ]);
+    res.json({
+      members:      parseInt(uRes.rows[0].count),
+      predictions:  parseInt(pRes.rows[0].count),
+      activeMatches:parseInt(mRes.rows[0].count),
+      totalPts:     parseInt(ptRes.rows[0].total_pts)
+    });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+/* ─────────────────────────────────────────────
+   ADMIN — PREDICTIONS VIEWER
+───────────────────────────────────────────── */
+app.get('/api/admin/predictions', async (req, res) => {
+  const { matchId } = req.query;
+  try {
+    let query, params;
+    if (matchId) {
+      query = `
+        SELECT u.nombre, p.home_pred, p.away_pred, p.result_pred,
+               m.home_real, m.away_real, m.home, m.away, m.status
+        FROM predictions p
+        JOIN users u ON u.id = p.user_id
+        JOIN matches m ON m.id = p.match_id
+        WHERE p.match_id = $1
+        ORDER BY u.nombre`;
+      params = [matchId];
+    } else {
+      query = `
+        SELECT u.nombre, m.id as match_id, m.home, m.away, m.match_date,
+               p.home_pred, p.away_pred, p.result_pred,
+               m.home_real, m.away_real, m.status
+        FROM predictions p
+        JOIN users u ON u.id = p.user_id
+        JOIN matches m ON m.id = p.match_id
+        ORDER BY m.id, u.nombre`;
+      params = [];
+    }
+    const { rows } = await pool.query(query, params);
+    res.json(rows);
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+/* ─────────────────────────────────────────────
    ADMIN — MATCH MANAGEMENT
 ───────────────────────────────────────────── */
 app.put('/api/admin/matches/:id', async (req, res) => {

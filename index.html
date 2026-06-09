@@ -645,6 +645,20 @@
 
     .round-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; }
 
+    /* Admin predictions panel */
+    .pred-match-block { margin-bottom: 1.5rem; }
+    .pred-match-header { display: flex; align-items: center; justify-content: space-between; gap: .5rem; background: var(--gray-100); border-radius: 10px 10px 0 0; padding: .6rem 1rem; cursor: pointer; }
+    .pred-match-title { font-size: .82rem; font-weight: 700; color: var(--text); }
+    .pred-match-meta  { font-size: .75rem; color: var(--gray-500); }
+    .pred-table { width: 100%; border-collapse: collapse; font-size: .82rem; border: 1px solid var(--gray-200); border-top: none; border-radius: 0 0 10px 10px; overflow: hidden; }
+    .pred-table th { background: var(--gray-100); padding: .5rem .85rem; text-align: left; font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--gray-500); }
+    .pred-table td { padding: .55rem .85rem; border-top: 1px solid var(--gray-100); vertical-align: middle; }
+    .pred-pts-badge { display: inline-block; border-radius: 6px; padding: .15rem .55rem; font-size: .72rem; font-weight: 800; }
+    .pred-pts-10 { background: rgba(249,183,0,.2); color: var(--yellow-dark); }
+    .pred-pts-3  { background: rgba(29,185,84,.15); color: var(--green); }
+    .pred-pts-0  { background: var(--gray-100); color: var(--gray-500); }
+    .pred-pts-nd { background: rgba(0,120,255,.1); color: #0078ff; }
+
     /* Admin knockout */
     .ko-admin-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-md); padding: 1rem; box-shadow: var(--shadow-sm); }
     .ko-round-section { margin-bottom: 2rem; }
@@ -993,7 +1007,8 @@
     </div>
 
     <div class="nav-right">
-      <button class="nav-logout" id="member-logout">Cerrar sesión</button>
+      <button class="nav-logout" id="btn-rules" style="background:var(--gray-100);color:var(--text)">Reglas</button>
+      <button class="nav-logout" id="member-logout">Salir</button>
       <div class="nav-avatar" id="nav-avatar" role="img" aria-label="Usuario" title="Cerrar sesión">AL</div>
     </div>
   </nav>
@@ -1321,6 +1336,38 @@
   </main>
 </div>
 
+<!-- RULES MODAL -->
+<div id="modal-rules" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.55);backdrop-filter:blur(4px);padding:1rem;overflow-y:auto">
+  <div style="max-width:480px;margin:2rem auto;background:#fff;border-radius:20px;padding:2rem;box-shadow:0 24px 60px rgba(0,0,0,0.25)">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem">
+      <h2 style="font-size:1.2rem;font-weight:900;color:var(--text)">📋 Reglas del Juego</h2>
+      <button onclick="document.getElementById('modal-rules').style.display='none'" style="background:var(--gray-100);border-radius:50%;width:32px;height:32px;font-size:1.1rem;font-weight:700;color:var(--gray-600)">&times;</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1rem;font-size:.9rem;color:var(--text)">
+      <div style="background:rgba(249,183,0,.12);border-radius:12px;padding:1rem">
+        <div style="font-weight:800;font-size:1rem;margin-bottom:.4rem">🥅 Marcador Exacto — 10 pts</div>
+        <div style="color:var(--gray-600)">Predice el resultado exacto del partido (ej. 2-1). Si aciertas, ganas <strong>10 puntos</strong>.</div>
+      </div>
+      <div style="background:rgba(29,185,84,.1);border-radius:12px;padding:1rem">
+        <div style="font-weight:800;font-size:1rem;margin-bottom:.4rem">✅ Resultado Correcto — 3 pts</div>
+        <div style="color:var(--gray-600)">Si predices quién gana o que empatan (botones 1 / X / 2) y aciertas el resultado, ganas <strong>3 puntos</strong>. Al ingresar el marcador exacto, el resultado se detecta automáticamente.</div>
+      </div>
+      <div style="background:rgba(227,6,19,.08);border-radius:12px;padding:1rem">
+        <div style="font-weight:800;font-size:1rem;margin-bottom:.4rem">❌ Fallo — 0 pts</div>
+        <div style="color:var(--gray-600)">Si ninguna predicción acierta, no sumas puntos.</div>
+      </div>
+      <div style="background:var(--gray-100);border-radius:12px;padding:1rem">
+        <div style="font-weight:800;font-size:1rem;margin-bottom:.4rem">⏰ ¿Hasta cuándo predecir?</div>
+        <div style="color:var(--gray-600)">Las predicciones se cierran automáticamente cuando empieza el partido. No puedes cambiarlas una vez cerrado.</div>
+      </div>
+      <div style="background:var(--gray-100);border-radius:12px;padding:1rem">
+        <div style="font-weight:800;font-size:1rem;margin-bottom:.4rem">🏆 Máximo posible</div>
+        <div style="color:var(--gray-600)">Si aciertas los 72 partidos de grupos con marcador exacto = <strong>720 pts</strong>.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- =============================================
      VIEW 3: ADMIN PANEL
 ============================================= -->
@@ -1337,6 +1384,7 @@
     <div class="admin-tabs">
       <button class="admin-tab-btn active" data-atab="usuarios">Usuarios</button>
       <button class="admin-tab-btn" data-atab="partidos">Partidos</button>
+      <button class="admin-tab-btn" data-atab="predicciones">Predicciones</button>
       <button class="admin-tab-btn" data-atab="eliminatorias">Eliminatorias</button>
       <button class="admin-tab-btn" data-atab="resumen">Resumen</button>
     </div>
@@ -1420,13 +1468,25 @@
       <div id="ko-admin-body"></div>
     </div>
 
+    <!-- ADMIN: PREDICCIONES -->
+    <div class="admin-panel" id="apanel-predicciones">
+      <div class="admin-head">
+        <h2>Predicciones por Partido</h2>
+        <div class="admin-search-wrap">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="admin-search" type="text" id="pred-match-search" placeholder="Buscar partido..." autocomplete="off" />
+        </div>
+      </div>
+      <div id="pred-admin-body"></div>
+    </div>
+
     <div class="admin-panel" id="apanel-resumen">
       <div class="admin-head"><h2>Resumen General</h2></div>
       <div class="admin-stats-grid">
-        <div class="admin-stat"><div class="admin-stat-val" id="stat-total-members">8</div><div class="admin-stat-lbl">Total Miembros</div></div>
-        <div class="admin-stat"><div class="admin-stat-val">2</div><div class="admin-stat-lbl">Partidos Activos</div></div>
-        <div class="admin-stat"><div class="admin-stat-val">24</div><div class="admin-stat-lbl">Total Predicciones</div></div>
-        <div class="admin-stat"><div class="admin-stat-val">142</div><div class="admin-stat-lbl">Promedio Puntos</div></div>
+        <div class="admin-stat"><div class="admin-stat-val" id="stat-total-members">—</div><div class="admin-stat-lbl">Miembros Activos</div></div>
+        <div class="admin-stat"><div class="admin-stat-val" id="stat-active-matches">—</div><div class="admin-stat-lbl">Partidos Abiertos</div></div>
+        <div class="admin-stat"><div class="admin-stat-val" id="stat-total-preds">—</div><div class="admin-stat-lbl">Total Predicciones</div></div>
+        <div class="admin-stat"><div class="admin-stat-val" id="stat-total-pts">—</div><div class="admin-stat-lbl">Puntos Repartidos</div></div>
       </div>
 
       <div class="chart-box">
@@ -1739,6 +1799,7 @@ $('#admin-form-login').addEventListener('submit', function(e) {
       showView('view-admin');
       renderMembers();
       renderAdminMatches();
+      renderAdminStats();
       loadLeaderboard().then(renderChart);
     });
   } else {
@@ -1764,6 +1825,8 @@ function logout() {
 $('#member-logout').addEventListener('click', logout);
 $('#nav-avatar').addEventListener('click', logout);
 $('#admin-logout').addEventListener('click', logout);
+$('#btn-rules').addEventListener('click', function() { document.getElementById('modal-rules').style.display = 'block'; });
+document.getElementById('modal-rules').addEventListener('click', function(e) { if (e.target === this) this.style.display = 'none'; });
 
 /* =============================================
    MEMBER TABS
@@ -2214,8 +2277,9 @@ $all('.admin-tab-btn').forEach(function(b) {
     $all('.admin-tab-btn').forEach(function(x) { x.classList.toggle('active', x === b); });
     $all('.admin-panel').forEach(function(p) { p.classList.remove('active'); });
     document.getElementById('apanel-' + t).classList.add('active');
-    if (t === 'resumen') setTimeout(renderChart, 60);
+    if (t === 'resumen') { renderAdminStats(); setTimeout(renderChart, 60); }
     if (t === 'eliminatorias') renderAdminKnockout();
+    if (t === 'predicciones') renderAdminPredictions();
   });
 });
 
@@ -2439,13 +2503,17 @@ function koTeamRow(name, score, pens, isWinner, isTbd) {
   return '<div class="ko-team-row' + winCls + '">' + flagHtml + '<span class="ko-team-name">' + (name || 'Por definir') + '</span>' + scoreHtml + pensHtml + '</div>';
 }
 
-function koCardHTML(m, roundLabel) {
+function koCardHTML(m) {
   var winner = koWinner(m);
+  var winnerName = winner === 'home' ? m.home : winner === 'away' ? m.away : null;
   var dateStr = m.date ? (m.date + (m.time ? ' &bull; ' + m.time : '')) : 'Fecha por confirmar';
   var statusBadge = '<span class="ko-status-badge ' + m.status + '">' + (m.status === 'pendiente' ? 'Pendiente' : m.status === 'en_juego' ? 'En juego' : 'Finalizado') + '</span>';
   var homeRow = (!m.home && !m.away) ? '' : koTeamRow(m.home, m.homeScore, m.homePens, winner === 'home', false);
   var awayRow = (!m.home && !m.away) ? '' : koTeamRow(m.away, m.awayScore, m.awayPens, winner === 'away', false);
   var body = (m.home || m.away) ? homeRow + awayRow : '<div class="ko-tbd">Equipos por definir</div>';
+  var advanceBanner = winnerName
+    ? '<div style="background:rgba(29,185,84,.1);border-top:1px solid rgba(29,185,84,.2);padding:.4rem 1rem;font-size:.78rem;font-weight:700;color:var(--green)">✓ Avanza: ' + winnerName + '</div>'
+    : '';
   return '<div class="ko-card">' +
     '<div class="ko-card-header">' +
       '<span class="ko-card-title">Partido ' + m.matchNum + '</span>' +
@@ -2454,6 +2522,7 @@ function koCardHTML(m, roundLabel) {
       '</div>' +
     '</div>' +
     '<div class="ko-card-body">' + body + '</div>' +
+    advanceBanner +
   '</div>';
 }
 
@@ -2492,7 +2561,7 @@ function renderTournament() {
     var label = ROUND_LABELS[currentKoRound] || currentKoRound;
     var html2 = '<div style="margin-bottom:1rem"><h2 style="font-size:1.1rem;font-weight:800;color:var(--text)">' + label + '</h2></div>';
     html2 += '<div class="round-grid">';
-    matches.forEach(function(m) { html2 += koCardHTML(m, label); });
+    matches.forEach(function(m) { html2 += koCardHTML(m); });
     if (!matches.length) html2 += '<p style="color:var(--gray-500)">No hay partidos para esta ronda.</p>';
     html2 += '</div>';
     el.innerHTML = html2;
@@ -2503,6 +2572,96 @@ function setKoRound(round) {
   currentKoRound = round;
   renderTournament();
 }
+
+/* =============================================
+   ADMIN: STATS
+============================================= */
+function renderAdminStats() {
+  api.get('/api/admin/stats').then(function(res) {
+    if (!res.ok) return;
+    var d = res.data;
+    var set = function(id, v) { var el = document.getElementById(id); if (el) el.textContent = v; };
+    set('stat-total-members',  d.members);
+    set('stat-active-matches', d.activeMatches);
+    set('stat-total-preds',    d.predictions);
+    set('stat-total-pts',      d.totalPts);
+  });
+}
+
+/* =============================================
+   ADMIN: PREDICTIONS VIEWER
+============================================= */
+var predSearchFilter = '';
+
+function renderAdminPredictions() {
+  var q = predSearchFilter.toLowerCase();
+  api.get('/api/admin/predictions').then(function(res) {
+    if (!res.ok) { toast('Error cargando predicciones'); return; }
+    var el = document.getElementById('pred-admin-body');
+    if (!el) return;
+
+    // Group by match
+    var matchMap = {};
+    res.data.forEach(function(row) {
+      var key = row.match_id;
+      if (!matchMap[key]) matchMap[key] = { home: row.home, away: row.away, date: row.match_date, status: row.status, homeReal: row.home_real, awayReal: row.away_real, preds: [] };
+      matchMap[key].preds.push(row);
+    });
+
+    var matchIds = Object.keys(matchMap).sort(function(a,b){ return parseInt(a)-parseInt(b); });
+    var filtered = matchIds.filter(function(id) {
+      var m = matchMap[id];
+      return !q || (m.home + ' ' + m.away).toLowerCase().includes(q);
+    });
+
+    if (!filtered.length) {
+      el.innerHTML = '<p style="color:var(--gray-500);padding:1rem">Sin predicciones' + (q ? ' para "' + predSearchFilter + '"' : '') + '.</p>';
+      return;
+    }
+
+    el.innerHTML = filtered.map(function(id) {
+      var m = matchMap[id];
+      var finished = m.homeReal !== null && m.awayReal !== null;
+      var realRes = finished ? (m.homeReal > m.awayReal ? '1' : m.homeReal < m.awayReal ? '2' : 'X') : null;
+
+      var rows = m.preds.map(function(p) {
+        var predStr = (p.home_pred !== null && p.away_pred !== null)
+          ? p.home_pred + ' - ' + p.away_pred
+          : (p.result_pred ? ({ '1': 'Local', 'X': 'Empate', '2': 'Visitante' }[p.result_pred] || p.result_pred) : '—');
+
+        var pts = 0, ptsClass = 'pred-pts-nd', ptsLabel = 'Pendiente';
+        if (finished) {
+          var exact = p.home_pred === parseInt(m.homeReal) && p.away_pred === parseInt(m.awayReal);
+          var resOk = false;
+          if (p.home_pred !== null) {
+            var pr = p.home_pred > p.away_pred ? '1' : p.home_pred < p.away_pred ? '2' : 'X';
+            resOk = pr === realRes;
+          } else if (p.result_pred) { resOk = p.result_pred === realRes; }
+          if (exact) { pts = 10; ptsClass = 'pred-pts-10'; ptsLabel = '+10 pts'; }
+          else if (resOk) { pts = 3; ptsClass = 'pred-pts-3'; ptsLabel = '+3 pts'; }
+          else { pts = 0; ptsClass = 'pred-pts-0'; ptsLabel = '0 pts'; }
+        }
+        return '<tr><td>' + p.nombre + '</td><td>' + predStr + '</td>' +
+          '<td><span class="pred-pts-badge ' + ptsClass + '">' + ptsLabel + '</span></td></tr>';
+      }).join('');
+
+      var realStr = finished ? (' &bull; Real: <strong>' + m.homeReal + '-' + m.awayReal + '</strong>') : '';
+      return '<div class="pred-match-block">' +
+        '<div class="pred-match-header">' +
+          '<span class="pred-match-title">Partido ' + id + ': ' + m.home + ' vs ' + m.away + '</span>' +
+          '<span class="pred-match-meta">' + (m.date || '') + realStr + '</span>' +
+        '</div>' +
+        '<table class="pred-table"><thead><tr><th>Usuario</th><th>Predicción</th><th>Puntos</th></tr></thead>' +
+        '<tbody>' + (rows || '<tr><td colspan="3" style="color:var(--gray-400);text-align:center">Sin predicciones</td></tr>') + '</tbody>' +
+        '</table></div>';
+    }).join('');
+  });
+}
+
+document.getElementById('pred-match-search').addEventListener('input', function() {
+  predSearchFilter = this.value;
+  renderAdminPredictions();
+});
 
 /* =============================================
    ADMIN: ELIMINATORIAS
