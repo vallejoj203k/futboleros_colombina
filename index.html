@@ -4,6 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mega Mundial 2026 &mdash; Gimnasio Mega Vital</title>
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#E30613" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Mundial 2026" />
+  <link rel="apple-touch-icon" href="/logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -605,6 +611,13 @@
 
     .hist-list { display: flex; flex-direction: column; gap: 0.75rem; }
 
+    /* ── GLOBAL LOADER ── */
+    #app-loader { position:fixed;inset:0;z-index:999;background:rgba(255,255,255,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;backdrop-filter:blur(6px);transition:opacity .3s; }
+    #app-loader.hidden { opacity:0;pointer-events:none; }
+    .loader-spinner { width:44px;height:44px;border:4px solid var(--gray-200);border-top-color:var(--red);border-radius:50%;animation:spin .7s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .loader-text { font-size:.88rem;font-weight:600;color:var(--gray-500); }
+
     /* ── TOURNAMENT BRACKET ── */
     .bracket-progress { display: flex; align-items: center; gap: 0; margin-bottom: 1.5rem; overflow-x: auto; padding-bottom: 0.25rem; }
     .bp-stage { display: flex; align-items: center; gap: 0; flex-shrink: 0; }
@@ -1056,6 +1069,7 @@
           <div>
             <h2 class="section-title">Partidos del Mundial</h2>
             <p class="section-subtitle" id="matches-count">72 partidos — Fase de Grupos</p>
+            <button id="btn-unpredicted" onclick="toggleUnpredicted()" style="margin-top:.4rem;padding:.3rem .85rem;border-radius:20px;font-size:.78rem;font-weight:700;border:2px solid var(--gray-200);background:var(--white);color:var(--gray-600);cursor:pointer;transition:all .2s">⚡ Sin predecir: <span id="unpredicted-count">0</span></button>
           </div>
         </div>
 
@@ -1068,6 +1082,10 @@
         <header class="leaderboard-header">
           <h1 class="section-title">Tabla de Clasificación</h1>
           <p class="section-subtitle">Top miembros &mdash; Mundial FIFA 2026</p>
+          <button onclick="shareWhatsApp()" style="margin-top:.75rem;display:inline-flex;align-items:center;gap:.4rem;padding:.45rem 1rem;border-radius:20px;background:#25D366;color:#fff;font-size:.82rem;font-weight:700;box-shadow:0 2px 10px rgba(37,211,102,.35);transition:all .2s">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.549 4.122 1.516 5.862L.044 23.25a.75.75 0 00.951.938l5.596-1.762A11.944 11.944 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.653-.518-5.17-1.42l-.36-.215-3.738 1.177 1.107-3.647-.234-.374A9.96 9.96 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            Compartir ranking
+          </button>
         </header>
 
         <div class="my-rank-card">
@@ -1121,9 +1139,13 @@
         <!-- MONTHLY CALENDAR WIDGET -->
         <div class="month-calendar">
           <div class="month-cal-header">
-            <div>
-              <div class="month-cal-title">Junio 2026</div>
-              <div class="month-cal-subtitle">Toca un día para ver sus partidos</div>
+            <div style="display:flex;align-items:center;gap:.5rem">
+              <button id="cal-prev" onclick="calMonth='Jun';renderMonthCalendar()" style="background:var(--gray-100);border-radius:8px;padding:.25rem .6rem;font-size:.9rem;visibility:hidden">‹</button>
+              <div>
+                <div class="month-cal-title">Junio 2026</div>
+                <div class="month-cal-subtitle">Toca un día para ver sus partidos</div>
+              </div>
+              <button id="cal-next" onclick="calMonth='Jul';renderMonthCalendar()" style="background:var(--gray-100);border-radius:8px;padding:.25rem .6rem;font-size:.9rem">›</button>
             </div>
             <button class="month-cal-clear" id="cal-clear-btn" onclick="clearDayFilter()">Limpiar filtro</button>
           </div>
@@ -1131,7 +1153,7 @@
           <div class="cal-legend">
             <div class="cal-legend-item"><div class="cal-legend-swatch" style="background:rgba(227,6,19,0.1)"></div> Con partidos</div>
             <div class="cal-legend-item"><div class="cal-legend-swatch" style="background:var(--red)"></div> Día seleccionado</div>
-            <div class="cal-legend-item"><div class="cal-legend-swatch" style="background:var(--white); box-shadow: inset 0 0 0 2px var(--yellow)"></div> Hoy (Jun 9)</div>
+            <div class="cal-legend-item"><div class="cal-legend-swatch" style="background:var(--white); box-shadow: inset 0 0 0 2px var(--yellow)"></div> Hoy</div>
           </div>
         </div>
 
@@ -1334,6 +1356,12 @@
 
     </div>
   </main>
+</div>
+
+<!-- GLOBAL LOADER -->
+<div id="app-loader">
+  <div class="loader-spinner"></div>
+  <div class="loader-text">Cargando...</div>
 </div>
 
 <!-- RULES MODAL -->
@@ -1632,7 +1660,8 @@ MATCHES.forEach(function(m) { m.resultPred = null; });
 
 var currentGroupFilter = 'all';
 var adminGroupFilter = 'all';
-var currentDayFilter = null;
+var currentDayFilter = { month: null, day: null };
+var showUnpredictedOnly = false;
 var STATUS_ES = { abierto: 'Abierto', cerrado: 'Cerrado', finalizado: 'Finalizado' };
 
 /* =============================================
@@ -1677,6 +1706,30 @@ $('#show-user').addEventListener('click', function() {
   $('#login-user-form').style.display = 'block';
   $('#admin-error').classList.remove('show');
 });
+
+/* =============================================
+   PWA — SERVICE WORKER
+============================================= */
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch(function() {});
+}
+
+/* =============================================
+   LOADER
+============================================= */
+function showLoader(msg) {
+  var el = document.getElementById('app-loader');
+  if (!el) return;
+  var t = el.querySelector('.loader-text');
+  if (t) t.textContent = msg || 'Cargando...';
+  el.classList.remove('hidden');
+}
+function hideLoader() {
+  var el = document.getElementById('app-loader');
+  if (el) el.classList.add('hidden');
+}
+// Hide immediately if JS runs — only show when explicitly called
+hideLoader();
 
 /* =============================================
    API LAYER
@@ -1761,12 +1814,15 @@ $('#user-form').addEventListener('submit', function(e) {
     $('#nav-avatar').textContent = ini;
 
     localStorage.setItem('mv_session', JSON.stringify({ id: user.id, nombre: user.nombre }));
+    showLoader('Cargando partidos...');
     loadAppData(user.id).then(function() {
       updateUserPts();
+      hideLoader();
       showView('app-shell');
       switchTab('partidos');
       toast('Bienvenido, ' + first);
     }).catch(function(e) {
+      hideLoader();
       toast('Error cargando datos: ' + e.message);
       showView('app-shell');
       switchTab('partidos');
@@ -2105,67 +2161,85 @@ var DATE_LABELS = {
   'Jun 15':'Lun 15 Jun','Jun 16':'Mar 16 Jun','Jun 17':'Mié 17 Jun','Jun 18':'Jue 18 Jun',
   'Jun 19':'Vie 19 Jun','Jun 20':'Sáb 20 Jun','Jun 21':'Dom 21 Jun','Jun 22':'Lun 22 Jun',
   'Jun 23':'Mar 23 Jun','Jun 24':'Mié 24 Jun','Jun 25':'Jue 25 Jun','Jun 26':'Vie 26 Jun',
-  'Jun 27':'Sáb 27 Jun'
+  'Jun 27':'Sáb 27 Jun',
+  'Jul 1':'Mié 1 Jul','Jul 2':'Jue 2 Jul','Jul 3':'Vie 3 Jul','Jul 4':'Sáb 4 Jul',
+  'Jul 5':'Dom 5 Jul','Jul 6':'Lun 6 Jul','Jul 7':'Mar 7 Jul','Jul 8':'Mié 8 Jul',
+  'Jul 9':'Jue 9 Jul','Jul 10':'Vie 10 Jul','Jul 11':'Sáb 11 Jul','Jul 12':'Dom 12 Jul',
+  'Jul 13':'Lun 13 Jul','Jul 14':'Mar 14 Jul','Jul 15':'Mié 15 Jul','Jul 16':'Jue 16 Jul',
+  'Jul 17':'Vie 17 Jul','Jul 18':'Sáb 18 Jul','Jul 19':'Dom 19 Jul'
 };
 
+/* Calendar config:
+   Jun 2026: 30 days, starts Monday (offset 0)
+   Jul 2026: 31 days, starts Wednesday (offset 2) */
+var CAL_CONFIG = {
+  Jun: { name:'Junio 2026',  prefix:'Jun', days:30, offset:0, today:9  },
+  Jul: { name:'Julio 2026',  prefix:'Jul', days:31, offset:2, today:null }
+};
+var calMonth = 'Jun'; // currently displayed month
+
 /* =============================================
-   MONTHLY CALENDAR WIDGET — June 2026
-   June 1 = Monday (firstDayOfWeek = 0)
+   MONTHLY CALENDAR WIDGET
 ============================================= */
 function renderMonthCalendar() {
   var container = $('#month-cal-grid');
   if (!container) return;
 
-  // Count matches per day for current group filter
+  var cfg = CAL_CONFIG[calMonth];
+
+  // Update header title
+  var titleEl = $('.month-cal-title');
+  if (titleEl) titleEl.textContent = cfg.name;
+
+  // Show/hide prev-next arrows
+  var prevBtn = document.getElementById('cal-prev');
+  var nextBtn = document.getElementById('cal-next');
+  if (prevBtn) prevBtn.style.visibility = calMonth === 'Jun' ? 'hidden' : 'visible';
+  if (nextBtn) nextBtn.style.visibility = calMonth === 'Jul' ? 'hidden' : 'visible';
+
+  // Count matches per day for selected month + group filter
   var matchesByDay = {};
   MATCHES.forEach(function(m) {
     if (currentGroupFilter !== 'all' && m.group !== currentGroupFilter) return;
-    var day = parseInt(m.date.split(' ')[1], 10);
+    var parts = m.date.split(' ');
+    if (parts[0] !== cfg.prefix) return;
+    var day = parseInt(parts[1], 10);
     matchesByDay[day] = (matchesByDay[day] || 0) + 1;
   });
 
-  var today = 9; // June 9, 2026 (current date from context)
   var html = '';
-
-  // Weekday headers (Mon–Sun in Spanish)
   ['Lu','Ma','Mi','Ju','Vi','Sá','Do'].forEach(function(d) {
     html += '<div class="cal-weekday">' + d + '</div>';
   });
+  for (var e = 0; e < cfg.offset; e++) html += '<div class="cal-cell other-month"></div>';
 
-  // June 1, 2026 = Monday → offset 0
-  var firstDayOffset = 0;
-  for (var e = 0; e < firstDayOffset; e++) {
-    html += '<div class="cal-cell other-month"></div>';
-  }
-
-  for (var day = 1; day <= 30; day++) {
+  for (var day = 1; day <= cfg.days; day++) {
     var cnt = matchesByDay[day] || 0;
     var cls = 'cal-cell';
     if (cnt > 0) cls += ' has-matches';
-    if (day === today) cls += ' today-mark';
-    if (day === currentDayFilter) cls += ' active-day';
-
-    html += '<div class="' + cls + '"' + (cnt > 0 ? ' onclick="filterByDay(' + day + ')" title="' + cnt + ' partido' + (cnt > 1 ? 's' : '') + '"' : '') + '>' +
+    if (cfg.today && day === cfg.today) cls += ' today-mark';
+    if (calMonth === currentDayFilter.month && day === currentDayFilter.day) cls += ' active-day';
+    html += '<div class="' + cls + '"' +
+      (cnt > 0 ? ' onclick="filterByDay(\'' + cfg.prefix + '\',' + day + ')" title="' + cnt + ' partido' + (cnt>1?'s':'') + '"' : '') + '>' +
       '<span class="cal-day-num">' + day + '</span>' +
       (cnt > 0 ? '<span class="cal-match-dot">' + cnt + '</span>' : '') +
     '</div>';
   }
-
   container.innerHTML = html;
 
   var clearBtn = $('#cal-clear-btn');
-  if (clearBtn) clearBtn.classList.toggle('visible', currentDayFilter !== null);
+  if (clearBtn) clearBtn.classList.toggle('visible', currentDayFilter.day !== null);
 }
 
-function filterByDay(day) {
-  currentDayFilter = (currentDayFilter === day) ? null : day;
+function filterByDay(month, day) {
+  var same = currentDayFilter.month === month && currentDayFilter.day === day;
+  currentDayFilter = same ? { month: null, day: null } : { month: month, day: day };
   renderMonthCalendar();
-  // Switch to Partidos tab with day filter applied
   switchTab('partidos');
 }
 
 function clearDayFilter() {
-  currentDayFilter = null;
+  currentDayFilter = { month: null, day: null };
   renderMonthCalendar();
 }
 
@@ -2174,12 +2248,29 @@ function renderMatches(groupFilter) {
 
   var list = MATCHES.filter(function(m) {
     if (currentGroupFilter !== 'all' && m.group !== currentGroupFilter) return false;
-    if (currentDayFilter !== null) {
-      var day = parseInt(m.date.split(' ')[1], 10);
-      if (day !== currentDayFilter) return false;
+    if (currentDayFilter.day !== null) {
+      var parts = m.date.split(' ');
+      if (parts[0] !== currentDayFilter.month || parseInt(parts[1], 10) !== currentDayFilter.day) return false;
+    }
+    if (showUnpredictedOnly) {
+      if (m.status !== 'abierto') return false;
+      if (m.homePred !== null || m.awayPred !== null || m.resultPred !== null) return false;
     }
     return true;
   });
+
+  // Update unpredicted counter (always from full open matches)
+  var unpredCount = MATCHES.filter(function(m) {
+    return m.status === 'abierto' && m.homePred === null && m.awayPred === null && m.resultPred === null;
+  }).length;
+  var ucEl = document.getElementById('unpredicted-count');
+  if (ucEl) ucEl.textContent = unpredCount;
+  var ubtn = document.getElementById('btn-unpredicted');
+  if (ubtn) {
+    ubtn.style.borderColor = showUnpredictedOnly ? 'var(--red)' : 'var(--gray-200)';
+    ubtn.style.color = showUnpredictedOnly ? 'var(--red)' : 'var(--gray-600)';
+    ubtn.style.background = showUnpredictedOnly ? 'rgba(227,6,19,.07)' : 'var(--white)';
+  }
 
   var byDate = {};
   var dateOrder = [];
@@ -2208,7 +2299,7 @@ function renderMatches(groupFilter) {
   $('#matches-grid').innerHTML = html;
 
   var lbl = currentGroupFilter === 'all' ? 'Fase de Grupos' : 'Grupo ' + currentGroupFilter;
-  if (currentDayFilter) lbl += ' &bull; ' + DATE_LABELS['Jun ' + currentDayFilter];
+  if (currentDayFilter.day) lbl += ' &bull; ' + (DATE_LABELS[currentDayFilter.month + ' ' + currentDayFilter.day] || currentDayFilter.month + ' ' + currentDayFilter.day);
   $('#matches-count').textContent = list.length + ' partidos — ';
   $('#matches-count').innerHTML = list.length + ' partidos &mdash; ' + lbl;
 }
@@ -2258,6 +2349,24 @@ function saveMatch(id) {
   toast('Marcador guardado: ' + m.homePred + ' - ' + m.awayPred + ' (+10 pts si aciertas!)');
   api.post('/api/predictions', { userId: state.user.id, matchId: id, homePred: m.homePred, awayPred: m.awayPred, resultPred: m.resultPred })
     .then(function(r) { if (!r.ok) toast('Error al guardar: ' + (r.data.error || 'intenta de nuevo')); });
+}
+
+function toggleUnpredicted() {
+  showUnpredictedOnly = !showUnpredictedOnly;
+  renderMatches(currentGroupFilter);
+}
+
+function shareWhatsApp() {
+  var lines = ['🏆 *Ranking Mega Mundial 2026* 🏆', ''];
+  var medals = ['🥇','🥈','🥉'];
+  leaderboard.slice(0, 10).forEach(function(u, i) {
+    var medal = medals[i] || (i + 1) + '.';
+    lines.push(medal + ' ' + u.name + ' — ' + u.pts + ' pts');
+  });
+  lines.push('');
+  lines.push('¡Predice tus partidos en Mega Vital! ⚽');
+  var text = encodeURIComponent(lines.join('\n'));
+  window.open('https://wa.me/?text=' + text, '_blank');
 }
 
 /* group filter buttons */
@@ -2440,7 +2549,8 @@ $all('#admin-group-filter .group-btn').forEach(function(b) {
 ============================================= */
 function renderChart() {
   var top5 = leaderboard.slice(0, 5);
-  var max = top5[0].pts;
+  if (!top5.length) { $('#chart-rows').innerHTML = '<p style="color:var(--gray-500);font-size:.85rem">Aún no hay puntos.</p>'; return; }
+  var max = Math.max(top5[0].pts, 1); // avoid division by zero
   var html = '';
   top5.forEach(function(m) {
     html += '<div class="chart-row">' +
@@ -2642,7 +2752,8 @@ function renderAdminPredictions() {
           else { pts = 0; ptsClass = 'pred-pts-0'; ptsLabel = '0 pts'; }
         }
         return '<tr><td>' + p.nombre + '</td><td>' + predStr + '</td>' +
-          '<td><span class="pred-pts-badge ' + ptsClass + '">' + ptsLabel + '</span></td></tr>';
+          '<td><span class="pred-pts-badge ' + ptsClass + '">' + ptsLabel + '</span></td>' +
+          '<td><button class="btn-sm btn-delete" onclick="adminDeletePred(' + p.user_id + ',' + id + ')" title="Borrar predicción">×</button></td></tr>';
       }).join('');
 
       var realStr = finished ? (' &bull; Real: <strong>' + m.homeReal + '-' + m.awayReal + '</strong>') : '';
@@ -2651,7 +2762,7 @@ function renderAdminPredictions() {
           '<span class="pred-match-title">Partido ' + id + ': ' + m.home + ' vs ' + m.away + '</span>' +
           '<span class="pred-match-meta">' + (m.date || '') + realStr + '</span>' +
         '</div>' +
-        '<table class="pred-table"><thead><tr><th>Usuario</th><th>Predicción</th><th>Puntos</th></tr></thead>' +
+        '<table class="pred-table"><thead><tr><th>Usuario</th><th>Predicción</th><th>Puntos</th><th></th></tr></thead>' +
         '<tbody>' + (rows || '<tr><td colspan="3" style="color:var(--gray-400);text-align:center">Sin predicciones</td></tr>') + '</tbody>' +
         '</table></div>';
     }).join('');
@@ -2662,6 +2773,14 @@ document.getElementById('pred-match-search').addEventListener('input', function(
   predSearchFilter = this.value;
   renderAdminPredictions();
 });
+
+function adminDeletePred(userId, matchId) {
+  if (!window.confirm('¿Borrar esta predicción?')) return;
+  api.del('/api/admin/predictions?userId=' + userId + '&matchId=' + matchId).then(function(res) {
+    if (res.ok) { toast('Predicción eliminada'); renderAdminPredictions(); }
+    else toast(res.data.error || 'Error al eliminar');
+  });
+}
 
 /* =============================================
    ADMIN: ELIMINATORIAS
@@ -2769,14 +2888,16 @@ setInterval(function() {
 ============================================= */
 (function restoreSession() {
   var raw = localStorage.getItem('mv_session');
-  if (!raw) { showView('view-login'); return; }
+  if (!raw) { hideLoader(); showView('view-login'); return; }
   var saved;
-  try { saved = JSON.parse(raw); } catch(e) { localStorage.removeItem('mv_session'); showView('view-login'); return; }
-  if (!saved || !saved.nombre) { localStorage.removeItem('mv_session'); showView('view-login'); return; }
+  try { saved = JSON.parse(raw); } catch(e) { localStorage.removeItem('mv_session'); hideLoader(); showView('view-login'); return; }
+  if (!saved || !saved.nombre) { localStorage.removeItem('mv_session'); hideLoader(); showView('view-login'); return; }
 
+  showLoader('Restaurando sesión...');
   // Silently verify the user still exists and is active
   api.post('/api/auth/login', { nombre: saved.nombre }).then(function(res) {
     if (!res.ok) {
+      hideLoader();
       localStorage.removeItem('mv_session');
       showView('view-login');
       return;
@@ -2790,13 +2911,15 @@ setInterval(function() {
     $('#user-name').textContent = first;
     $('#user-pts').textContent = '0 pts';
     $('#nav-avatar').textContent = ini;
+    showLoader('Restaurando sesión...');
     loadAppData(user.id).then(function() {
       updateUserPts();
+      hideLoader();
       showView('app-shell');
       switchTab('partidos');
-    }).catch(function() { showView('app-shell'); switchTab('partidos'); });
+    }).catch(function() { hideLoader(); showView('app-shell'); switchTab('partidos'); });
   }).catch(function() {
-    // Network error — show login so user can retry
+    hideLoader();
     localStorage.removeItem('mv_session');
     showView('view-login');
   });

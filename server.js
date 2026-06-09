@@ -460,7 +460,7 @@ app.get('/api/admin/predictions', async (req, res) => {
     let query, params;
     if (matchId) {
       query = `
-        SELECT u.nombre, p.home_pred, p.away_pred, p.result_pred,
+        SELECT u.id as user_id, u.nombre, p.home_pred, p.away_pred, p.result_pred,
                m.home_real, m.away_real, m.home, m.away, m.status
         FROM predictions p
         JOIN users u ON u.id = p.user_id
@@ -470,7 +470,7 @@ app.get('/api/admin/predictions', async (req, res) => {
       params = [matchId];
     } else {
       query = `
-        SELECT u.nombre, m.id as match_id, m.home, m.away, m.match_date,
+        SELECT u.id as user_id, u.nombre, m.id as match_id, m.home, m.away, m.match_date,
                p.home_pred, p.away_pred, p.result_pred,
                m.home_real, m.away_real, m.status
         FROM predictions p
@@ -481,6 +481,15 @@ app.get('/api/admin/predictions', async (req, res) => {
     }
     const { rows } = await pool.query(query, params);
     res.json(rows);
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+app.delete('/api/admin/predictions', async (req, res) => {
+  const { userId, matchId } = req.query;
+  if (!userId || !matchId) return res.status(400).json({ error: 'userId y matchId requeridos' });
+  try {
+    await pool.query('DELETE FROM predictions WHERE user_id=$1 AND match_id=$2', [userId, matchId]);
+    res.json({ ok: true });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
