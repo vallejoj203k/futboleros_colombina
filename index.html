@@ -1116,37 +1116,37 @@
         <div class="my-rank-card">
           <div class="my-rank-left">
             <span class="my-rank-label">Tu posición actual</span>
-            <span class="my-rank-pos">#7</span>
+            <span class="my-rank-pos" id="my-rank-pos">—</span>
           </div>
           <div class="my-rank-right">
-            <div class="my-rank-stat"><span>0</span><small>pts</small></div>
-            <div class="my-rank-stat"><span>0</span><small>aciertos</small></div>
+            <div class="my-rank-stat"><span id="my-rank-pts">0</span><small>pts</small></div>
+            <div class="my-rank-stat"><span id="my-rank-aciertos">0</span><small>aciertos</small></div>
           </div>
         </div>
 
         <div class="podium" aria-label="Podio top 3">
           <!-- 2nd -->
-          <div class="podium-item">
-            <div class="podium-avatar rank-2">CJ</div>
-            <div class="podium-name">Carlos<br>Jiménez</div>
-            <div class="podium-pts">0 pts</div>
+          <div class="podium-item" id="podium-2">
+            <div class="podium-avatar rank-2" id="podium-2-ini">—</div>
+            <div class="podium-name" id="podium-2-name">—</div>
+            <div class="podium-pts" id="podium-2-pts">0 pts</div>
             <div class="podium-block h-2">2</div>
           </div>
           <!-- 1st -->
-          <div class="podium-item">
+          <div class="podium-item" id="podium-1">
             <svg class="podium-crown" width="34" height="34" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M2 7l4 4 6-7 6 7 4-4v11H2V7z"/>
             </svg>
-            <div class="podium-avatar rank-1">MR</div>
-            <div class="podium-name">María<br>Rodríguez</div>
-            <div class="podium-pts">0 pts</div>
+            <div class="podium-avatar rank-1" id="podium-1-ini">—</div>
+            <div class="podium-name" id="podium-1-name">—</div>
+            <div class="podium-pts" id="podium-1-pts">0 pts</div>
             <div class="podium-block h-1">1</div>
           </div>
           <!-- 3rd -->
-          <div class="podium-item">
-            <div class="podium-avatar rank-3">LG</div>
-            <div class="podium-name">Laura<br>García</div>
-            <div class="podium-pts">0 pts</div>
+          <div class="podium-item" id="podium-3">
+            <div class="podium-avatar rank-3" id="podium-3-ini">—</div>
+            <div class="podium-name" id="podium-3-name">—</div>
+            <div class="podium-pts" id="podium-3-pts">0 pts</div>
             <div class="podium-block h-3">3</div>
           </div>
         </div>
@@ -1562,37 +1562,12 @@ var state = {
   loggedIn: false,
   isAdmin: false,
   user: { id: null, name: '', fullName: '', initials: '', pts: 0 },
-  members: [
-    { id: 1, nombre: 'Ana López',        cedula: '1020304050', estado: 'Activo' },
-    { id: 2, nombre: 'Carlos Jiménez',   cedula: '1030405060', estado: 'Activo' },
-    { id: 3, nombre: 'María Rodríguez',  cedula: '1040506070', estado: 'Activo' },
-    { id: 4, nombre: 'Laura García',     cedula: '1050607080', estado: 'Activo' },
-    { id: 5, nombre: 'Andrés Martínez',  cedula: '1060708090', estado: 'Activo' },
-    { id: 6, nombre: 'Sofía Hernández',  cedula: '1070809010', estado: 'Inactivo' },
-    { id: 7, nombre: 'Felipe Torres',    cedula: '1080910020', estado: 'Activo' },
-    { id: 8, nombre: 'Diego Morales',    cedula: '1090102030', estado: 'Activo' }
-  ],
-  adminMatches: [
-    { id: 1, teams: 'Colombia vs Argentina', fecha: 'Jun 15, 2026', estado: 'Abierto' },
-    { id: 2, teams: 'Colombia vs Brasil',    fecha: 'Jun 20, 2026', estado: 'Abierto' },
-    { id: 3, teams: 'Colombia vs Ecuador',   fecha: 'Jun 25, 2026', estado: 'Cerrado' },
-    { id: 4, teams: 'Colombia vs Uruguay',   fecha: 'Jun 30, 2026', estado: 'Finalizado' }
-  ],
-  saves: { 1: null, 2: null }
+  members: [],
+  adminMatches: [],
+  saves: {}
 };
 
-var leaderboard = [
-  { rank: 1,  name: 'María Rodríguez',  ini: 'MR', aciertos: 0, pts: 0 },
-  { rank: 2,  name: 'Carlos Jiménez',   ini: 'CJ', aciertos: 0, pts: 0 },
-  { rank: 3,  name: 'Laura García',     ini: 'LG', aciertos: 0, pts: 0 },
-  { rank: 4,  name: 'Andrés Martínez',  ini: 'AM', aciertos: 0, pts: 0 },
-  { rank: 5,  name: 'Sofía Hernández',  ini: 'SH', aciertos: 0, pts: 0 },
-  { rank: 6,  name: 'Felipe Torres',    ini: 'FT', aciertos: 0, pts: 0 },
-  { rank: 7,  name: 'Ana López',        ini: 'AL', aciertos: 0, pts: 0, you: true },
-  { rank: 8,  name: 'Diego Morales',    ini: 'DM', aciertos: 0, pts: 0 },
-  { rank: 9,  name: 'Valentina Cruz',   ini: 'VC', aciertos: 0, pts: 0 },
-  { rank: 10, name: 'Javier Peña',      ini: 'JP', aciertos: 0, pts: 0 }
-];
+var leaderboard = [];
 var MAX_PTS = 720;
 
 /* =============================================
@@ -1951,6 +1926,29 @@ $all('.tab-btn').forEach(function(b) {
    LEADERBOARD RENDER + BAR ANIMATION
 ============================================= */
 function renderLeaderboard() {
+  // Update podium top 3
+  [1, 2, 3].forEach(function(rank) {
+    var u = leaderboard[rank - 1];
+    var nameParts = u ? u.name.split(' ') : [];
+    var nameHtml = u ? (nameParts[0] + (nameParts[1] ? '<br>' + nameParts.slice(1).join(' ') : '')) : '—';
+    var el = function(id) { return document.getElementById(id); };
+    if (el('podium-' + rank + '-ini')) el('podium-' + rank + '-ini').textContent = u ? u.ini : '—';
+    if (el('podium-' + rank + '-name')) el('podium-' + rank + '-name').innerHTML = nameHtml;
+    if (el('podium-' + rank + '-pts')) el('podium-' + rank + '-pts').textContent = (u ? u.pts : 0) + ' pts';
+    var item = el('podium-' + rank);
+    if (item) item.style.display = u ? '' : 'none';
+  });
+
+  // Update my-rank card
+  var me = leaderboard.filter(function(u) { return u.you; })[0];
+  var posEl = document.getElementById('my-rank-pos');
+  var ptsEl = document.getElementById('my-rank-pts');
+  var acEl  = document.getElementById('my-rank-aciertos');
+  if (posEl) posEl.textContent = me ? '#' + me.rank : '—';
+  if (ptsEl) ptsEl.textContent = me ? me.pts : 0;
+  if (acEl)  acEl.textContent  = me ? me.aciertos : 0;
+
+  // Full list
   var html = '';
   leaderboard.forEach(function(m) {
     var pct = Math.round((m.pts / MAX_PTS) * 100);
