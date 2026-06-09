@@ -915,11 +915,93 @@
       .container { padding: 0 2rem; }
       .tab-btn { padding: 0.55rem 1.25rem; font-size: 0.88rem; }
     }
+    /* HAMBURGER MENU */
+    .hamburger-btn {
+      display: none; flex-direction: column; justify-content: center; gap: 5px;
+      width: 38px; height: 38px; padding: 6px; border-radius: 10px;
+      background: var(--gray-100); flex-shrink: 0; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .hamburger-btn:hover { background: var(--gray-200); }
+    .hamburger-btn span {
+      display: block; height: 2px; background: var(--text); border-radius: 2px;
+      transition: all 0.25s ease;
+    }
+    .hamburger-btn.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger-btn.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger-btn.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .nav-drawer-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+      z-index: 199; backdrop-filter: blur(2px);
+    }
+    .nav-drawer-overlay.open { display: block; }
+
+    .nav-drawer {
+      position: fixed; top: 0; right: 0; bottom: 0; width: 270px;
+      background: var(--white); z-index: 200; box-shadow: -4px 0 32px rgba(0,0,0,0.15);
+      display: flex; flex-direction: column;
+      transform: translateX(100%); transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+    }
+    .nav-drawer.open { transform: translateX(0); }
+
+    .drawer-header {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 1.25rem 1.25rem 1rem; border-bottom: 1px solid var(--gray-200);
+    }
+    .drawer-avatar {
+      width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, var(--red) 0%, var(--yellow) 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; font-weight: 800; color: #fff;
+    }
+    .drawer-user-name { font-size: 0.95rem; font-weight: 800; color: var(--text); }
+    .drawer-user-pts  { font-size: 0.75rem; font-weight: 600; color: var(--red); }
+
+    .drawer-nav { flex: 1; padding: 0.75rem 0; overflow-y: auto; }
+    .drawer-tab-btn {
+      display: flex; align-items: center; gap: 0.75rem;
+      width: 100%; padding: 0.85rem 1.25rem;
+      font-size: 0.95rem; font-weight: 600; color: var(--gray-600);
+      background: none; border: none; text-align: left; cursor: pointer;
+      transition: all 0.15s; border-left: 3px solid transparent;
+      font-family: var(--font);
+    }
+    .drawer-tab-btn:hover { background: var(--gray-100); color: var(--text); }
+    .drawer-tab-btn.active {
+      color: var(--red); background: rgba(227,6,19,0.06);
+      border-left-color: var(--red); font-weight: 700;
+    }
+    .drawer-tab-icon { font-size: 1.1rem; width: 22px; text-align: center; flex-shrink: 0; }
+    .drawer-badge {
+      margin-left: auto; background: var(--red); color: #fff;
+      font-size: 0.65rem; font-weight: 800; padding: 0.1rem 0.45rem;
+      border-radius: 999px; min-width: 18px; text-align: center;
+    }
+
+    .drawer-footer {
+      padding: 1rem 1.25rem; border-top: 1px solid var(--gray-200);
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    .drawer-footer-btn {
+      display: flex; align-items: center; gap: 0.6rem;
+      width: 100%; padding: 0.65rem 0.75rem; border-radius: 10px;
+      font-size: 0.88rem; font-weight: 600; background: none;
+      border: none; cursor: pointer; color: var(--gray-600); font-family: var(--font);
+      transition: background 0.15s;
+    }
+    .drawer-footer-btn:hover { background: var(--gray-100); }
+    .drawer-footer-btn.danger { color: var(--red); }
+    .drawer-footer-btn.danger:hover { background: rgba(227,6,19,0.06); }
+
     @media (max-width: 480px) {
       /* NAV */
       .top-nav { padding: 0 1rem; }
       .nav-brand-sub { display: none; }
       .nav-logout { display: none; }
+      .tab-bar { display: none; }
+      .hamburger-btn { display: flex; }
+      .nav-avatar { display: none; }
       .tab-btn { padding: 0.55rem 0.75rem; font-size: 0.78rem; }
       .main-content { padding-top: calc(var(--nav-h) + 1rem); }
 
@@ -1097,8 +1179,49 @@
       <button class="nav-logout" id="btn-rules" style="background:var(--gray-100);color:var(--text)">Reglas</button>
       <button class="nav-logout" id="member-logout">Salir</button>
       <div class="nav-avatar" id="nav-avatar" role="img" aria-label="Usuario" title="Cerrar sesión">AL</div>
+      <button class="hamburger-btn" id="hamburger-btn" aria-label="Menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </nav>
+
+  <!-- MOBILE DRAWER -->
+  <div class="nav-drawer-overlay" id="drawer-overlay"></div>
+  <div class="nav-drawer" id="nav-drawer" role="dialog" aria-label="Menú de navegación">
+    <div class="drawer-header">
+      <div class="drawer-avatar" id="drawer-avatar">AL</div>
+      <div>
+        <div class="drawer-user-name" id="drawer-user-name">Usuario</div>
+        <div class="drawer-user-pts" id="drawer-user-pts">0 pts</div>
+      </div>
+    </div>
+    <nav class="drawer-nav">
+      <button class="drawer-tab-btn active" data-tab="partidos">
+        <span class="drawer-tab-icon">⚽</span> Partidos
+        <span class="drawer-badge" id="drawer-badge-partidos" style="display:none"></span>
+      </button>
+      <button class="drawer-tab-btn" data-tab="calendario">
+        <span class="drawer-tab-icon">📅</span> Calendario
+      </button>
+      <button class="drawer-tab-btn" data-tab="torneo">
+        <span class="drawer-tab-icon">🏆</span> Torneo
+      </button>
+      <button class="drawer-tab-btn" data-tab="clasificacion">
+        <span class="drawer-tab-icon">📊</span> Clasificación
+      </button>
+      <button class="drawer-tab-btn" data-tab="historial">
+        <span class="drawer-tab-icon">📋</span> Mi Historial
+      </button>
+    </nav>
+    <div class="drawer-footer">
+      <button class="drawer-footer-btn" id="drawer-rules-btn">
+        <span>📜</span> Reglas del juego
+      </button>
+      <button class="drawer-footer-btn danger" id="drawer-logout-btn">
+        <span>🚪</span> Cerrar sesión
+      </button>
+    </div>
+  </div>
 
   <main class="main-content">
     <div class="container">
@@ -1957,6 +2080,7 @@ function switchTab(tab) {
   $all('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
   var panel = document.getElementById('tab-' + tab);
   if (panel) panel.classList.add('active');
+  syncDrawer(tab);
 
   if (tab === 'partidos') {
     renderMatches(currentGroupFilter);
@@ -1977,6 +2101,52 @@ function switchTab(tab) {
 $all('.tab-btn').forEach(function(b) {
   b.addEventListener('click', function() { switchTab(b.getAttribute('data-tab')); });
 });
+
+/* =============================================
+   HAMBURGER / DRAWER
+============================================= */
+function openDrawer() {
+  document.getElementById('nav-drawer').classList.add('open');
+  document.getElementById('drawer-overlay').classList.add('open');
+  document.getElementById('hamburger-btn').classList.add('open');
+  document.getElementById('hamburger-btn').setAttribute('aria-expanded', 'true');
+  document.body.style.overflow = 'hidden';
+}
+function closeDrawer() {
+  document.getElementById('nav-drawer').classList.remove('open');
+  document.getElementById('drawer-overlay').classList.remove('open');
+  document.getElementById('hamburger-btn').classList.remove('open');
+  document.getElementById('hamburger-btn').setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+}
+document.getElementById('hamburger-btn').addEventListener('click', function() {
+  document.getElementById('nav-drawer').classList.contains('open') ? closeDrawer() : openDrawer();
+});
+document.getElementById('drawer-overlay').addEventListener('click', closeDrawer);
+document.getElementById('drawer-logout-btn').addEventListener('click', function() { closeDrawer(); logout(); });
+document.getElementById('drawer-rules-btn').addEventListener('click', function() {
+  closeDrawer();
+  document.getElementById('modal-rules').style.display = 'block';
+});
+$all('.drawer-tab-btn').forEach(function(b) {
+  b.addEventListener('click', function() {
+    switchTab(b.getAttribute('data-tab'));
+    closeDrawer();
+  });
+});
+
+function syncDrawer(tab) {
+  $all('.drawer-tab-btn').forEach(function(b) {
+    b.classList.toggle('active', b.getAttribute('data-tab') === tab);
+  });
+  // Sync user info
+  var nameEl = document.getElementById('drawer-user-name');
+  var ptsEl  = document.getElementById('drawer-user-pts');
+  var avaEl  = document.getElementById('drawer-avatar');
+  if (nameEl) nameEl.textContent = state.user.fullName || state.user.name;
+  if (ptsEl)  ptsEl.textContent  = (state.user.pts || 0) + ' pts';
+  if (avaEl)  avaEl.textContent  = state.user.initials || '?';
+}
 
 /* =============================================
    LEADERBOARD RENDER + BAR ANIMATION
@@ -2357,15 +2527,16 @@ function renderMatches(groupFilter) {
     ubtn.style.color = showUnpredictedOnly ? 'var(--red)' : 'var(--gray-600)';
     ubtn.style.background = showUnpredictedOnly ? 'rgba(227,6,19,.07)' : 'var(--white)';
   }
-  // Tab badge on "Partidos"
+  // Tab badge on "Partidos" (nav + drawer)
   var badge = document.getElementById('tab-badge-partidos');
+  var drawerBadge = document.getElementById('drawer-badge-partidos');
   if (badge) {
-    if (unpredCount > 0) {
-      badge.textContent = unpredCount;
-      badge.classList.remove('hidden');
-    } else {
-      badge.classList.add('hidden');
-    }
+    if (unpredCount > 0) { badge.textContent = unpredCount; badge.classList.remove('hidden'); }
+    else { badge.classList.add('hidden'); }
+  }
+  if (drawerBadge) {
+    if (unpredCount > 0) { drawerBadge.textContent = unpredCount; drawerBadge.style.display = ''; }
+    else { drawerBadge.style.display = 'none'; }
   }
 
   var byDate = {};
@@ -2994,6 +3165,8 @@ function updateUserPts() {
   state.user.pts = pts;
   var el = $('#user-pts');
   if (el) el.textContent = pts + ' pts';
+  var dPts = document.getElementById('drawer-user-pts');
+  if (dPts) dPts.textContent = pts + ' pts';
   // Animate pts gain (only during auto-refresh, not first load)
   if (prev > 0 && pts > prev && el) {
     var gain = pts - prev;
