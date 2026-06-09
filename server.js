@@ -111,7 +111,7 @@ async function initDB() {
       CREATE TABLE IF NOT EXISTS users (
         id      SERIAL PRIMARY KEY,
         nombre  VARCHAR(100) NOT NULL,
-        cedula  VARCHAR(20)  UNIQUE NOT NULL,
+        cedula  VARCHAR(20)  UNIQUE,
         estado  VARCHAR(20)  NOT NULL DEFAULT 'Activo',
         created_at TIMESTAMPTZ DEFAULT NOW()
       );
@@ -140,6 +140,22 @@ async function initDB() {
         updated_at  TIMESTAMPTZ DEFAULT NOW(),
         UNIQUE(user_id, match_id)
       );
+
+      CREATE TABLE IF NOT EXISTS knockout_matches (
+        id          SERIAL PRIMARY KEY,
+        round       VARCHAR(5)  NOT NULL,
+        match_num   INTEGER     NOT NULL,
+        home        VARCHAR(60),
+        away        VARCHAR(60),
+        match_date  VARCHAR(20),
+        match_time  VARCHAR(20),
+        home_score  INTEGER,
+        away_score  INTEGER,
+        home_pens   INTEGER,
+        away_pens   INTEGER,
+        status      VARCHAR(20) NOT NULL DEFAULT 'pendiente',
+        UNIQUE(round, match_num)
+      );
     `);
 
     const { rows } = await client.query('SELECT COUNT(*) FROM matches');
@@ -152,6 +168,21 @@ async function initDB() {
         );
       }
       console.log('Seeded 72 matches');
+    }
+
+    // Seed knockout slots
+    const KNOCKOUT_SLOTS = [
+      ...Array.from({length:16}, (_,i) => ['R32', i+1]),
+      ...Array.from({length:8},  (_,i) => ['R16', i+1]),
+      ...Array.from({length:4},  (_,i) => ['QF',  i+1]),
+      ...Array.from({length:2},  (_,i) => ['SF',  i+1]),
+      ['3P', 1], ['F', 1]
+    ];
+    for (const [round, num] of KNOCKOUT_SLOTS) {
+      await client.query(
+        `INSERT INTO knockout_matches (round, match_num) VALUES ($1, $2) ON CONFLICT DO NOTHING`,
+        [round, num]
+      );
     }
   } finally {
     client.release();
@@ -356,6 +387,46 @@ app.put('/api/admin/matches/:id', async (req, res) => {
   vals.push(req.params.id);
   try {
     await pool.query(`UPDATE matches SET ${fields.join(',')} WHERE id=$${idx}`, vals);
+    res.json({ ok: true });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+/* ─────────────────────────────────────────────
+   KNOCKOUT BRACKET
+───────────────────────────────────────────── */
+app.get('/api/knockout', async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      `SELECT id, round, match_num as "matchNum", home, away,
+              match_date as date, match_time as time,
+              home_score as "homeScore", away_score as "awayScore",
+              home_pens as "homePens", away_pens as "awayPens", status
+       FROM knockout_matches ORDER BY
+         CASE round WHEN 'R32' THEN 1 WHEN 'R16' THEN 2 WHEN 'QF' THEN 3
+                    WHEN 'SF' THEN 4 WHEN '3P' THEN 5 WHEN 'F' THEN 6 END,
+         match_num`
+    );
+    res.json(rows);
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+app.put('/api/admin/knockout/:id', async (req, res) => {
+  const { home, away, date, time, homeScore, awayScore, homePens, awayPens, status } = req.body;
+  const fields = [], vals = [];
+  let i = 1;
+  if (home      !== undefined) { fields.push(`home=$${i++}`);       vals.push(home || null); }
+  if (away      !== undefined) { fields.push(`away=$${i++}`);       vals.push(away || null); }
+  if (date      !== undefined) { fields.push(`match_date=$${i++}`); vals.push(date || null); }
+  if (time      !== undefined) { fields.push(`match_time=$${i++}`); vals.push(time || null); }
+  if (homeScore !== undefined) { fields.push(`home_score=$${i++}`); vals.push(homeScore !== '' ? homeScore : null); }
+  if (awayScore !== undefined) { fields.push(`away_score=$${i++}`); vals.push(awayScore !== '' ? awayScore : null); }
+  if (homePens  !== undefined) { fields.push(`home_pens=$${i++}`);  vals.push(homePens  !== '' ? homePens  : null); }
+  if (awayPens  !== undefined) { fields.push(`away_pens=$${i++}`);  vals.push(awayPens  !== '' ? awayPens  : null); }
+  if (status    !== undefined) { fields.push(`status=$${i++}`);     vals.push(status); }
+  if (!fields.length) return res.status(400).json({ error: 'Nada que actualizar' });
+  vals.push(req.params.id);
+  try {
+    await pool.query(`UPDATE knockout_matches SET ${fields.join(',')} WHERE id=$${i}`, vals);
     res.json({ ok: true });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
