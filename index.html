@@ -934,23 +934,6 @@
           <div class="hero-accent" aria-hidden="true"></div>
         </div>
 
-        <!-- MONTHLY CALENDAR WIDGET -->
-        <div class="month-calendar">
-          <div class="month-cal-header">
-            <div>
-              <div class="month-cal-title">Junio 2026</div>
-              <div class="month-cal-subtitle">Toca un día para filtrar partidos</div>
-            </div>
-            <button class="month-cal-clear" id="cal-clear-btn" onclick="clearDayFilter()">Limpiar filtro</button>
-          </div>
-          <div class="month-cal-grid" id="month-cal-grid"></div>
-          <div class="cal-legend">
-            <div class="cal-legend-item"><div class="cal-legend-swatch" style="background:rgba(227,6,19,0.1)"></div> Con partidos</div>
-            <div class="cal-legend-item"><div class="cal-legend-swatch" style="background:var(--red)"></div> Día activo</div>
-            <div class="cal-legend-item"><div class="cal-legend-swatch" style="background:var(--white); box-shadow: inset 0 0 0 2px var(--yellow)"></div> Hoy (Jun 9)</div>
-          </div>
-        </div>
-
         <div class="group-filter" id="group-filter">
           <button class="group-btn active" data-group="all">Todos</button>
           <button class="group-btn" data-group="A">Grupo A</button>
@@ -1029,9 +1012,26 @@
       <!-- TAB: CALENDARIO -->
       <div class="tab-panel" id="tab-calendario" role="tabpanel">
         <header class="leaderboard-header">
-          <h1 class="section-title">📅 Calendario Mundial 2026</h1>
-          <p class="section-subtitle">72 partidos · Fase de grupos · 11–27 jun · Horarios en hora Colombia (COT)</p>
+          <h1 class="section-title">Calendario Mundial 2026</h1>
+          <p class="section-subtitle">72 partidos &middot; Fase de grupos &middot; 11&ndash;27 jun &middot; Horarios en hora Colombia (COT)</p>
         </header>
+
+        <!-- MONTHLY CALENDAR WIDGET -->
+        <div class="month-calendar">
+          <div class="month-cal-header">
+            <div>
+              <div class="month-cal-title">Junio 2026</div>
+              <div class="month-cal-subtitle">Toca un día para ver sus partidos</div>
+            </div>
+            <button class="month-cal-clear" id="cal-clear-btn" onclick="clearDayFilter()">Limpiar filtro</button>
+          </div>
+          <div class="month-cal-grid" id="month-cal-grid"></div>
+          <div class="cal-legend">
+            <div class="cal-legend-item"><div class="cal-legend-swatch" style="background:rgba(227,6,19,0.1)"></div> Con partidos</div>
+            <div class="cal-legend-item"><div class="cal-legend-swatch" style="background:var(--red)"></div> Día seleccionado</div>
+            <div class="cal-legend-item"><div class="cal-legend-swatch" style="background:var(--white); box-shadow: inset 0 0 0 2px var(--yellow)"></div> Hoy (Jun 9)</div>
+          </div>
+        </div>
 
         <!-- Jornada 1 -->
         <div class="cal-jornada">
@@ -1631,6 +1631,9 @@ function switchTab(tab) {
   if (tab === 'partidos') {
     renderMatches(currentGroupFilter);
   }
+  if (tab === 'calendario') {
+    renderMonthCalendar();
+  }
   if (tab === 'clasificacion') {
     renderLeaderboard();
     setTimeout(animateBars, 60);
@@ -1819,12 +1822,14 @@ function renderMonthCalendar() {
 
 function filterByDay(day) {
   currentDayFilter = (currentDayFilter === day) ? null : day;
-  renderMatches(currentGroupFilter);
+  renderMonthCalendar();
+  // Switch to Partidos tab with day filter applied
+  switchTab('partidos');
 }
 
 function clearDayFilter() {
   currentDayFilter = null;
-  renderMatches(currentGroupFilter);
+  renderMonthCalendar();
 }
 
 function renderMatches(groupFilter) {
@@ -1869,8 +1874,6 @@ function renderMatches(groupFilter) {
   if (currentDayFilter) lbl += ' &bull; ' + DATE_LABELS['Jun ' + currentDayFilter];
   $('#matches-count').textContent = list.length + ' partidos — ';
   $('#matches-count').innerHTML = list.length + ' partidos &mdash; ' + lbl;
-
-  renderMonthCalendar();
 }
 
 function saveMatch(id) {
