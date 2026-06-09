@@ -554,6 +554,83 @@
     .hist-score-label { font-size: 0.68rem; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.2rem; }
     .hist-score-val { font-size: 1.1rem; font-weight: 800; color: var(--text); }
 
+    /* =============================================
+       CALENDARIO
+    ============================================= */
+    .cal-jornada { margin-bottom: 2rem; }
+    .cal-jornada-title {
+      font-size: 0.75rem; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.14em; color: var(--white);
+      background: linear-gradient(135deg, var(--red) 0%, #a8000e 100%);
+      display: inline-block; padding: 0.35rem 1rem; border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+    .cal-day-block {
+      background: var(--white); border-radius: var(--radius-md);
+      border: 1px solid var(--gray-200); overflow: hidden;
+      margin-bottom: 0.85rem; box-shadow: var(--shadow-sm);
+      animation: fadeInUp 0.4s ease both;
+    }
+    .cal-day-header {
+      background: var(--gray-100); border-bottom: 1px solid var(--gray-200);
+      padding: 0.55rem 1.1rem; font-size: 0.78rem; font-weight: 800;
+      color: var(--text); text-transform: uppercase; letter-spacing: 0.07em;
+    }
+    .cal-match-row {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.65rem 1.1rem; border-bottom: 1px solid var(--gray-100);
+      transition: background 0.15s; flex-wrap: wrap;
+    }
+    .cal-match-row:last-child { border-bottom: none; }
+    .cal-match-row:hover { background: var(--gray-100); }
+    .cal-match-row.cal-colombia {
+      background: linear-gradient(90deg, rgba(252,209,22,0.1) 0%, rgba(0,48,135,0.06) 100%);
+      border-left: 3px solid var(--yellow);
+    }
+    .cal-match-row.cal-highlight { opacity: 0.7; }
+    .cal-time {
+      font-size: 0.82rem; font-weight: 800; color: var(--red);
+      min-width: 70px; flex-shrink: 0;
+    }
+    .cal-group {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 22px; height: 22px; border-radius: 50%;
+      background: var(--red); color: #fff;
+      font-size: 0.65rem; font-weight: 800; flex-shrink: 0;
+    }
+    .cal-teams {
+      display: flex; align-items: center; gap: 0.45rem;
+      flex: 1; min-width: 0; flex-wrap: nowrap;
+    }
+    .cal-flag {
+      width: 36px; height: 25px; border-radius: 4px;
+      font-size: 0.54rem; font-weight: 800; letter-spacing: 0.03em;
+      color: #fff; display: inline-flex; align-items: center; justify-content: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.15); flex-shrink: 0;
+    }
+    .cal-team-name {
+      font-size: 0.82rem; font-weight: 700; color: var(--text);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 118px;
+    }
+    .cal-vs {
+      font-size: 0.65rem; font-weight: 800; color: var(--gray-400);
+      text-transform: uppercase; flex-shrink: 0; padding: 0 0.1rem;
+    }
+    .cal-venue {
+      font-size: 0.7rem; font-weight: 500; color: var(--gray-400);
+      margin-left: auto; white-space: nowrap; flex-shrink: 0;
+    }
+    .cal-note {
+      font-size: 0.75rem; color: var(--gray-400); text-align: center;
+      padding: 0.75rem 1rem; background: var(--gray-100); border-radius: var(--radius-sm);
+      margin-bottom: 1.5rem; font-weight: 500;
+    }
+    @media (max-width: 600px) {
+      .cal-venue { display: none; }
+      .cal-team-name { max-width: 72px; font-size: 0.74rem; }
+      .cal-time { min-width: 58px; font-size: 0.74rem; }
+    }
+
     .app-footer { text-align: center; font-size: 0.72rem; color: var(--gray-400); padding-top: 2rem; border-top: 1px solid var(--gray-200); margin-top: 2rem; }
 
     /* =============================================
@@ -775,6 +852,7 @@
 
     <div class="tab-bar" role="tablist">
       <button class="tab-btn active" role="tab" data-tab="partidos">Partidos</button>
+      <button class="tab-btn" role="tab" data-tab="calendario">Calendario</button>
       <button class="tab-btn" role="tab" data-tab="clasificacion">Clasificación</button>
       <button class="tab-btn" role="tab" data-tab="historial">Mi Historial</button>
     </div>
@@ -881,6 +959,175 @@
         </div>
 
         <div class="lb-list" role="list" id="lb-list"></div>
+      </div>
+
+      <!-- TAB: CALENDARIO -->
+      <div class="tab-panel" id="tab-calendario" role="tabpanel">
+        <header class="leaderboard-header">
+          <h1 class="section-title">📅 Calendario Mundial 2026</h1>
+          <p class="section-subtitle">72 partidos · Fase de grupos · 11–27 jun · Horarios en hora Colombia (COT)</p>
+        </header>
+
+        <!-- Jornada 1 -->
+        <div class="cal-jornada">
+          <div class="cal-jornada-title">Jornada 1</div>
+
+          <div class="cal-day-block">
+            <div class="cal-day-header">Jueves 11 de junio</div>
+            <div class="cal-match-row"><span class="cal-time">3:00 PM</span><span class="cal-group">A</span><span class="cal-teams"><span class="cal-flag flag-MEX">MEX</span><span class="cal-team-name">México</span><span class="cal-vs">vs</span><span class="cal-team-name">Sudáfrica</span><span class="cal-flag flag-RSA">RSA</span></span><span class="cal-venue">Azteca, Cdmx</span></div>
+            <div class="cal-match-row"><span class="cal-time">10:00 PM</span><span class="cal-group">A</span><span class="cal-teams"><span class="cal-flag flag-KOR">KOR</span><span class="cal-team-name">Corea del Sur</span><span class="cal-vs">vs</span><span class="cal-team-name">Chequia</span><span class="cal-flag flag-CZE">CZE</span></span><span class="cal-venue">Akron, Guadalajara</span></div>
+          </div>
+
+          <div class="cal-day-block">
+            <div class="cal-day-header">Viernes 12 de junio</div>
+            <div class="cal-match-row"><span class="cal-time">2:00 PM</span><span class="cal-group">B</span><span class="cal-teams"><span class="cal-flag flag-CAN">CAN</span><span class="cal-team-name">Canadá</span><span class="cal-vs">vs</span><span class="cal-team-name">Bosnia</span><span class="cal-flag flag-BIH">BOS</span></span><span class="cal-venue">BMO Field, Toronto</span></div>
+            <div class="cal-match-row"><span class="cal-time">8:00 PM</span><span class="cal-group">D</span><span class="cal-teams"><span class="cal-flag flag-USA">USA</span><span class="cal-team-name">USA</span><span class="cal-vs">vs</span><span class="cal-team-name">Paraguay</span><span class="cal-flag flag-PAR">PAR</span></span><span class="cal-venue">SoFi, Los Ángeles</span></div>
+          </div>
+
+          <div class="cal-day-block">
+            <div class="cal-day-header">Sábado 13 de junio</div>
+            <div class="cal-match-row"><span class="cal-time">2:00 PM</span><span class="cal-group">B</span><span class="cal-teams"><span class="cal-flag flag-QAT">QAT</span><span class="cal-team-name">Qatar</span><span class="cal-vs">vs</span><span class="cal-team-name">Suiza</span><span class="cal-flag flag-SUI">SUI</span></span><span class="cal-venue">Levi's, Santa Clara</span></div>
+            <div class="cal-match-row"><span class="cal-time">5:00 PM</span><span class="cal-group">C</span><span class="cal-teams"><span class="cal-flag flag-BRA">BRA</span><span class="cal-team-name">Brasil</span><span class="cal-vs">vs</span><span class="cal-team-name">Marruecos</span><span class="cal-flag flag-MAR">MAR</span></span><span class="cal-venue">MetLife, NJ</span></div>
+            <div class="cal-match-row"><span class="cal-time">8:00 PM</span><span class="cal-group">C</span><span class="cal-teams"><span class="cal-flag flag-HAI">HAI</span><span class="cal-team-name">Haití</span><span class="cal-vs">vs</span><span class="cal-team-name">Escocia</span><span class="cal-flag flag-SCO">SCO</span></span><span class="cal-venue">Gillette, Boston</span></div>
+          </div>
+
+          <div class="cal-day-block">
+            <div class="cal-day-header">Domingo 14 de junio</div>
+            <div class="cal-match-row cal-highlight"><span class="cal-time">11:00 PM</span><span class="cal-group">D</span><span class="cal-teams"><span class="cal-flag flag-AUS">AUS</span><span class="cal-team-name">Australia</span><span class="cal-vs">vs</span><span class="cal-team-name">Turquía</span><span class="cal-flag flag-TUR">TUR</span></span><span class="cal-venue">BC Place, Vancouver</span></div>
+            <div class="cal-match-row"><span class="cal-time">12:00 PM</span><span class="cal-group">E</span><span class="cal-teams"><span class="cal-flag flag-GER">GER</span><span class="cal-team-name">Alemania</span><span class="cal-vs">vs</span><span class="cal-team-name">Curazao</span><span class="cal-flag flag-CUW">CUW</span></span><span class="cal-venue">NRG, Houston</span></div>
+            <div class="cal-match-row"><span class="cal-time">3:00 PM</span><span class="cal-group">F</span><span class="cal-teams"><span class="cal-flag flag-NED">NED</span><span class="cal-team-name">Países Bajos</span><span class="cal-vs">vs</span><span class="cal-team-name">Japón</span><span class="cal-flag flag-JPN">JPN</span></span><span class="cal-venue">AT&amp;T, Dallas</span></div>
+            <div class="cal-match-row"><span class="cal-time">6:00 PM</span><span class="cal-group">E</span><span class="cal-teams"><span class="cal-flag flag-CIV">CIV</span><span class="cal-team-name">Costa de Marfil</span><span class="cal-vs">vs</span><span class="cal-team-name">Ecuador</span><span class="cal-flag flag-ECU">ECU</span></span><span class="cal-venue">Lincoln, Filadelfia</span></div>
+            <div class="cal-match-row"><span class="cal-time">9:00 PM</span><span class="cal-group">F</span><span class="cal-teams"><span class="cal-flag flag-SWE">SWE</span><span class="cal-team-name">Suecia</span><span class="cal-vs">vs</span><span class="cal-team-name">Túnez</span><span class="cal-flag flag-TUN">TUN</span></span><span class="cal-venue">BBVA, Monterrey</span></div>
+          </div>
+
+          <div class="cal-day-block">
+            <div class="cal-day-header">Lunes 15 de junio</div>
+            <div class="cal-match-row"><span class="cal-time">11:00 AM</span><span class="cal-group">H</span><span class="cal-teams"><span class="cal-flag flag-ESP">ESP</span><span class="cal-team-name">España</span><span class="cal-vs">vs</span><span class="cal-team-name">Cabo Verde</span><span class="cal-flag flag-CPV">CPV</span></span><span class="cal-venue">Mercedes-Benz, Atlanta</span></div>
+            <div class="cal-match-row"><span class="cal-time">2:00 PM</span><span class="cal-group">G</span><span class="cal-teams"><span class="cal-flag flag-BEL">BEL</span><span class="cal-team-name">Bélgica</span><span class="cal-vs">vs</span><span class="cal-team-name">Egipto</span><span class="cal-flag flag-EGY">EGY</span></span><span class="cal-venue">Lumen Field, Seattle</span></div>
+            <div class="cal-match-row"><span class="cal-time">5:00 PM</span><span class="cal-group">H</span><span class="cal-teams"><span class="cal-flag flag-KSA">KSA</span><span class="cal-team-name">Arabia Saudita</span><span class="cal-vs">vs</span><span class="cal-team-name">Uruguay</span><span class="cal-flag flag-URY">URY</span></span><span class="cal-venue">Hard Rock, Miami</span></div>
+            <div class="cal-match-row"><span class="cal-time">8:00 PM</span><span class="cal-group">G</span><span class="cal-teams"><span class="cal-flag flag-IRN">IRN</span><span class="cal-team-name">Irán</span><span class="cal-vs">vs</span><span class="cal-team-name">Nueva Zelanda</span><span class="cal-flag flag-NZL">NZL</span></span><span class="cal-venue">SoFi, Los Ángeles</span></div>
+          </div>
+
+          <div class="cal-day-block">
+            <div class="cal-day-header">Martes 16 de junio</div>
+            <div class="cal-match-row"><span class="cal-time">2:00 PM</span><span class="cal-group">I</span><span class="cal-teams"><span class="cal-flag flag-FRA">FRA</span><span class="cal-team-name">Francia</span><span class="cal-vs">vs</span><span class="cal-team-name">Senegal</span><span class="cal-flag flag-SEN">SEN</span></span><span class="cal-venue">MetLife, NJ</span></div>
+            <div class="cal-match-row"><span class="cal-time">5:00 PM</span><span class="cal-group">I</span><span class="cal-teams"><span class="cal-flag flag-IRQ">IRQ</span><span class="cal-team-name">Iraq</span><span class="cal-vs">vs</span><span class="cal-team-name">Noruega</span><span class="cal-flag flag-NOR">NOR</span></span><span class="cal-venue">Gillette, Boston</span></div>
+            <div class="cal-match-row"><span class="cal-time">8:00 PM</span><span class="cal-group">J</span><span class="cal-teams"><span class="cal-flag flag-ARG">ARG</span><span class="cal-team-name">Argentina</span><span class="cal-vs">vs</span><span class="cal-team-name">Argelia</span><span class="cal-flag flag-ALG">ALG</span></span><span class="cal-venue">Arrowhead, Kansas City</span></div>
+          </div>
+
+          <div class="cal-day-block">
+            <div class="cal-day-header">Miércoles 17 de junio</div>
+            <div class="cal-match-row cal-highlight"><span class="cal-time">11:00 PM</span><span class="cal-group">J</span><span class="cal-teams"><span class="cal-flag flag-AUT">AUT</span><span class="cal-team-name">Austria</span><span class="cal-vs">vs</span><span class="cal-team-name">Jordania</span><span class="cal-flag flag-JOR">JOR</span></span><span class="cal-venue">Levi's, Santa Clara</span></div>
+            <div class="cal-match-row"><span class="cal-time">12:00 PM</span><span class="cal-group">K</span><span class="cal-teams"><span class="cal-flag flag-POR">POR</span><span class="cal-team-name">Portugal</span><span class="cal-vs">vs</span><span class="cal-team-name">DR Congo</span><span class="cal-flag flag-COD">COD</span></span><span class="cal-venue">NRG, Houston</span></div>
+            <div class="cal-match-row"><span class="cal-time">3:00 PM</span><span class="cal-group">L</span><span class="cal-teams"><span class="cal-flag flag-ENG">ENG</span><span class="cal-team-name">Inglaterra</span><span class="cal-vs">vs</span><span class="cal-team-name">Croacia</span><span class="cal-flag flag-CRO">CRO</span></span><span class="cal-venue">AT&amp;T, Dallas</span></div>
+            <div class="cal-match-row"><span class="cal-time">6:00 PM</span><span class="cal-group">L</span><span class="cal-teams"><span class="cal-flag flag-GHA">GHA</span><span class="cal-team-name">Ghana</span><span class="cal-vs">vs</span><span class="cal-team-name">Panamá</span><span class="cal-flag flag-PAN">PAN</span></span><span class="cal-venue">BMO Field, Toronto</span></div>
+            <div class="cal-match-row cal-colombia"><span class="cal-time">9:00 PM</span><span class="cal-group">K</span><span class="cal-teams"><span class="cal-flag flag-UZB">UZB</span><span class="cal-team-name">Uzbekistán</span><span class="cal-vs">vs</span><span class="cal-team-name">Colombia 🇨🇴</span><span class="cal-flag flag-COL">COL</span></span><span class="cal-venue">Azteca, Cdmx</span></div>
+          </div>
+        </div>
+
+        <!-- Jornada 2 -->
+        <div class="cal-jornada">
+          <div class="cal-jornada-title">Jornada 2</div>
+
+          <div class="cal-day-block">
+            <div class="cal-day-header">Jueves 18 de junio</div>
+            <div class="cal-match-row"><span class="cal-time">11:00 AM</span><span class="cal-group">A</span><span class="cal-teams"><span class="cal-flag flag-CZE">CZE</span><span class="cal-team-name">Chequia</span><span class="cal-vs">vs</span><span class="cal-team-name">Sudáfrica</span><span class="cal-flag flag-RSA">RSA</span></span><span class="cal-venue">Mercedes-Benz, Atlanta</span></div>
+            <div class="cal-match-row"><span class="cal-time">2:00 PM</span><span class="cal-group">B</span><span class="cal-teams"><span class="cal-flag flag-SUI">SUI</span><span class="cal-team-name">Suiza</span><span class="cal-vs">vs</span><span class="cal-team-name">Bosnia</span><span class="cal-flag flag-BIH">BOS</span></span><span class="cal-venue">SoFi, Los Ángeles</span></div>
+            <div class="cal-match-row"><span class="cal-time">5:00 PM</span><span class="cal-group">B</span><span class="cal-teams"><span class="cal-flag flag-CAN">CAN</span><span class="cal-team-name">Canadá</span><span class="cal-vs">vs</span><span class="cal-team-name">Qatar</span><span class="cal-flag flag-QAT">QAT</span></span><span class="cal-venue">BC Place, Vancouver</span></div>
+            <div class="cal-match-row"><span class="cal-time">8:00 PM</span><span class="cal-group">A</span><span class="cal-teams"><span class="cal-flag flag-MEX">MEX</span><span class="cal-team-name">México</span><span class="cal-vs">vs</span><span class="cal-team-name">Corea del Sur</span><span class="cal-flag flag-KOR">KOR</span></span><span class="cal-venue">Akron, Guadalajara</span></div>
+          </div>
+
+          <div class="cal-day-block">
+            <div class="cal-day-header">Viernes 19 de junio</div>
+            <div class="cal-match-row"><span class="cal-time">5:00 PM</span><span class="cal-group">C</span><span class="cal-teams"><span class="cal-flag flag-SCO">SCO</span><span class="cal-team-name">Escocia</span><span class="cal-vs">vs</span><span class="cal-team-name">Marruecos</span><span class="cal-flag flag-MAR">MAR</span></span><span class="cal-venue">Gillette, Boston</span></div>
+            <div class="cal-match-row"><span class="cal-time">7:30 PM</span><span class="cal-group">C</span><span class="cal-teams"><span class="cal-flag flag-BRA">BRA</span><span class="cal-team-name">Brasil</span><span class="cal-vs">vs</span><span class="cal-team-name">Haití</span><span class="cal-flag flag-HAI">HAI</span></span><span class="cal-venue">Lincoln, Filadelfia</span></div>
+            <div class="cal-match-row"><span class="cal-time">2:00 PM</span><span class="cal-group">D</span><span class="cal-teams"><span class="cal-flag flag-USA">USA</span><span class="cal-team-name">USA</span><span class="cal-vs">vs</span><span class="cal-team-name">Australia</span><span class="cal-flag flag-AUS">AUS</span></span><span class="cal-venue">Lumen Field, Seattle</span></div>
+            <div class="cal-match-row"><span class="cal-time">10:00 PM</span><span class="cal-group">D</span><span class="cal-teams"><span class="cal-flag flag-TUR">TUR</span><span class="cal-team-name">Turquía</span><span class="cal-vs">vs</span><span class="cal-team-name">Paraguay</span><span class="cal-flag flag-PAR">PAR</span></span><span class="cal-venue">Levi's, Santa Clara</span></div>
+          </div>
+
+          <div class="cal-day-block">
+            <div class="cal-day-header">Sábado 20 de junio</div>
+            <div class="cal-match-row"><span class="cal-time">12:00 PM</span><span class="cal-group">F</span><span class="cal-teams"><span class="cal-flag flag-NED">NED</span><span class="cal-team-name">Países Bajos</span><span class="cal-vs">vs</span><span class="cal-team-name">Suecia</span><span class="cal-flag flag-SWE">SWE</span></span><span class="cal-venue">NRG, Houston</span></div>
+            <div class="cal-match-row"><span class="cal-time">3:00 PM</span><span class="cal-group">E</span><span class="cal-teams"><span class="cal-flag flag-GER">GER</span><span class="cal-team-name">Alemania</span><span class="cal-vs">vs</span><span class="cal-team-name">Costa de Marfil</span><span class="cal-flag flag-CIV">CIV</span></span><span class="cal-venue">BMO Field, Toronto</span></div>
+            <div class="cal-match-row"><span class="cal-time">7:00 PM</span><span class="cal-group">E</span><span class="cal-teams"><span class="cal-flag flag-ECU">ECU</span><span class="cal-team-name">Ecuador</span><span class="cal-vs">vs</span><span class="cal-team-name">Curazao</span><span class="cal-flag flag-CUW">CUW</span></span><span class="cal-venue">Arrowhead, Kansas City</span></div>
+          </div>
+
+          <div class="cal-day-block">
+            <div class="cal-day-header">Domingo 21 de junio</div>
+            <div class="cal-match-row cal-highlight"><span class="cal-time">11:00 PM</span><span class="cal-group">F</span><span class="cal-teams"><span class="cal-flag flag-TUN">TUN</span><span class="cal-team-name">Túnez</span><span class="cal-vs">vs</span><span class="cal-team-name">Japón</span><span class="cal-flag flag-JPN">JPN</span></span><span class="cal-venue">BBVA, Monterrey</span></div>
+            <div class="cal-match-row"><span class="cal-time">11:00 AM</span><span class="cal-group">H</span><span class="cal-teams"><span class="cal-flag flag-ESP">ESP</span><span class="cal-team-name">España</span><span class="cal-vs">vs</span><span class="cal-team-name">Arabia Saudita</span><span class="cal-flag flag-KSA">KSA</span></span><span class="cal-venue">Mercedes-Benz, Atlanta</span></div>
+            <div class="cal-match-row"><span class="cal-time">2:00 PM</span><span class="cal-group">G</span><span class="cal-teams"><span class="cal-flag flag-BEL">BEL</span><span class="cal-team-name">Bélgica</span><span class="cal-vs">vs</span><span class="cal-team-name">Irán</span><span class="cal-flag flag-IRN">IRN</span></span><span class="cal-venue">SoFi, Los Ángeles</span></div>
+            <div class="cal-match-row"><span class="cal-time">5:00 PM</span><span class="cal-group">H</span><span class="cal-teams"><span class="cal-flag flag-URY">URY</span><span class="cal-team-name">Uruguay</span><span class="cal-vs">vs</span><span class="cal-team-name">Cabo Verde</span><span class="cal-flag flag-CPV">CPV</span></span><span class="cal-venue">Hard Rock, Miami</span></div>
+            <div class="cal-match-row"><span class="cal-time">8:00 PM</span><span class="cal-group">G</span><span class="cal-teams"><span class="cal-flag flag-NZL">NZL</span><span class="cal-team-name">Nueva Zelanda</span><span class="cal-vs">vs</span><span class="cal-team-name">Egipto</span><span class="cal-flag flag-EGY">EGY</span></span><span class="cal-venue">BC Place, Vancouver</span></div>
+          </div>
+
+          <div class="cal-day-block">
+            <div class="cal-day-header">Lunes 22 de junio</div>
+            <div class="cal-match-row"><span class="cal-time">4:00 PM</span><span class="cal-group">I</span><span class="cal-teams"><span class="cal-flag flag-FRA">FRA</span><span class="cal-team-name">Francia</span><span class="cal-vs">vs</span><span class="cal-team-name">Iraq</span><span class="cal-flag flag-IRQ">IRQ</span></span><span class="cal-venue">MetLife, NJ</span></div>
+            <div class="cal-match-row"><span class="cal-time">7:00 PM</span><span class="cal-group">I</span><span class="cal-teams"><span class="cal-flag flag-NOR">NOR</span><span class="cal-team-name">Noruega</span><span class="cal-vs">vs</span><span class="cal-team-name">Senegal</span><span class="cal-flag flag-SEN">SEN</span></span><span class="cal-venue">Gillette, Boston</span></div>
+            <div class="cal-match-row"><span class="cal-time">12:00 PM</span><span class="cal-group">J</span><span class="cal-teams"><span class="cal-flag flag-ARG">ARG</span><span class="cal-team-name">Argentina</span><span class="cal-vs">vs</span><span class="cal-team-name">Austria</span><span class="cal-flag flag-AUT">AUT</span></span><span class="cal-venue">Arrowhead, Kansas City</span></div>
+            <div class="cal-match-row"><span class="cal-time">10:00 PM</span><span class="cal-group">J</span><span class="cal-teams"><span class="cal-flag flag-JOR">JOR</span><span class="cal-team-name">Jordania</span><span class="cal-vs">vs</span><span class="cal-team-name">Argelia</span><span class="cal-flag flag-ALG">ALG</span></span><span class="cal-venue">Levi's, Santa Clara</span></div>
+          </div>
+
+          <div class="cal-day-block">
+            <div class="cal-day-header">Martes 23 de junio</div>
+            <div class="cal-match-row"><span class="cal-time">12:00 PM</span><span class="cal-group">K</span><span class="cal-teams"><span class="cal-flag flag-POR">POR</span><span class="cal-team-name">Portugal</span><span class="cal-vs">vs</span><span class="cal-team-name">Uzbekistán</span><span class="cal-flag flag-UZB">UZB</span></span><span class="cal-venue">NRG, Houston</span></div>
+            <div class="cal-match-row"><span class="cal-time">3:00 PM</span><span class="cal-group">L</span><span class="cal-teams"><span class="cal-flag flag-ENG">ENG</span><span class="cal-team-name">Inglaterra</span><span class="cal-vs">vs</span><span class="cal-team-name">Ghana</span><span class="cal-flag flag-GHA">GHA</span></span><span class="cal-venue">AT&amp;T, Dallas</span></div>
+            <div class="cal-match-row"><span class="cal-time">9:00 PM</span><span class="cal-group">L</span><span class="cal-teams"><span class="cal-flag flag-CRO">CRO</span><span class="cal-team-name">Croacia</span><span class="cal-vs">vs</span><span class="cal-team-name">Panamá</span><span class="cal-flag flag-PAN">PAN</span></span><span class="cal-venue">BMO Field, Toronto</span></div>
+            <div class="cal-match-row cal-colombia"><span class="cal-time">9:00 PM</span><span class="cal-group">K</span><span class="cal-teams"><span class="cal-flag flag-COL">COL</span><span class="cal-team-name">Colombia 🇨🇴</span><span class="cal-vs">vs</span><span class="cal-team-name">DR Congo</span><span class="cal-flag flag-COD">COD</span></span><span class="cal-venue">Akron, Guadalajara</span></div>
+          </div>
+        </div>
+
+        <!-- Jornada 3 -->
+        <div class="cal-jornada">
+          <div class="cal-jornada-title">Jornada 3 — Partidos simultáneos</div>
+
+          <div class="cal-day-block">
+            <div class="cal-day-header">Miércoles 24 de junio</div>
+            <div class="cal-match-row"><span class="cal-time">8:00 PM</span><span class="cal-group">A</span><span class="cal-teams"><span class="cal-flag flag-CZE">CZE</span><span class="cal-team-name">Chequia</span><span class="cal-vs">vs</span><span class="cal-team-name">México</span><span class="cal-flag flag-MEX">MEX</span></span><span class="cal-venue">Azteca, Cdmx</span></div>
+            <div class="cal-match-row"><span class="cal-time">8:00 PM</span><span class="cal-group">A</span><span class="cal-teams"><span class="cal-flag flag-RSA">RSA</span><span class="cal-team-name">Sudáfrica</span><span class="cal-vs">vs</span><span class="cal-team-name">Corea del Sur</span><span class="cal-flag flag-KOR">KOR</span></span><span class="cal-venue">BBVA, Monterrey</span></div>
+            <div class="cal-match-row"><span class="cal-time">2:00 PM</span><span class="cal-group">B</span><span class="cal-teams"><span class="cal-flag flag-SUI">SUI</span><span class="cal-team-name">Suiza</span><span class="cal-vs">vs</span><span class="cal-team-name">Canadá</span><span class="cal-flag flag-CAN">CAN</span></span><span class="cal-venue">Lumen, Seattle</span></div>
+            <div class="cal-match-row"><span class="cal-time">2:00 PM</span><span class="cal-group">B</span><span class="cal-teams"><span class="cal-flag flag-BIH">BOS</span><span class="cal-team-name">Bosnia</span><span class="cal-vs">vs</span><span class="cal-team-name">Qatar</span><span class="cal-flag flag-QAT">QAT</span></span><span class="cal-venue">Mercedes-Benz, Atlanta</span></div>
+            <div class="cal-match-row"><span class="cal-time">5:00 PM</span><span class="cal-group">C</span><span class="cal-teams"><span class="cal-flag flag-SCO">SCO</span><span class="cal-team-name">Escocia</span><span class="cal-vs">vs</span><span class="cal-team-name">Brasil</span><span class="cal-flag flag-BRA">BRA</span></span><span class="cal-venue">SoFi, Los Ángeles</span></div>
+            <div class="cal-match-row"><span class="cal-time">5:00 PM</span><span class="cal-group">C</span><span class="cal-teams"><span class="cal-flag flag-MAR">MAR</span><span class="cal-team-name">Marruecos</span><span class="cal-vs">vs</span><span class="cal-team-name">Haití</span><span class="cal-flag flag-HAI">HAI</span></span><span class="cal-venue">BC Place, Vancouver</span></div>
+          </div>
+
+          <div class="cal-day-block">
+            <div class="cal-day-header">Jueves 25 de junio</div>
+            <div class="cal-match-row"><span class="cal-time">9:00 PM</span><span class="cal-group">D</span><span class="cal-teams"><span class="cal-flag flag-TUR">TUR</span><span class="cal-team-name">Turquía</span><span class="cal-vs">vs</span><span class="cal-team-name">USA</span><span class="cal-flag flag-USA">USA</span></span><span class="cal-venue">Arrowhead, Kansas City</span></div>
+            <div class="cal-match-row"><span class="cal-time">9:00 PM</span><span class="cal-group">D</span><span class="cal-teams"><span class="cal-flag flag-PAR">PAR</span><span class="cal-team-name">Paraguay</span><span class="cal-vs">vs</span><span class="cal-team-name">Australia</span><span class="cal-flag flag-AUS">AUS</span></span><span class="cal-venue">Levi's, Santa Clara</span></div>
+            <div class="cal-match-row"><span class="cal-time">3:00 PM</span><span class="cal-group">E</span><span class="cal-teams"><span class="cal-flag flag-CUW">CUW</span><span class="cal-team-name">Curazao</span><span class="cal-vs">vs</span><span class="cal-team-name">Costa de Marfil</span><span class="cal-flag flag-CIV">CIV</span></span><span class="cal-venue">Lincoln, Filadelfia</span></div>
+            <div class="cal-match-row"><span class="cal-time">3:00 PM</span><span class="cal-group">E</span><span class="cal-teams"><span class="cal-flag flag-ECU">ECU</span><span class="cal-team-name">Ecuador</span><span class="cal-vs">vs</span><span class="cal-team-name">Alemania</span><span class="cal-flag flag-GER">GER</span></span><span class="cal-venue">MetLife, NJ</span></div>
+            <div class="cal-match-row"><span class="cal-time">6:00 PM</span><span class="cal-group">F</span><span class="cal-teams"><span class="cal-flag flag-JPN">JPN</span><span class="cal-team-name">Japón</span><span class="cal-vs">vs</span><span class="cal-team-name">Suecia</span><span class="cal-flag flag-SWE">SWE</span></span><span class="cal-venue">AT&amp;T, Dallas</span></div>
+            <div class="cal-match-row"><span class="cal-time">6:00 PM</span><span class="cal-group">F</span><span class="cal-teams"><span class="cal-flag flag-TUN">TUN</span><span class="cal-team-name">Túnez</span><span class="cal-vs">vs</span><span class="cal-team-name">Países Bajos</span><span class="cal-flag flag-NED">NED</span></span><span class="cal-venue">NRG, Houston</span></div>
+          </div>
+
+          <div class="cal-day-block">
+            <div class="cal-day-header">Viernes 26 de junio</div>
+            <div class="cal-match-row"><span class="cal-time">7:00 PM</span><span class="cal-group">G</span><span class="cal-teams"><span class="cal-flag flag-EGY">EGY</span><span class="cal-team-name">Egipto</span><span class="cal-vs">vs</span><span class="cal-team-name">Irán</span><span class="cal-flag flag-IRN">IRN</span></span><span class="cal-venue">Gillette, Boston</span></div>
+            <div class="cal-match-row"><span class="cal-time">10:00 PM</span><span class="cal-group">G</span><span class="cal-teams"><span class="cal-flag flag-NZL">NZL</span><span class="cal-team-name">Nueva Zelanda</span><span class="cal-vs">vs</span><span class="cal-team-name">Bélgica</span><span class="cal-flag flag-BEL">BEL</span></span><span class="cal-venue">BMO Field, Toronto</span></div>
+            <div class="cal-match-row"><span class="cal-time">7:00 PM</span><span class="cal-group">H</span><span class="cal-teams"><span class="cal-flag flag-CPV">CPV</span><span class="cal-team-name">Cabo Verde</span><span class="cal-vs">vs</span><span class="cal-team-name">Arabia Saudita</span><span class="cal-flag flag-KSA">KSA</span></span><span class="cal-venue">Mercedes-Benz, Atlanta</span></div>
+            <div class="cal-match-row"><span class="cal-time">7:00 PM</span><span class="cal-group">H</span><span class="cal-teams"><span class="cal-flag flag-URY">URY</span><span class="cal-team-name">Uruguay</span><span class="cal-vs">vs</span><span class="cal-team-name">España</span><span class="cal-flag flag-ESP">ESP</span></span><span class="cal-venue">Akron, Guadalajara</span></div>
+            <div class="cal-match-row"><span class="cal-time">2:00 PM</span><span class="cal-group">I</span><span class="cal-teams"><span class="cal-flag flag-NOR">NOR</span><span class="cal-team-name">Noruega</span><span class="cal-vs">vs</span><span class="cal-team-name">Francia</span><span class="cal-flag flag-FRA">FRA</span></span><span class="cal-venue">Hard Rock, Miami</span></div>
+            <div class="cal-match-row"><span class="cal-time">2:00 PM</span><span class="cal-group">I</span><span class="cal-teams"><span class="cal-flag flag-SEN">SEN</span><span class="cal-team-name">Senegal</span><span class="cal-vs">vs</span><span class="cal-team-name">Iraq</span><span class="cal-flag flag-IRQ">IRQ</span></span><span class="cal-venue">Lumen Field, Seattle</span></div>
+          </div>
+
+          <div class="cal-day-block">
+            <div class="cal-day-header">Sábado 27 de junio</div>
+            <div class="cal-match-row"><span class="cal-time">9:00 PM</span><span class="cal-group">J</span><span class="cal-teams"><span class="cal-flag flag-ALG">ALG</span><span class="cal-team-name">Argelia</span><span class="cal-vs">vs</span><span class="cal-team-name">Austria</span><span class="cal-flag flag-AUT">AUT</span></span><span class="cal-venue">SoFi, Los Ángeles</span></div>
+            <div class="cal-match-row"><span class="cal-time">9:00 PM</span><span class="cal-group">J</span><span class="cal-teams"><span class="cal-flag flag-JOR">JOR</span><span class="cal-team-name">Jordania</span><span class="cal-vs">vs</span><span class="cal-team-name">Argentina</span><span class="cal-flag flag-ARG">ARG</span></span><span class="cal-venue">AT&amp;T, Dallas</span></div>
+            <div class="cal-match-row cal-colombia"><span class="cal-time">6:30 PM</span><span class="cal-group">K</span><span class="cal-teams"><span class="cal-flag flag-COL">COL</span><span class="cal-team-name">Colombia 🇨🇴</span><span class="cal-vs">vs</span><span class="cal-team-name">Portugal</span><span class="cal-flag flag-POR">POR</span></span><span class="cal-venue">Hard Rock, Miami</span></div>
+            <div class="cal-match-row"><span class="cal-time">6:30 PM</span><span class="cal-group">K</span><span class="cal-teams"><span class="cal-flag flag-COD">COD</span><span class="cal-team-name">DR Congo</span><span class="cal-vs">vs</span><span class="cal-team-name">Uzbekistán</span><span class="cal-flag flag-UZB">UZB</span></span><span class="cal-venue">MetLife, NJ</span></div>
+            <div class="cal-match-row"><span class="cal-time">9:00 PM</span><span class="cal-group">L</span><span class="cal-teams"><span class="cal-flag flag-CRO">CRO</span><span class="cal-team-name">Croacia</span><span class="cal-vs">vs</span><span class="cal-team-name">Ghana</span><span class="cal-flag flag-GHA">GHA</span></span><span class="cal-venue">Arrowhead, Kansas City</span></div>
+            <div class="cal-match-row"><span class="cal-time">9:00 PM</span><span class="cal-group">L</span><span class="cal-teams"><span class="cal-flag flag-PAN">PAN</span><span class="cal-team-name">Panamá</span><span class="cal-vs">vs</span><span class="cal-team-name">Inglaterra</span><span class="cal-flag flag-ENG">ENG</span></span><span class="cal-venue">Levi's, Santa Clara</span></div>
+          </div>
+        </div>
+
+        <div class="cal-note">
+          ⏰ Horarios en hora Colombia (COT = ET − 1h) · Fuente: FIFA.com · Sujeto a cambios oficiales
+        </div>
+
+        <footer class="app-footer">Gimnasio Mega Vital &copy; 2026 &mdash; Uso exclusivo para miembros</footer>
       </div>
 
       <!-- TAB: MI HISTORIAL -->
