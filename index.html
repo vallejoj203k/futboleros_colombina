@@ -244,7 +244,7 @@
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 1.5rem; gap: 1rem;
     }
-    .nav-brand { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
+    .nav-brand { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; cursor: pointer; }
     .nav-logo-img { height: 32px; width: auto; object-fit: contain; }
     .nav-brand-labels { display: flex; flex-direction: column; }
     .nav-brand-text { font-size: 0.95rem; font-weight: 800; color: var(--red); line-height: 1.1; }
@@ -1159,7 +1159,7 @@
 ============================================= -->
 <div id="app-shell">
   <nav class="top-nav" role="navigation" aria-label="Navegación principal">
-    <div class="nav-brand">
+    <div class="nav-brand" onclick="switchTab('partidos')" role="button" aria-label="Ir al inicio">
       <img src="logo.png" alt="Mega Vital" class="nav-logo-img" />
       <div class="nav-brand-labels">
         <div class="nav-brand-text">Mega Mundial</div>
