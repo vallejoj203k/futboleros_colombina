@@ -207,6 +207,40 @@ function calcPoints(p, m) {
   return 0;
 }
 
+// Parse "Jun 11" + "2:00 PM" → UTC Date (matches are in COT = UTC-5)
+const MONTH_IDX = { Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11 };
+function parseMatchUTC(dateStr, timeStr) {
+  if (!dateStr || !timeStr) return null;
+  const [mon, day] = dateStr.trim().split(' ');
+  const [hhmm, ampm] = timeStr.trim().split(' ');
+  let [h, m] = hhmm.split(':').map(Number);
+  if (ampm === 'PM' && h !== 12) h += 12;
+  if (ampm === 'AM' && h === 12) h = 0;
+  // COT = UTC-5 → add 5 hours to get UTC
+  return new Date(Date.UTC(2026, MONTH_IDX[mon] ?? 5, parseInt(day), h + 5, m));
+}
+
+/* ─────────────────────────────────────────────
+   AUTO-CLOSE MATCHES (runs every 60 s)
+───────────────────────────────────────────── */
+async function autoCloseMatches() {
+  try {
+    const { rows } = await pool.query(
+      "SELECT id, match_date, match_time FROM matches WHERE status = 'abierto'"
+    );
+    const now = Date.now();
+    for (const m of rows) {
+      const t = parseMatchUTC(m.match_date, m.match_time);
+      if (t && now >= t.getTime()) {
+        await pool.query("UPDATE matches SET status = 'cerrado' WHERE id = $1", [m.id]);
+        console.log(`Auto-closed match ${m.id} (${m.match_date} ${m.match_time} COT)`);
+      }
+    }
+  } catch (e) {
+    console.error('autoCloseMatches error:', e.message);
+  }
+}
+
 /* ─────────────────────────────────────────────
    AUTH
 ───────────────────────────────────────────── */
@@ -219,6 +253,7 @@ app.post('/api/auth/login', async (req, res) => {
       [nombre.trim()]
     );
     if (!rows.length) return res.status(404).json({ error: 'Nombre no registrado. Contacta al administrador.' });
+    if (rows.length > 1) return res.status(409).json({ error: 'Nombre duplicado en el sistema. Contacta al administrador.' });
     if (rows[0].estado !== 'Activo') return res.status(403).json({ error: 'Tu cuenta está inactiva. Contacta al administrador.' });
     res.json(rows[0]);
   } catch (e) {
@@ -356,9 +391,15 @@ app.post('/api/admin/users', async (req, res) => {
 app.put('/api/admin/users/:id', async (req, res) => {
   const { nombre, cedula, estado } = req.body;
   try {
+    // Check duplicate name excluding self
+    const dup = await pool.query(
+      'SELECT id FROM users WHERE LOWER(nombre) = LOWER($1) AND id <> $2',
+      [nombre, req.params.id]
+    );
+    if (dup.rows.length) return res.status(400).json({ error: 'Ya existe un usuario con ese nombre' });
     const { rows } = await pool.query(
       'UPDATE users SET nombre=$1, cedula=$2, estado=$3 WHERE id=$4 RETURNING *',
-      [nombre, cedula, estado, req.params.id]
+      [nombre, cedula || null, estado, req.params.id]
     );
     if (!rows.length) return res.status(404).json({ error: 'Usuario no encontrado' });
     res.json(rows[0]);
@@ -447,6 +488,8 @@ app.get('*', (req, res) => {
 initDB()
   .then(() => {
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    autoCloseMatches(); // run once immediately on startup
+    setInterval(autoCloseMatches, 60 * 1000);
   })
   .catch(err => {
     console.error('DB init failed:', err);

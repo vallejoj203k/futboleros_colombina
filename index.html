@@ -1700,7 +1700,9 @@ $('#user-form').addEventListener('submit', function(e) {
     $('#user-pts').textContent = '0 pts';
     $('#nav-avatar').textContent = ini;
 
+    localStorage.setItem('mv_session', JSON.stringify({ id: user.id, nombre: user.nombre }));
     loadAppData(user.id).then(function() {
+      updateUserPts();
       showView('app-shell');
       switchTab('partidos');
       toast('Bienvenido, ' + first);
@@ -1751,6 +1753,7 @@ function logout() {
   state.loggedIn = false;
   state.isAdmin = false;
   state.user = { id: null, name: '', fullName: '', initials: '', pts: 0 };
+  localStorage.removeItem('mv_session');
   $('#full-name').value = '';
   $('#admin-user').value = '';
   $('#admin-pass').value = '';
@@ -2586,9 +2589,59 @@ function koUpdateStatus(id, status) {
 }
 
 /* =============================================
-   INIT
+   LIVE POINTS + AUTO-REFRESH
 ============================================= */
-showView('view-login');
+function updateUserPts() {
+  var pts = 0;
+  MATCHES.forEach(function(m) { pts += predPoints(m); });
+  state.user.pts = pts;
+  var el = $('#user-pts');
+  if (el) el.textContent = pts + ' pts';
+}
+
+// Refresh matches + pts every 60 s while logged in
+setInterval(function() {
+  if (!state.loggedIn || state.isAdmin) return;
+  loadAppData(state.user.id).then(updateUserPts);
+}, 60000);
+
+/* =============================================
+   INIT — restore session from localStorage
+============================================= */
+(function restoreSession() {
+  var raw = localStorage.getItem('mv_session');
+  if (!raw) { showView('view-login'); return; }
+  var saved;
+  try { saved = JSON.parse(raw); } catch(e) { localStorage.removeItem('mv_session'); showView('view-login'); return; }
+  if (!saved || !saved.nombre) { localStorage.removeItem('mv_session'); showView('view-login'); return; }
+
+  // Silently verify the user still exists and is active
+  api.post('/api/auth/login', { nombre: saved.nombre }).then(function(res) {
+    if (!res.ok) {
+      localStorage.removeItem('mv_session');
+      showView('view-login');
+      return;
+    }
+    var user = res.data;
+    var first = user.nombre.split(/\s+/)[0];
+    var ini = getInitials(user.nombre);
+    state.loggedIn = true;
+    state.isAdmin = false;
+    state.user = { id: user.id, name: first, fullName: user.nombre, initials: ini, pts: 0 };
+    $('#user-name').textContent = first;
+    $('#user-pts').textContent = '0 pts';
+    $('#nav-avatar').textContent = ini;
+    loadAppData(user.id).then(function() {
+      updateUserPts();
+      showView('app-shell');
+      switchTab('partidos');
+    }).catch(function() { showView('app-shell'); switchTab('partidos'); });
+  }).catch(function() {
+    // Network error — show login so user can retry
+    localStorage.removeItem('mv_session');
+    showView('view-login');
+  });
+})();
 </script>
 
 <datalist id="teams-list">
