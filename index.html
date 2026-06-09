@@ -1134,6 +1134,17 @@
               <input class="form-input" type="text" id="reg-name" placeholder="Ej: Ana López" autocomplete="name" autocapitalize="words" />
             </div>
           </div>
+          <div class="form-group">
+            <label class="form-label" for="reg-recomendado">¿Quién te recomendó el Mega Vital? <span style="color:rgba(255,255,255,.3);font-weight:400;text-transform:none;letter-spacing:0">(opcional)</span></label>
+            <div class="input-wrap">
+              <span class="input-icon-left">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                </svg>
+              </span>
+              <input class="form-input" type="text" id="reg-recomendado" placeholder="Nombre de quien te recomendó" autocapitalize="words" />
+            </div>
+          </div>
           <button type="submit" class="btn-jugar" id="btn-register">Crear mi cuenta</button>
           <p class="register-link"><a id="show-login-back">← Volver al inicio de sesión</a></p>
         </form>
@@ -1646,6 +1657,7 @@
       <button class="admin-tab-btn" data-atab="partidos">Partidos</button>
       <button class="admin-tab-btn" data-atab="predicciones">Predicciones</button>
       <button class="admin-tab-btn" data-atab="eliminatorias">Eliminatorias</button>
+      <button class="admin-tab-btn" data-atab="referidos">Referidos</button>
       <button class="admin-tab-btn" data-atab="resumen">Resumen</button>
     </div>
 
@@ -1742,6 +1754,29 @@
         </div>
       </div>
       <div id="pred-admin-body"></div>
+    </div>
+
+    <!-- ADMIN: REFERIDOS -->
+    <div class="admin-panel" id="apanel-referidos">
+      <div class="admin-head">
+        <h2>Referidos al Mega Vital</h2>
+        <div class="admin-search-wrap">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="admin-search" type="text" id="ref-search" placeholder="Buscar referidor..." autocomplete="off" />
+        </div>
+      </div>
+      <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1.25rem">
+        <div class="admin-stat" style="flex:1;min-width:140px"><div class="admin-stat-val" id="stat-ref-total">—</div><div class="admin-stat-lbl">Total referidos</div></div>
+        <div class="admin-stat" style="flex:1;min-width:140px"><div class="admin-stat-val" id="stat-ref-unique">—</div><div class="admin-stat-lbl">Referidores únicos</div></div>
+      </div>
+      <div class="table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr><th>#</th><th>Referidor</th><th>Cantidad referidos</th><th>Miembros que mencionaron</th></tr>
+          </thead>
+          <tbody id="referidos-tbody"></tbody>
+        </table>
+      </div>
     </div>
 
     <div class="admin-panel" id="apanel-resumen">
@@ -1955,7 +1990,8 @@ $('#register-form').addEventListener('submit', function(e) {
   btn.disabled = true;
   btn.textContent = 'Creando cuenta...';
 
-  api.post('/api/admin/users', { nombre: nombre, estado: 'Activo' }).then(function(res) {
+  var recomendado = $('#reg-recomendado').value.trim() || null;
+  api.post('/api/admin/users', { nombre: nombre, estado: 'Activo', recomendado_por: recomendado }).then(function(res) {
     btn.disabled = false;
     btn.textContent = 'Crear mi cuenta';
     if (!res.ok) {
@@ -2762,6 +2798,7 @@ $all('.admin-tab-btn').forEach(function(b) {
     if (t === 'resumen') { renderAdminStats(); setTimeout(renderChart, 60); }
     if (t === 'eliminatorias') renderAdminKnockout();
     if (t === 'predicciones') renderAdminPredictions();
+    if (t === 'referidos') renderReferidos();
   });
 });
 
@@ -2871,6 +2908,49 @@ function saveMember(id) {
     toast('Cambios guardados');
   });
 }
+
+/* =============================================
+   ADMIN: REFERIDOS
+============================================= */
+function renderReferidos() {
+  var q = ($('#ref-search').value || '').trim().toLowerCase();
+  api.get('/api/admin/users').then(function(res) {
+    if (!res.ok) { toast('Error cargando referidos'); return; }
+    var todos = res.data;
+    // Agrupar por recomendado_por
+    var mapa = {};
+    todos.forEach(function(u) {
+      if (!u.recomendado_por) return;
+      var key = u.recomendado_por.trim();
+      if (!mapa[key]) mapa[key] = [];
+      mapa[key].push(u.nombre);
+    });
+    // Ordenar de mayor a menor
+    var lista = Object.keys(mapa).map(function(k) {
+      return { referidor: k, count: mapa[k].length, miembros: mapa[k] };
+    }).sort(function(a, b) { return b.count - a.count; });
+
+    // Filtro búsqueda
+    if (q) lista = lista.filter(function(r) { return r.referidor.toLowerCase().includes(q); });
+
+    var totalRef = todos.filter(function(u) { return u.recomendado_por; }).length;
+    $('#stat-ref-total').textContent = totalRef;
+    $('#stat-ref-unique').textContent = lista.length;
+
+    var html = lista.length ? '' : '<tr><td colspan="4" style="text-align:center;color:var(--gray-500);padding:1.5rem">Nadie ha indicado un referidor todavía</td></tr>';
+    lista.forEach(function(r, idx) {
+      html += '<tr>' +
+        '<td>' + (idx + 1) + '</td>' +
+        '<td><strong>' + r.referidor + '</strong></td>' +
+        '<td><span style="background:var(--green-bg);color:var(--green);font-weight:800;padding:.2rem .7rem;border-radius:999px">' + r.count + '</span></td>' +
+        '<td style="font-size:.8rem;color:var(--gray-600)">' + r.miembros.join(', ') + '</td>' +
+      '</tr>';
+    });
+    $('#referidos-tbody').innerHTML = html;
+  });
+}
+
+$('#ref-search').addEventListener('input', function() { renderReferidos(); });
 
 /* =============================================
    ADMIN: MATCHES TABLE
