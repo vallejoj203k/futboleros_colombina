@@ -129,7 +129,7 @@
     .view.active { display: block; }
 
     /* =============================================
-       LOGIN VIEW — Split Screen
+       LOGIN VIEW — Rediseño con login.png
     ============================================= */
     #view-login {
       min-height: 100vh;
@@ -137,159 +137,139 @@
       flex-direction: row;
     }
 
-    #view-login.active {
-      display: flex;
-    }
+    #view-login.active { display: flex; }
 
-    /* ---- LEFT PANEL ---- */
+    /* ---- LEFT PANEL: imagen de fondo ---- */
     .login-left {
-      width: 42%;
-      background: var(--red);
+      width: 52%;
       position: relative;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      padding: 2.5rem 2.5rem 0;
       flex-shrink: 0;
+      background: #0a0a0a url('login.png') center center / cover no-repeat;
     }
 
-    .login-dots {
+    /* Overlay degradado sobre la imagen */
+    .login-left-overlay {
       position: absolute;
       inset: 0;
-      background-image: radial-gradient(circle, rgba(255,255,255,0.18) 1.5px, transparent 1.5px);
-      background-size: 22px 22px;
-      pointer-events: none;
+      background: linear-gradient(
+        160deg,
+        rgba(0,0,0,0.65) 0%,
+        rgba(0,0,0,0.35) 50%,
+        rgba(227,6,19,0.25) 100%
+      );
     }
 
-    .login-left-logo {
-      width: 140px;
-      height: auto;
-      object-fit: contain;
-      position: relative;
-      z-index: 1;
-      margin-bottom: 2.5rem;
-    }
-
+    /* Contenido encima de la imagen */
     .login-left-content {
       position: relative;
-      z-index: 1;
-      flex: 1;
+      z-index: 2;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 3rem;
     }
 
     .login-eyebrow {
-      display: block;
-      font-size: 0.72rem;
+      display: inline-block;
+      font-size: 0.7rem;
       font-weight: 700;
-      letter-spacing: 0.18em;
-      color: var(--yellow);
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      margin-bottom: 0.75rem;
+      color: var(--yellow);
+      background: rgba(249,183,0,0.12);
+      border: 1px solid rgba(249,183,0,0.35);
+      border-radius: 999px;
+      padding: 0.3rem 0.85rem;
+      margin-bottom: 1rem;
     }
 
     .login-headline {
-      font-size: 2.6rem;
+      font-size: 2.8rem;
       font-weight: 900;
       color: #fff;
       line-height: 1.1;
-      margin-bottom: 1.1rem;
-    }
-
-    .candy-inline {
-      display: inline-block;
-      vertical-align: middle;
-      margin-left: 0.15rem;
-      position: relative;
-      top: -4px;
+      margin-bottom: 0.85rem;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.5);
     }
 
     .login-desc {
-      font-size: 0.92rem;
-      color: rgba(255,255,255,0.72);
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.75);
       font-weight: 400;
-      line-height: 1.65;
-      max-width: 270px;
+      line-height: 1.6;
+      max-width: 320px;
+      margin-bottom: 2rem;
     }
 
-    /* Illustrations */
-    .login-illustrations {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-around;
-      padding: 0 0.5rem;
-      margin-top: 2rem;
-      height: 130px;
+    /* Logo encima */
+    .login-left-logo {
+      position: absolute;
+      top: 2rem;
+      left: 2.5rem;
+      z-index: 3;
+      height: 56px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 12px rgba(0,0,0,0.6));
     }
 
-    .illus-lollipop {
-      animation: float 3.5s ease-in-out infinite;
-      animation-delay: 0.3s;
-    }
-
-    .illus-ball-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-    }
-
-    .illus-ball {
-      animation: ballBounce 0.65s cubic-bezier(0.36, 0, 0.66, -0.4) infinite alternate;
-      transform-origin: center bottom;
-    }
-
-    .illus-ball-shadow {
-      width: 50px;
-      height: 10px;
-      background: rgba(0,0,0,0.25);
-      border-radius: 50%;
-      animation: shadowPulse 0.65s ease-in-out infinite alternate;
-    }
-
-    .illus-candy {
-      animation: float 3.5s ease-in-out infinite;
-      animation-delay: 1.1s;
-    }
-
-    /* ---- RIGHT PANEL ---- */
+    /* ---- RIGHT PANEL: formulario minimalista ---- */
     .login-right {
       flex: 1;
       background: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 3rem 2rem;
+      padding: 3rem 2.5rem;
     }
 
     .login-form-wrap {
       width: 100%;
-      max-width: 420px;
-      animation: fadeInUp 0.6s ease both;
+      max-width: 380px;
+      animation: fadeInUp 0.5s ease both;
+    }
+
+    /* Logo pequeño en mobile (derecho) */
+    .login-right-logo {
+      display: none;
+      width: 80px;
+      margin: 0 auto 1.5rem;
     }
 
     .login-form-wrap h2 {
-      font-size: 1.9rem;
-      font-weight: 800;
+      font-size: 2rem;
+      font-weight: 900;
       color: var(--text);
-      margin-bottom: 2rem;
+      margin-bottom: 0.4rem;
+      line-height: 1.1;
     }
 
-    .form-group { margin-bottom: 1.25rem; }
+    .login-form-tagline {
+      font-size: 0.88rem;
+      color: var(--gray-600);
+      margin-bottom: 2.5rem;
+      font-weight: 400;
+    }
+
+    .form-group { margin-bottom: 1.5rem; }
 
     .form-label {
       display: block;
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 0.5rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--gray-600);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.6rem;
     }
 
     .input-wrap { position: relative; display: flex; align-items: center; }
 
     .input-icon-left {
       position: absolute;
-      left: 1rem;
+      left: 1.1rem;
       color: var(--gray-400);
       display: flex;
       align-items: center;
@@ -298,14 +278,14 @@
 
     .form-input {
       width: 100%;
-      background: #fff;
-      border: 1.5px solid var(--gray-200);
-      border-radius: var(--radius-sm);
-      padding: 0.9rem 3rem 0.9rem 3rem;
-      font-size: 0.95rem;
-      font-weight: 500;
+      background: var(--gray-100);
+      border: 2px solid transparent;
+      border-radius: var(--radius-md);
+      padding: 1rem 1rem 1rem 3.2rem;
+      font-size: 1rem;
+      font-weight: 600;
       color: var(--text);
-      transition: border-color 0.2s, box-shadow 0.2s;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
       outline: none;
       font-family: var(--font);
     }
@@ -314,85 +294,49 @@
 
     .form-input:focus {
       border-color: var(--red);
-      box-shadow: 0 0 0 3px rgba(227,6,19,0.1);
       background: #fff;
+      box-shadow: 0 0 0 4px rgba(227,6,19,0.08);
     }
-
-    .input-toggle {
-      position: absolute;
-      right: 1rem;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--gray-400);
-      display: flex;
-      align-items: center;
-      padding: 0;
-      transition: color 0.2s;
-    }
-
-    .input-toggle:hover { color: var(--gray-600); }
-
-    .form-options {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 1.5rem;
-    }
-
-    .remember-label {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      font-size: 0.82rem;
-      color: var(--gray-600);
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .remember-label input[type="checkbox"] {
-      accent-color: var(--red);
-      width: 15px; height: 15px;
-    }
-
-    .forgot-link {
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--red);
-      text-decoration: none;
-    }
-
-    .forgot-link:hover { text-decoration: underline; }
 
     .btn-jugar {
       width: 100%;
-      padding: 1rem;
-      border-radius: var(--radius-sm);
+      padding: 1.1rem;
+      border-radius: var(--radius-md);
       background: var(--red);
       color: #fff;
       font-size: 1.05rem;
-      font-weight: 700;
-      letter-spacing: 0.02em;
+      font-weight: 800;
+      letter-spacing: 0.03em;
       transition: all 0.25s ease;
       box-shadow: 0 4px 20px rgba(227,6,19,0.35);
       border: none;
       cursor: pointer;
       font-family: var(--font);
-      margin-bottom: 1.25rem;
+      margin-top: 0.5rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-jugar::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 60%);
     }
 
     .btn-jugar:hover {
       background: var(--red-dark);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 28px rgba(227,6,19,0.45);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(227,6,19,0.45);
     }
 
-    .btn-jugar:active { transform: translateY(0); }
+    .btn-jugar:active { transform: translateY(0); box-shadow: 0 2px 10px rgba(227,6,19,0.3); }
 
     .register-link {
       text-align: center;
       font-size: 0.85rem;
-      color: var(--gray-600);
+      color: var(--gray-400);
     }
 
     .register-link a {
@@ -416,16 +360,36 @@
       font-weight: 500;
     }
 
+    .login-divider {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 1.5rem 0;
+      color: var(--gray-400);
+      font-size: 0.78rem;
+    }
+
+    .login-divider::before,
+    .login-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gray-200);
+    }
+
     /* ---- Responsive ---- */
     @media (max-width: 767px) {
       #view-login.active { flex-direction: column; }
-      .login-left { width: 100%; min-height: 280px; padding: 2rem 1.5rem 0; }
+      .login-left { width: 100%; min-height: 240px; }
+      .login-left-content { padding: 2rem; }
       .login-headline { font-size: 1.9rem; }
+      .login-desc { display: none; }
+      .login-left-logo { height: 44px; top: 1.25rem; left: 1.5rem; }
       .login-right { padding: 2rem 1.5rem; }
-      .login-illustrations { height: 110px; }
+      .login-right-logo { display: block; }
     }
 
-    /* Legacy selector kept for nothing — merged above */
+    /* Legacy placeholder — merged above */
     .login-bg-pattern {
       position: absolute;
       inset: 0;
@@ -1761,128 +1725,53 @@
 ============================================= -->
 <div id="view-login" class="view active">
 
-  <!-- ===== LEFT PANEL ===== -->
+  <!-- ===== LEFT PANEL: login.png background ===== -->
   <div class="login-left">
-    <div class="login-dots" aria-hidden="true"></div>
+    <div class="login-left-overlay" aria-hidden="true"></div>
 
     <img src="logo.png" alt="Mega Vital" class="login-left-logo" />
 
     <div class="login-left-content">
       <span class="login-eyebrow">Mega Mundial 2026</span>
-      <h1 class="login-headline">
-        Tu pronóstico<br>vale oro
-        <span class="candy-inline" aria-hidden="true">
-          <!-- Candy SVG -->
-          <svg width="38" height="32" viewBox="0 0 38 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="19" cy="16" rx="11" ry="9" fill="#F9B700"/>
-            <ellipse cx="19" cy="16" rx="7" ry="5.5" fill="#FFDA55"/>
-            <path d="M4 8 C7 4, 10 6, 8 10 C6 14, 2 13, 4 8Z" fill="#F9B700" transform="rotate(-30 8 10)"/>
-            <path d="M34 8 C31 4, 28 6, 30 10 C32 14, 36 13, 34 8Z" fill="#F9B700" transform="rotate(30 30 10)"/>
-            <path d="M2 12 Q6 10 4 16 Q2 22 6 20" stroke="#FFDA55" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-            <path d="M36 12 Q32 10 34 16 Q36 22 32 20" stroke="#FFDA55" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-          </svg>
-        </span>
-      </h1>
-      <p class="login-desc">Cada acierto suma puntos y premios Mega Vital. ¡No dejes pasar la fecha!</p>
-    </div>
-
-    <!-- Illustrations -->
-    <div class="login-illustrations" aria-hidden="true">
-
-      <!-- Lollipop -->
-      <svg class="illus-lollipop" width="44" height="110" viewBox="0 0 44 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <line x1="22" y1="44" x2="22" y2="108" stroke="rgba(255,255,255,0.55)" stroke-width="3.5" stroke-linecap="round"/>
-        <circle cx="22" cy="22" r="21" fill="rgba(255,255,255,0.12)"/>
-        <circle cx="22" cy="22" r="21" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" fill="none"/>
-        <circle cx="22" cy="22" r="14" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" fill="none"/>
-        <circle cx="22" cy="22" r="8"  stroke="rgba(255,255,255,0.25)" stroke-width="1.5" fill="none"/>
-        <circle cx="22" cy="22" r="3.5" fill="rgba(255,255,255,0.5)"/>
-      </svg>
-
-      <!-- Football with bounce -->
-      <div class="illus-ball-wrap">
-        <svg class="illus-ball" width="78" height="78" viewBox="0 0 78 78" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="39" cy="39" r="37" fill="white"/>
-          <circle cx="39" cy="39" r="37" fill="none" stroke="rgba(200,200,200,0.5)" stroke-width="1"/>
-          <!-- Pentagon patches -->
-          <path d="M39 13 L50 21 L46 33 L32 33 L28 21 Z" fill="#1a1a1a"/>
-          <path d="M60 28 L67 39 L61 50 L49 47 L46 33 L56 23 Z" fill="#1a1a1a"/>
-          <path d="M59 54 L51 64 L39 64 L33 54 L46 47 L61 50 Z" fill="#1a1a1a"/>
-          <path d="M36 64 L24 64 L16 54 L20 43 L33 46 L39 56 Z" fill="#1a1a1a"/>
-          <path d="M13 43 L11 31 L20 23 L30 28 L32 41 L19 48 Z" fill="#1a1a1a"/>
-        </svg>
-        <div class="illus-ball-shadow"></div>
-      </div>
-
-      <!-- Candy (wrapped) -->
-      <svg class="illus-candy" width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <ellipse cx="26" cy="26" rx="14" ry="11" fill="#FF6B9D"/>
-        <ellipse cx="26" cy="26" rx="9" ry="7" fill="#FF9CBB"/>
-        <path d="M6 18 C10 12, 15 15, 12 20 C9 25, 4 23, 6 18Z" fill="#FF6B9D"/>
-        <path d="M46 18 C42 12, 37 15, 40 20 C43 25, 48 23, 46 18Z" fill="#FF6B9D"/>
-        <path d="M4 20 Q8 18 6 24 Q4 30 8 28" stroke="#FF9CBB" stroke-width="2" stroke-linecap="round" fill="none"/>
-        <path d="M48 20 Q44 18 46 24 Q48 30 44 28" stroke="#FF9CBB" stroke-width="2" stroke-linecap="round" fill="none"/>
-      </svg>
-
+      <h1 class="login-headline">Tu pronóstico<br>vale oro</h1>
+      <p class="login-desc">Predice los partidos del Mundial, suma puntos y gana premios en Gimnasio Mega Vital.</p>
     </div>
   </div>
 
-  <!-- ===== RIGHT PANEL ===== -->
+  <!-- ===== RIGHT PANEL: solo nombre ===== -->
   <div class="login-right">
     <div class="login-form-wrap">
-      <h2>Inicia sesión</h2>
+
+      <!-- Logo visible en mobile -->
+      <img src="logo.png" alt="Mega Vital" class="login-right-logo" />
+
+      <h2>Bienvenido</h2>
+      <p class="login-form-tagline">Ingresa tu nombre para comenzar a jugar</p>
 
       <form id="login-form" novalidate>
         <div class="login-error" id="login-error">
-          Credenciales inválidas. Intenta de nuevo.
+          Ingresa tu nombre completo para continuar.
         </div>
 
-        <!-- Cédula -->
         <div class="form-group">
-          <label class="form-label" for="cedula">Número de cédula</label>
+          <label class="form-label" for="full-name">Nombre completo</label>
           <div class="input-wrap">
             <span class="input-icon-left">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>
-                <line x1="6" y1="15" x2="10" y2="15"/><line x1="6" y1="18" x2="13" y2="18"/>
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
               </svg>
             </span>
-            <input class="form-input" type="text" id="cedula" name="cedula"
-              placeholder="1.012.345.678" autocomplete="off" inputmode="numeric" />
+            <input class="form-input" type="text" id="full-name" name="full-name"
+              placeholder="Ej: Carlos Rodríguez" autocomplete="name" autocapitalize="words" />
           </div>
         </div>
 
-        <!-- ID empresarial -->
-        <div class="form-group">
-          <label class="form-label" for="employee-id">ID de miembro</label>
-          <div class="input-wrap">
-            <span class="input-icon-left">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              </svg>
-            </span>
-            <input class="form-input" type="text" id="employee-id" name="employee-id"
-              placeholder="MV-00000" autocomplete="off" />
-            <button type="button" class="input-toggle" id="toggle-id" aria-label="Mostrar/ocultar ID">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
-                <line x1="1" y1="1" x2="23" y2="23"/>
-              </svg>
-            </button>
-          </div>
-        </div>
+        <button type="submit" class="btn-jugar">Entrar al torneo &nbsp;&rarr;</button>
 
-        <!-- Options row -->
-        <div class="form-options">
-          <label class="remember-label">
-            <input type="checkbox" /> Recordar mi cédula
-          </label>
-          <a href="#" class="forgot-link">¿Olvidaste tu ID?</a>
-        </div>
+        <div class="login-divider">o</div>
 
-        <button type="submit" class="btn-jugar">¡A jugar! &nbsp;&rarr;</button>
-
-        <p class="register-link">¿Eres nuevo en Mega Mundial? <a href="#">Regístrate aquí</a></p>
+        <p class="register-link">¿No estás inscrito? <a href="#">Regístrate aquí</a></p>
       </form>
     </div>
   </div>
@@ -2510,38 +2399,42 @@
   }
 
   /* =============================================
-     LOGIN
+     LOGIN — solo nombre completo
   ============================================= */
   const loginForm  = document.getElementById('login-form');
   const loginError = document.getElementById('login-error');
 
   loginForm.addEventListener('submit', function(e) {
     e.preventDefault();
-    const cedula = document.getElementById('cedula').value.trim();
-    const empId  = document.getElementById('employee-id').value.trim();
+    const fullName = document.getElementById('full-name').value.trim();
 
-    // Basic validation
-    if (!cedula || !empId) {
+    if (!fullName || fullName.length < 3) {
       loginError.style.display = 'block';
-      loginError.textContent = 'Por favor completa todos los campos.';
+      loginError.textContent = 'Ingresa tu nombre completo para continuar.';
       return;
     }
 
-    if (cedula.length < 6) {
-      loginError.style.display = 'block';
-      loginError.textContent = 'La cédula debe tener al menos 6 dígitos.';
-      return;
-    }
-
-    // Simulate auth (any valid-looking credentials work)
     loginError.style.display = 'none';
+
+    // Extraer primer nombre e iniciales del nombre completo
+    const parts    = fullName.split(' ').filter(Boolean);
+    const firstName = parts[0];
+    const initials  = parts.slice(0, 2).map(p => p[0].toUpperCase()).join('');
+
+    state.user.name     = firstName;
+    state.user.fullName = fullName;
+    state.user.initials = initials || fullName[0].toUpperCase();
+
     doLogin();
   });
 
   function doLogin() {
-    // Transition: fade out login
     const loginView = document.getElementById('view-login');
     const appShell  = document.getElementById('app-shell');
+
+    // Actualizar UI con el nombre real
+    document.getElementById('user-name').textContent = state.user.name;
+    document.getElementById('nav-avatar').textContent = state.user.initials;
 
     loginView.style.transition = 'opacity 0.5s ease';
     loginView.style.opacity = '0';
@@ -2561,7 +2454,7 @@
       });
 
       state.loggedIn = true;
-      showToast('¡Bienvenido a Mega Mundial, ' + state.user.name + '!');
+      showToast('Bienvenido, ' + state.user.name + '!');
     }, 400);
   }
 
@@ -2708,23 +2601,11 @@
     });
   });
 
-  /* =============================================
-     DEMO: Allow pressing Enter on login for quick flow
-  ============================================= */
-  document.getElementById('cedula').addEventListener('keydown', e => {
-    if (e.key === 'Enter') document.getElementById('employee-id').focus();
+  // Autofocus nombre al cargar
+  document.addEventListener('DOMContentLoaded', () => {
+    const nameInput = document.getElementById('full-name');
+    if (nameInput) nameInput.focus();
   });
-
-  // Toggle ID visibility
-  const toggleBtn = document.getElementById('toggle-id');
-  const empInput  = document.getElementById('employee-id');
-  if (toggleBtn) {
-    toggleBtn.addEventListener('click', () => {
-      const isText = empInput.type === 'text';
-      empInput.type = isText ? 'password' : 'text';
-      toggleBtn.querySelector('svg').style.opacity = isText ? '0.4' : '1';
-    });
-  }
 </script>
 
 </body>
