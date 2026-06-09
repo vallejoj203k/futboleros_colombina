@@ -605,6 +605,13 @@
 
     .hist-list { display: flex; flex-direction: column; gap: 0.75rem; }
 
+    /* ── GLOBAL LOADER ── */
+    #app-loader { position:fixed;inset:0;z-index:999;background:rgba(255,255,255,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;backdrop-filter:blur(6px);transition:opacity .3s; }
+    #app-loader.hidden { opacity:0;pointer-events:none; }
+    .loader-spinner { width:44px;height:44px;border:4px solid var(--gray-200);border-top-color:var(--red);border-radius:50%;animation:spin .7s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .loader-text { font-size:.88rem;font-weight:600;color:var(--gray-500); }
+
     /* ── TOURNAMENT BRACKET ── */
     .bracket-progress { display: flex; align-items: center; gap: 0; margin-bottom: 1.5rem; overflow-x: auto; padding-bottom: 0.25rem; }
     .bp-stage { display: flex; align-items: center; gap: 0; flex-shrink: 0; }
@@ -1121,9 +1128,13 @@
         <!-- MONTHLY CALENDAR WIDGET -->
         <div class="month-calendar">
           <div class="month-cal-header">
-            <div>
-              <div class="month-cal-title">Junio 2026</div>
-              <div class="month-cal-subtitle">Toca un día para ver sus partidos</div>
+            <div style="display:flex;align-items:center;gap:.5rem">
+              <button id="cal-prev" onclick="calMonth='Jun';renderMonthCalendar()" style="background:var(--gray-100);border-radius:8px;padding:.25rem .6rem;font-size:.9rem;visibility:hidden">‹</button>
+              <div>
+                <div class="month-cal-title">Junio 2026</div>
+                <div class="month-cal-subtitle">Toca un día para ver sus partidos</div>
+              </div>
+              <button id="cal-next" onclick="calMonth='Jul';renderMonthCalendar()" style="background:var(--gray-100);border-radius:8px;padding:.25rem .6rem;font-size:.9rem">›</button>
             </div>
             <button class="month-cal-clear" id="cal-clear-btn" onclick="clearDayFilter()">Limpiar filtro</button>
           </div>
@@ -1131,7 +1142,7 @@
           <div class="cal-legend">
             <div class="cal-legend-item"><div class="cal-legend-swatch" style="background:rgba(227,6,19,0.1)"></div> Con partidos</div>
             <div class="cal-legend-item"><div class="cal-legend-swatch" style="background:var(--red)"></div> Día seleccionado</div>
-            <div class="cal-legend-item"><div class="cal-legend-swatch" style="background:var(--white); box-shadow: inset 0 0 0 2px var(--yellow)"></div> Hoy (Jun 9)</div>
+            <div class="cal-legend-item"><div class="cal-legend-swatch" style="background:var(--white); box-shadow: inset 0 0 0 2px var(--yellow)"></div> Hoy</div>
           </div>
         </div>
 
@@ -1334,6 +1345,12 @@
 
     </div>
   </main>
+</div>
+
+<!-- GLOBAL LOADER -->
+<div id="app-loader">
+  <div class="loader-spinner"></div>
+  <div class="loader-text">Cargando...</div>
 </div>
 
 <!-- RULES MODAL -->
@@ -1632,7 +1649,7 @@ MATCHES.forEach(function(m) { m.resultPred = null; });
 
 var currentGroupFilter = 'all';
 var adminGroupFilter = 'all';
-var currentDayFilter = null;
+var currentDayFilter = { month: null, day: null };
 var STATUS_ES = { abierto: 'Abierto', cerrado: 'Cerrado', finalizado: 'Finalizado' };
 
 /* =============================================
@@ -1677,6 +1694,23 @@ $('#show-user').addEventListener('click', function() {
   $('#login-user-form').style.display = 'block';
   $('#admin-error').classList.remove('show');
 });
+
+/* =============================================
+   LOADER
+============================================= */
+function showLoader(msg) {
+  var el = document.getElementById('app-loader');
+  if (!el) return;
+  var t = el.querySelector('.loader-text');
+  if (t) t.textContent = msg || 'Cargando...';
+  el.classList.remove('hidden');
+}
+function hideLoader() {
+  var el = document.getElementById('app-loader');
+  if (el) el.classList.add('hidden');
+}
+// Hide immediately if JS runs — only show when explicitly called
+hideLoader();
 
 /* =============================================
    API LAYER
@@ -1761,12 +1795,15 @@ $('#user-form').addEventListener('submit', function(e) {
     $('#nav-avatar').textContent = ini;
 
     localStorage.setItem('mv_session', JSON.stringify({ id: user.id, nombre: user.nombre }));
+    showLoader('Cargando partidos...');
     loadAppData(user.id).then(function() {
       updateUserPts();
+      hideLoader();
       showView('app-shell');
       switchTab('partidos');
       toast('Bienvenido, ' + first);
     }).catch(function(e) {
+      hideLoader();
       toast('Error cargando datos: ' + e.message);
       showView('app-shell');
       switchTab('partidos');
@@ -2105,67 +2142,85 @@ var DATE_LABELS = {
   'Jun 15':'Lun 15 Jun','Jun 16':'Mar 16 Jun','Jun 17':'Mié 17 Jun','Jun 18':'Jue 18 Jun',
   'Jun 19':'Vie 19 Jun','Jun 20':'Sáb 20 Jun','Jun 21':'Dom 21 Jun','Jun 22':'Lun 22 Jun',
   'Jun 23':'Mar 23 Jun','Jun 24':'Mié 24 Jun','Jun 25':'Jue 25 Jun','Jun 26':'Vie 26 Jun',
-  'Jun 27':'Sáb 27 Jun'
+  'Jun 27':'Sáb 27 Jun',
+  'Jul 1':'Mié 1 Jul','Jul 2':'Jue 2 Jul','Jul 3':'Vie 3 Jul','Jul 4':'Sáb 4 Jul',
+  'Jul 5':'Dom 5 Jul','Jul 6':'Lun 6 Jul','Jul 7':'Mar 7 Jul','Jul 8':'Mié 8 Jul',
+  'Jul 9':'Jue 9 Jul','Jul 10':'Vie 10 Jul','Jul 11':'Sáb 11 Jul','Jul 12':'Dom 12 Jul',
+  'Jul 13':'Lun 13 Jul','Jul 14':'Mar 14 Jul','Jul 15':'Mié 15 Jul','Jul 16':'Jue 16 Jul',
+  'Jul 17':'Vie 17 Jul','Jul 18':'Sáb 18 Jul','Jul 19':'Dom 19 Jul'
 };
 
+/* Calendar config:
+   Jun 2026: 30 days, starts Monday (offset 0)
+   Jul 2026: 31 days, starts Wednesday (offset 2) */
+var CAL_CONFIG = {
+  Jun: { name:'Junio 2026',  prefix:'Jun', days:30, offset:0, today:9  },
+  Jul: { name:'Julio 2026',  prefix:'Jul', days:31, offset:2, today:null }
+};
+var calMonth = 'Jun'; // currently displayed month
+
 /* =============================================
-   MONTHLY CALENDAR WIDGET — June 2026
-   June 1 = Monday (firstDayOfWeek = 0)
+   MONTHLY CALENDAR WIDGET
 ============================================= */
 function renderMonthCalendar() {
   var container = $('#month-cal-grid');
   if (!container) return;
 
-  // Count matches per day for current group filter
+  var cfg = CAL_CONFIG[calMonth];
+
+  // Update header title
+  var titleEl = $('.month-cal-title');
+  if (titleEl) titleEl.textContent = cfg.name;
+
+  // Show/hide prev-next arrows
+  var prevBtn = document.getElementById('cal-prev');
+  var nextBtn = document.getElementById('cal-next');
+  if (prevBtn) prevBtn.style.visibility = calMonth === 'Jun' ? 'hidden' : 'visible';
+  if (nextBtn) nextBtn.style.visibility = calMonth === 'Jul' ? 'hidden' : 'visible';
+
+  // Count matches per day for selected month + group filter
   var matchesByDay = {};
   MATCHES.forEach(function(m) {
     if (currentGroupFilter !== 'all' && m.group !== currentGroupFilter) return;
-    var day = parseInt(m.date.split(' ')[1], 10);
+    var parts = m.date.split(' ');
+    if (parts[0] !== cfg.prefix) return;
+    var day = parseInt(parts[1], 10);
     matchesByDay[day] = (matchesByDay[day] || 0) + 1;
   });
 
-  var today = 9; // June 9, 2026 (current date from context)
   var html = '';
-
-  // Weekday headers (Mon–Sun in Spanish)
   ['Lu','Ma','Mi','Ju','Vi','Sá','Do'].forEach(function(d) {
     html += '<div class="cal-weekday">' + d + '</div>';
   });
+  for (var e = 0; e < cfg.offset; e++) html += '<div class="cal-cell other-month"></div>';
 
-  // June 1, 2026 = Monday → offset 0
-  var firstDayOffset = 0;
-  for (var e = 0; e < firstDayOffset; e++) {
-    html += '<div class="cal-cell other-month"></div>';
-  }
-
-  for (var day = 1; day <= 30; day++) {
+  for (var day = 1; day <= cfg.days; day++) {
     var cnt = matchesByDay[day] || 0;
     var cls = 'cal-cell';
     if (cnt > 0) cls += ' has-matches';
-    if (day === today) cls += ' today-mark';
-    if (day === currentDayFilter) cls += ' active-day';
-
-    html += '<div class="' + cls + '"' + (cnt > 0 ? ' onclick="filterByDay(' + day + ')" title="' + cnt + ' partido' + (cnt > 1 ? 's' : '') + '"' : '') + '>' +
+    if (cfg.today && day === cfg.today) cls += ' today-mark';
+    if (calMonth === currentDayFilter.month && day === currentDayFilter.day) cls += ' active-day';
+    html += '<div class="' + cls + '"' +
+      (cnt > 0 ? ' onclick="filterByDay(\'' + cfg.prefix + '\',' + day + ')" title="' + cnt + ' partido' + (cnt>1?'s':'') + '"' : '') + '>' +
       '<span class="cal-day-num">' + day + '</span>' +
       (cnt > 0 ? '<span class="cal-match-dot">' + cnt + '</span>' : '') +
     '</div>';
   }
-
   container.innerHTML = html;
 
   var clearBtn = $('#cal-clear-btn');
-  if (clearBtn) clearBtn.classList.toggle('visible', currentDayFilter !== null);
+  if (clearBtn) clearBtn.classList.toggle('visible', currentDayFilter.day !== null);
 }
 
-function filterByDay(day) {
-  currentDayFilter = (currentDayFilter === day) ? null : day;
+function filterByDay(month, day) {
+  var same = currentDayFilter.month === month && currentDayFilter.day === day;
+  currentDayFilter = same ? { month: null, day: null } : { month: month, day: day };
   renderMonthCalendar();
-  // Switch to Partidos tab with day filter applied
   switchTab('partidos');
 }
 
 function clearDayFilter() {
-  currentDayFilter = null;
+  currentDayFilter = { month: null, day: null };
   renderMonthCalendar();
 }
 
@@ -2174,9 +2229,9 @@ function renderMatches(groupFilter) {
 
   var list = MATCHES.filter(function(m) {
     if (currentGroupFilter !== 'all' && m.group !== currentGroupFilter) return false;
-    if (currentDayFilter !== null) {
-      var day = parseInt(m.date.split(' ')[1], 10);
-      if (day !== currentDayFilter) return false;
+    if (currentDayFilter.day !== null) {
+      var parts = m.date.split(' ');
+      if (parts[0] !== currentDayFilter.month || parseInt(parts[1], 10) !== currentDayFilter.day) return false;
     }
     return true;
   });
@@ -2208,7 +2263,7 @@ function renderMatches(groupFilter) {
   $('#matches-grid').innerHTML = html;
 
   var lbl = currentGroupFilter === 'all' ? 'Fase de Grupos' : 'Grupo ' + currentGroupFilter;
-  if (currentDayFilter) lbl += ' &bull; ' + DATE_LABELS['Jun ' + currentDayFilter];
+  if (currentDayFilter.day) lbl += ' &bull; ' + (DATE_LABELS[currentDayFilter.month + ' ' + currentDayFilter.day] || currentDayFilter.month + ' ' + currentDayFilter.day);
   $('#matches-count').textContent = list.length + ' partidos — ';
   $('#matches-count').innerHTML = list.length + ' partidos &mdash; ' + lbl;
 }
@@ -2440,7 +2495,8 @@ $all('#admin-group-filter .group-btn').forEach(function(b) {
 ============================================= */
 function renderChart() {
   var top5 = leaderboard.slice(0, 5);
-  var max = top5[0].pts;
+  if (!top5.length) { $('#chart-rows').innerHTML = '<p style="color:var(--gray-500);font-size:.85rem">Aún no hay puntos.</p>'; return; }
+  var max = Math.max(top5[0].pts, 1); // avoid division by zero
   var html = '';
   top5.forEach(function(m) {
     html += '<div class="chart-row">' +
@@ -2769,14 +2825,16 @@ setInterval(function() {
 ============================================= */
 (function restoreSession() {
   var raw = localStorage.getItem('mv_session');
-  if (!raw) { showView('view-login'); return; }
+  if (!raw) { hideLoader(); showView('view-login'); return; }
   var saved;
-  try { saved = JSON.parse(raw); } catch(e) { localStorage.removeItem('mv_session'); showView('view-login'); return; }
-  if (!saved || !saved.nombre) { localStorage.removeItem('mv_session'); showView('view-login'); return; }
+  try { saved = JSON.parse(raw); } catch(e) { localStorage.removeItem('mv_session'); hideLoader(); showView('view-login'); return; }
+  if (!saved || !saved.nombre) { localStorage.removeItem('mv_session'); hideLoader(); showView('view-login'); return; }
 
+  showLoader('Restaurando sesión...');
   // Silently verify the user still exists and is active
   api.post('/api/auth/login', { nombre: saved.nombre }).then(function(res) {
     if (!res.ok) {
+      hideLoader();
       localStorage.removeItem('mv_session');
       showView('view-login');
       return;
@@ -2790,13 +2848,15 @@ setInterval(function() {
     $('#user-name').textContent = first;
     $('#user-pts').textContent = '0 pts';
     $('#nav-avatar').textContent = ini;
+    showLoader('Restaurando sesión...');
     loadAppData(user.id).then(function() {
       updateUserPts();
+      hideLoader();
       showView('app-shell');
       switchTab('partidos');
-    }).catch(function() { showView('app-shell'); switchTab('partidos'); });
+    }).catch(function() { hideLoader(); showView('app-shell'); switchTab('partidos'); });
   }).catch(function() {
-    // Network error — show login so user can retry
+    hideLoader();
     localStorage.removeItem('mv_session');
     showView('view-login');
   });
