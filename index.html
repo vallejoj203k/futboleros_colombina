@@ -339,58 +339,65 @@
     .flag-TUN { background: radial-gradient(circle, #fff 30%, #E70013 30%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
     .flag-QAT { background: linear-gradient(90deg, #fff 25%, #8A1538 25%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
     .flag-ROM { background: linear-gradient(90deg, #002B7F 33%, #FCD116 33%, #FCD116 66%, #CE1126 66%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
+    .flag-CZE { background: linear-gradient(135deg, #11457E 40%, #fff 40%, #fff 50%, #D7141A 50%); color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.4); }
+    .flag-BIH { background: linear-gradient(145deg, #002395 60%, #FECB00 60%); color: #fff; }
+    .flag-HAI { background: linear-gradient(180deg, #00209F 50%, #D21034 50%); color: #fff; }
+    .flag-CUW { background: #002B7F; color: #F9E300; }
+    .flag-SWE { background: #006AA7; color: #FECC02; }
+    .flag-NZL { background: linear-gradient(160deg, #00247D 0%, #CC142B 100%); color: #fff; }
+    .flag-CPV { background: #003893; color: #F7D116; }
+    .flag-IRQ { background: linear-gradient(180deg, #CE1126 33%, #fff 33%, #fff 66%, #000 66%); color: #007A3D; }
+    .flag-NOR { background: #EF2B2D; color: #fff; }
+    .flag-ALG { background: linear-gradient(90deg, #006233 50%, #fff 50%); color: #D21034; }
+    .flag-JOR { background: linear-gradient(180deg, #007A3D 33%, #fff 33%, #fff 66%, #000 66%); color: #CE1126; }
+    .flag-COD { background: linear-gradient(135deg, #007FFF 60%, #F7D618 60%); color: #CE1126; }
+    .flag-UZB { background: linear-gradient(180deg, #1EBFEE 33%, #fff 33%, #fff 66%, #1FAD50 66%); color: #fff; }
 
-    /* MATCH CARDS */
-    .cards-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
-    .match-card {
-      background: var(--white); border-radius: var(--radius-lg);
-      box-shadow: 0 2px 12px rgba(0,0,0,0.07); overflow: hidden;
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-      animation: fadeInUp 0.5s ease both; border: 1px solid var(--gray-200);
+    /* CALENDAR */
+    .cards-grid { display: flex; flex-direction: column; gap: 1rem; }
+    .calendar-day { background: var(--white); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--gray-200); animation: fadeInUp 0.5s ease both; }
+    .calendar-day-header { background: linear-gradient(135deg, var(--red) 0%, #b8040f 100%); color: #fff; padding: 0.7rem 1.25rem; display: flex; align-items: center; justify-content: space-between; }
+    .cal-date-text { font-size: 0.9rem; font-weight: 800; letter-spacing: 0.01em; }
+    .cal-day-count { font-size: 0.72rem; font-weight: 600; opacity: 0.75; }
+    .match-row { display: grid; grid-template-columns: 64px 1fr auto; align-items: center; padding: 0.9rem 1.25rem; gap: 1rem; border-bottom: 1px solid var(--gray-100); transition: background 0.15s; }
+    .match-row:last-child { border-bottom: none; }
+    .match-row:hover { background: #fafafa; }
+    .match-time-col { text-align: center; flex-shrink: 0; }
+    .match-time-main { font-size: 1.05rem; font-weight: 800; color: var(--red); line-height: 1; }
+    .match-time-zone { font-size: 0.58rem; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 0.1rem; }
+    .match-center { flex: 1; min-width: 0; }
+    .match-group-pill { display: inline-block; font-size: 0.6rem; font-weight: 700; color: var(--gray-600); background: var(--gray-100); padding: 0.15rem 0.55rem; border-radius: 999px; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .match-teams-row { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 0.6rem; }
+    .match-team { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; flex: 1; min-width: 0; }
+    .match-team-name { font-size: 0.75rem; font-weight: 700; color: var(--text); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 96px; }
+    .match-vs { font-size: 0.65rem; font-weight: 800; color: var(--gray-400); letter-spacing: 0.1em; flex-shrink: 0; }
+    .match-inputs { display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+    .match-score-input { width: 46px; height: 46px; border: 2px solid var(--gray-200); border-radius: 10px; font-size: 1.3rem; font-weight: 900; color: var(--text); text-align: center; background: var(--gray-100); transition: border-color 0.2s, box-shadow 0.2s, background 0.2s; outline: none; -moz-appearance: textfield; appearance: textfield; font-family: var(--font); }
+    .match-score-input::-webkit-inner-spin-button, .match-score-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+    .match-score-input:focus { border-color: var(--red); background: #fff; box-shadow: 0 0 0 3px rgba(227,6,19,0.1); }
+    .match-score-input:disabled { opacity: 0.6; cursor: not-allowed; }
+    .match-score-dash { font-size: 1.3rem; font-weight: 800; color: var(--gray-400); }
+    .match-right-col { display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; flex-shrink: 0; min-width: 80px; }
+    .match-save-btn { padding: 0.45rem 0.85rem; border-radius: 999px; background: linear-gradient(135deg, var(--red) 0%, #b8040f 100%); color: #fff; font-size: 0.7rem; font-weight: 700; transition: all 0.2s; box-shadow: 0 2px 8px rgba(227,6,19,0.3); white-space: nowrap; font-family: var(--font); }
+    .match-save-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(227,6,19,0.4); }
+    .match-save-btn.pulse { animation: pulse 0.5s ease; }
+    .match-save-feedback { font-size: 0.68rem; font-weight: 600; color: var(--green); display: none; text-align: right; }
+    .match-save-feedback.show { display: block; }
+    .match-pred-saved { font-size: 0.72rem; font-weight: 700; color: var(--gray-600); background: var(--yellow-bg); padding: 0.25rem 0.6rem; border-radius: 6px; text-align: right; }
+    .match-result-score { font-size: 0.82rem; font-weight: 800; color: var(--text); background: var(--gray-100); padding: 0.25rem 0.6rem; border-radius: 6px; text-align: center; white-space: nowrap; }
+    .match-pts-earned { font-size: 0.72rem; font-weight: 800; color: var(--yellow-dark); }
+    @media (max-width: 600px) {
+      .match-row { grid-template-columns: 52px 1fr; gap: 0.6rem; padding: 0.75rem 1rem; }
+      .match-right-col { display: none; }
+      .match-team-name { max-width: 72px; font-size: 0.68rem; }
+      .match-score-input { width: 38px; height: 38px; font-size: 1.1rem; }
     }
-    .match-card:nth-child(1){animation-delay:.05s}
-    .match-card:nth-child(2){animation-delay:.1s}
-    .match-card:nth-child(3){animation-delay:.15s}
-    .match-card:nth-child(4){animation-delay:.2s}
-    .match-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.13); }
-
-    .match-card-header { display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1.25rem; background: var(--gray-100); border-bottom: 1px solid var(--gray-200); }
-    .match-group-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 0.2rem; }
-    .match-meta { display: flex; flex-direction: column; font-size: 0.82rem; color: var(--gray-600); font-weight: 600; }
 
     .status-badge { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.3rem 0.75rem; border-radius: 999px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
     .status-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
     .status-abierto { background: var(--green-bg); color: var(--green); }
     .status-cerrado { background: #fdecea; color: var(--red); }
     .status-finalizado { background: var(--gray-bg); color: var(--gray-400); }
-
-    .match-card-body { padding: 1.25rem; }
-    .teams-row { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1.25rem; }
-    .team { display: flex; flex-direction: column; align-items: center; gap: 0.35rem; flex: 1; min-width: 0; }
-    .team-name { font-size: 0.85rem; font-weight: 700; color: var(--text); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
-    .vs-divider { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; flex-shrink: 0; }
-    .vs-text { font-size: 0.7rem; font-weight: 800; color: var(--gray-400); letter-spacing: 0.1em; text-transform: uppercase; }
-    .vs-line { width: 1px; height: 24px; background: var(--gray-200); }
-
-    .score-row { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 1rem; }
-    .score-input {
-      width: 60px; height: 60px; border: 2px solid var(--gray-200);
-      border-radius: var(--radius-md); font-size: 1.6rem; font-weight: 900;
-      color: var(--text); text-align: center; background: var(--gray-100);
-      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-      outline: none; -moz-appearance: textfield; appearance: textfield;
-    }
-    .score-input::-webkit-inner-spin-button, .score-input::-webkit-outer-spin-button { -webkit-appearance: none; }
-    .score-input:focus { border-color: var(--red); background: #fff; box-shadow: 0 0 0 3px rgba(227,6,19,0.1); }
-    .score-input:disabled { opacity: 0.6; cursor: not-allowed; }
-    .score-dash { font-size: 1.6rem; font-weight: 800; color: var(--gray-400); line-height: 1; }
-
-    .result-display { background: var(--gray-100); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 0.75rem; }
-    .result-label { font-size: 0.7rem; font-weight: 700; color: var(--gray-400); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.4rem; }
-    .result-scores { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-    .result-item { display: flex; flex-direction: column; gap: 0.2rem; }
-    .result-item-label { font-size: 0.68rem; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.05em; }
-    .result-item-score { font-size: 1.3rem; font-weight: 800; color: var(--text); }
 
     .points-earned {
       display: inline-flex; align-items: center; gap: 0.3rem;
@@ -399,10 +406,6 @@
       font-size: 0.88rem; font-weight: 800; box-shadow: 0 2px 12px rgba(249,183,0,0.5);
       animation: badgePop 0.3s ease both;
     }
-
-    .saved-pred { display: flex; align-items: center; gap: 0.5rem; background: #fff8e1; border: 1px solid rgba(249,183,0,0.3); border-radius: var(--radius-sm); padding: 0.6rem 1rem; margin-bottom: 0.75rem; }
-    .saved-pred-label { font-size: 0.75rem; font-weight: 600; color: var(--gray-600); }
-    .saved-pred-score { font-size: 1rem; font-weight: 800; color: var(--text); margin-left: auto; }
 
     .btn-save {
       width: 100%; padding: 0.8rem; border-radius: var(--radius-sm);
@@ -782,14 +785,14 @@
             <div>
               <p class="hero-eyebrow">Mundial FIFA 2026</p>
               <h1 class="hero-greeting">Hola, <span id="user-name">Ana</span>!</h1>
-              <p class="hero-sub">Llevas <strong id="user-pts">182 pts</strong> acumulados</p>
+              <p class="hero-sub">Llevas <strong id="user-pts">0 pts</strong> acumulados</p>
             </div>
             <div class="hero-stats">
-              <div class="hero-stat"><span class="hero-stat-val">7</span><span class="hero-stat-lbl">Posición</span></div>
+              <div class="hero-stat"><span class="hero-stat-val">—</span><span class="hero-stat-lbl">Posición</span></div>
               <div class="hero-stat-divider"></div>
-              <div class="hero-stat"><span class="hero-stat-val">18</span><span class="hero-stat-lbl">Aciertos</span></div>
+              <div class="hero-stat"><span class="hero-stat-val">0</span><span class="hero-stat-lbl">Aciertos</span></div>
               <div class="hero-stat-divider"></div>
-              <div class="hero-stat"><span class="hero-stat-val">4</span><span class="hero-stat-lbl">Partidos</span></div>
+              <div class="hero-stat"><span class="hero-stat-val">0</span><span class="hero-stat-lbl">Partidos</span></div>
             </div>
           </div>
           <div class="hero-accent" aria-hidden="true"></div>
@@ -835,8 +838,8 @@
             <span class="my-rank-pos">#7</span>
           </div>
           <div class="my-rank-right">
-            <div class="my-rank-stat"><span>182</span><small>pts</small></div>
-            <div class="my-rank-stat"><span>18</span><small>aciertos</small></div>
+            <div class="my-rank-stat"><span>0</span><small>pts</small></div>
+            <div class="my-rank-stat"><span>0</span><small>aciertos</small></div>
           </div>
         </div>
 
@@ -845,7 +848,7 @@
           <div class="podium-item">
             <div class="podium-avatar rank-2">CJ</div>
             <div class="podium-name">Carlos<br>Jiménez</div>
-            <div class="podium-pts">260 pts</div>
+            <div class="podium-pts">0 pts</div>
             <div class="podium-block h-2">2</div>
           </div>
           <!-- 1st -->
@@ -855,14 +858,14 @@
             </svg>
             <div class="podium-avatar rank-1">MR</div>
             <div class="podium-name">María<br>Rodríguez</div>
-            <div class="podium-pts">285 pts</div>
+            <div class="podium-pts">0 pts</div>
             <div class="podium-block h-1">1</div>
           </div>
           <!-- 3rd -->
           <div class="podium-item">
             <div class="podium-avatar rank-3">LG</div>
             <div class="podium-name">Laura<br>García</div>
-            <div class="podium-pts">241 pts</div>
+            <div class="podium-pts">0 pts</div>
             <div class="podium-block h-3">3</div>
           </div>
         </div>
@@ -878,10 +881,10 @@
         </header>
 
         <div class="stats-row">
-          <div class="stat-card"><div class="stat-value">5</div><div class="stat-label">Partidos jugados</div></div>
-          <div class="stat-card"><div class="stat-value green">2</div><div class="stat-label">Exactas</div></div>
-          <div class="stat-card"><div class="stat-value yellow">2</div><div class="stat-label">Parciales</div></div>
-          <div class="stat-card"><div class="stat-value">35</div><div class="stat-label">Puntos</div></div>
+          <div class="stat-card"><div class="stat-value">0</div><div class="stat-label">Partidos jugados</div></div>
+          <div class="stat-card"><div class="stat-value green">0</div><div class="stat-label">Exactas</div></div>
+          <div class="stat-card"><div class="stat-value yellow">0</div><div class="stat-label">Parciales</div></div>
+          <div class="stat-card"><div class="stat-value">0</div><div class="stat-label">Puntos</div></div>
         </div>
 
         <div class="hist-list">
@@ -1061,7 +1064,7 @@
 var state = {
   loggedIn: false,
   isAdmin: false,
-  user: { name: 'Ana', fullName: 'Ana López', initials: 'AL', pts: 182 },
+  user: { name: 'Ana', fullName: 'Ana López', initials: 'AL', pts: 0 },
   members: [
     { id: 1, nombre: 'Ana López',        cedula: '1020304050', estado: 'Activo' },
     { id: 2, nombre: 'Carlos Jiménez',   cedula: '1030405060', estado: 'Activo' },
@@ -1082,108 +1085,107 @@ var state = {
 };
 
 var leaderboard = [
-  { rank: 1,  name: 'María Rodríguez',  ini: 'MR', aciertos: 28, pts: 285 },
-  { rank: 2,  name: 'Carlos Jiménez',   ini: 'CJ', aciertos: 25, pts: 260 },
-  { rank: 3,  name: 'Laura García',     ini: 'LG', aciertos: 23, pts: 241 },
-  { rank: 4,  name: 'Andrés Martínez',  ini: 'AM', aciertos: 21, pts: 218 },
-  { rank: 5,  name: 'Sofía Hernández',  ini: 'SH', aciertos: 20, pts: 205 },
-  { rank: 6,  name: 'Felipe Torres',    ini: 'FT', aciertos: 19, pts: 196 },
-  { rank: 7,  name: 'Ana López',        ini: 'AL', aciertos: 18, pts: 182, you: true },
-  { rank: 8,  name: 'Diego Morales',    ini: 'DM', aciertos: 16, pts: 164 },
-  { rank: 9,  name: 'Valentina Cruz',   ini: 'VC', aciertos: 15, pts: 152 },
-  { rank: 10, name: 'Javier Peña',      ini: 'JP', aciertos: 13, pts: 138 }
+  { rank: 1,  name: 'María Rodríguez',  ini: 'MR', aciertos: 0, pts: 0 },
+  { rank: 2,  name: 'Carlos Jiménez',   ini: 'CJ', aciertos: 0, pts: 0 },
+  { rank: 3,  name: 'Laura García',     ini: 'LG', aciertos: 0, pts: 0 },
+  { rank: 4,  name: 'Andrés Martínez',  ini: 'AM', aciertos: 0, pts: 0 },
+  { rank: 5,  name: 'Sofía Hernández',  ini: 'SH', aciertos: 0, pts: 0 },
+  { rank: 6,  name: 'Felipe Torres',    ini: 'FT', aciertos: 0, pts: 0 },
+  { rank: 7,  name: 'Ana López',        ini: 'AL', aciertos: 0, pts: 0, you: true },
+  { rank: 8,  name: 'Diego Morales',    ini: 'DM', aciertos: 0, pts: 0 },
+  { rank: 9,  name: 'Valentina Cruz',   ini: 'VC', aciertos: 0, pts: 0 },
+  { rank: 10, name: 'Javier Peña',      ini: 'JP', aciertos: 0, pts: 0 }
 ];
-
-var MAX_PTS = 285;
+var MAX_PTS = 720;
 
 /* =============================================
    WORLD CUP 2026 MATCH DATASET (72 group matches)
 ============================================= */
 var MATCHES = [
-  // GROUP A
-  { id:1,  group:'A', home:'USA',    away:'Panama',   homeCls:'flag-USA', awayCls:'flag-PAN', date:'Jun 11', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:2,  group:'A', home:'Morocco',away:'Belgium',  homeCls:'flag-MAR', awayCls:'flag-BEL', date:'Jun 11', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:3,  group:'A', home:'USA',    away:'Morocco',  homeCls:'flag-USA', awayCls:'flag-MAR', date:'Jun 15', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:4,  group:'A', home:'Panama', away:'Belgium',  homeCls:'flag-PAN', awayCls:'flag-BEL', date:'Jun 15', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:5,  group:'A', home:'USA',    away:'Belgium',  homeCls:'flag-USA', awayCls:'flag-BEL', date:'Jun 19', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:6,  group:'A', home:'Panama', away:'Morocco',  homeCls:'flag-PAN', awayCls:'flag-MAR', date:'Jun 19', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  // GROUP B
-  { id:7,  group:'B', home:'Mexico', away:'Jamaica',  homeCls:'flag-MEX', awayCls:'flag-JAM', date:'Jun 12', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:8,  group:'B', home:'Poland', away:'Croatia',  homeCls:'flag-POL', awayCls:'flag-CRO', date:'Jun 12', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:9,  group:'B', home:'Mexico', away:'Poland',   homeCls:'flag-MEX', awayCls:'flag-POL', date:'Jun 16', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:10, group:'B', home:'Jamaica',away:'Croatia',  homeCls:'flag-JAM', awayCls:'flag-CRO', date:'Jun 16', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:11, group:'B', home:'Mexico', away:'Croatia',  homeCls:'flag-MEX', awayCls:'flag-CRO', date:'Jun 20', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:12, group:'B', home:'Jamaica',away:'Poland',   homeCls:'flag-JAM', awayCls:'flag-POL', date:'Jun 20', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  // GROUP C
-  { id:13, group:'C', home:'Canada', away:'Honduras', homeCls:'flag-CAN', awayCls:'flag-HON', date:'Jun 12', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:14, group:'C', home:'France', away:'Australia',homeCls:'flag-FRA', awayCls:'flag-AUS', date:'Jun 12', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:15, group:'C', home:'Canada', away:'France',   homeCls:'flag-CAN', awayCls:'flag-FRA', date:'Jun 16', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:16, group:'C', home:'Honduras',away:'Australia',homeCls:'flag-HON',awayCls:'flag-AUS', date:'Jun 16', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:17, group:'C', home:'Canada', away:'Australia',homeCls:'flag-CAN', awayCls:'flag-AUS', date:'Jun 20', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:18, group:'C', home:'Honduras',away:'France',  homeCls:'flag-HON', awayCls:'flag-FRA', date:'Jun 20', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  // GROUP D
-  { id:19, group:'D', home:'Brazil', away:'Bolivia',  homeCls:'flag-BRA', awayCls:'flag-BOL', date:'Jun 13', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:20, group:'D', home:'Serbia', away:'Switzerland',homeCls:'flag-SRB',awayCls:'flag-SUI',date:'Jun 13', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:21, group:'D', home:'Brazil', away:'Serbia',   homeCls:'flag-BRA', awayCls:'flag-SRB', date:'Jun 17', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:22, group:'D', home:'Bolivia',away:'Switzerland',homeCls:'flag-BOL',awayCls:'flag-SUI',date:'Jun 17', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:23, group:'D', home:'Brazil', away:'Switzerland',homeCls:'flag-BRA',awayCls:'flag-SUI',date:'Jun 21', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:24, group:'D', home:'Bolivia',away:'Serbia',   homeCls:'flag-BOL', awayCls:'flag-SRB', date:'Jun 21', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  // GROUP E
-  { id:25, group:'E', home:'Argentina',away:'Chile',  homeCls:'flag-ARG', awayCls:'flag-CHI', date:'Jun 13', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:26, group:'E', home:'Japan',  away:'Spain',    homeCls:'flag-JPN', awayCls:'flag-ESP', date:'Jun 13', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:27, group:'E', home:'Argentina',away:'Japan',  homeCls:'flag-ARG', awayCls:'flag-JPN', date:'Jun 17', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:28, group:'E', home:'Chile',  away:'Spain',    homeCls:'flag-CHI', awayCls:'flag-ESP', date:'Jun 17', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:29, group:'E', home:'Argentina',away:'Spain',  homeCls:'flag-ARG', awayCls:'flag-ESP', date:'Jun 21', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:30, group:'E', home:'Chile',  away:'Japan',    homeCls:'flag-CHI', awayCls:'flag-JPN', date:'Jun 21', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  // GROUP F
-  { id:31, group:'F', home:'Colombia',away:'Paraguay',homeCls:'flag-COL', awayCls:'flag-PAR', date:'Jun 14', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:32, group:'F', home:'South Korea',away:'Germany',homeCls:'flag-KOR',awayCls:'flag-GER',date:'Jun 14', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:33, group:'F', home:'Colombia',away:'South Korea',homeCls:'flag-COL',awayCls:'flag-KOR',date:'Jun 18', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:34, group:'F', home:'Paraguay',away:'Germany', homeCls:'flag-PAR', awayCls:'flag-GER', date:'Jun 18', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:35, group:'F', home:'Colombia',away:'Germany', homeCls:'flag-COL', awayCls:'flag-GER', date:'Jun 22', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:36, group:'F', home:'Paraguay',away:'South Korea',homeCls:'flag-PAR',awayCls:'flag-KOR',date:'Jun 22', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  // GROUP G
-  { id:37, group:'G', home:'Uruguay', away:'Venezuela',homeCls:'flag-URY', awayCls:'flag-VEN', date:'Jun 14', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:38, group:'G', home:'Iran',   away:'Portugal', homeCls:'flag-IRN', awayCls:'flag-POR', date:'Jun 14', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:39, group:'G', home:'Uruguay', away:'Iran',    homeCls:'flag-URY', awayCls:'flag-IRN', date:'Jun 18', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:40, group:'G', home:'Venezuela',away:'Portugal',homeCls:'flag-VEN',awayCls:'flag-POR', date:'Jun 18', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:41, group:'G', home:'Uruguay', away:'Portugal',homeCls:'flag-URY', awayCls:'flag-POR', date:'Jun 22', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:42, group:'G', home:'Venezuela',away:'Iran',   homeCls:'flag-VEN', awayCls:'flag-IRN', date:'Jun 22', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  // GROUP H
-  { id:43, group:'H', home:'Ecuador', away:'Peru',    homeCls:'flag-ECU', awayCls:'flag-PER', date:'Jun 15', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:44, group:'H', home:'Saudi Arabia',away:'England',homeCls:'flag-KSA',awayCls:'flag-ENG',date:'Jun 15', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:45, group:'H', home:'Ecuador', away:'Saudi Arabia',homeCls:'flag-ECU',awayCls:'flag-KSA',date:'Jun 19', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:46, group:'H', home:'Peru',   away:'England',  homeCls:'flag-PER', awayCls:'flag-ENG', date:'Jun 19', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:47, group:'H', home:'Ecuador', away:'England', homeCls:'flag-ECU', awayCls:'flag-ENG', date:'Jun 23', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:48, group:'H', home:'Peru',   away:'Saudi Arabia',homeCls:'flag-PER',awayCls:'flag-KSA',date:'Jun 23', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  // GROUP I
-  { id:49, group:'I', home:'Senegal', away:'Nigeria', homeCls:'flag-SEN', awayCls:'flag-NGA', date:'Jun 15', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:50, group:'I', home:'Netherlands',away:'Denmark',homeCls:'flag-NED',awayCls:'flag-DEN',date:'Jun 15', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:51, group:'I', home:'Senegal', away:'Netherlands',homeCls:'flag-SEN',awayCls:'flag-NED',date:'Jun 19', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:52, group:'I', home:'Nigeria', away:'Denmark', homeCls:'flag-NGA', awayCls:'flag-DEN', date:'Jun 19', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:53, group:'I', home:'Senegal', away:'Denmark', homeCls:'flag-SEN', awayCls:'flag-DEN', date:'Jun 23', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:54, group:'I', home:'Nigeria', away:'Netherlands',homeCls:'flag-NGA',awayCls:'flag-NED',date:'Jun 23', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  // GROUP J
-  { id:55, group:'J', home:'Cameroon',away:'Ivory Coast',homeCls:'flag-CMR',awayCls:'flag-CIV',date:'Jun 16', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:56, group:'J', home:'Austria', away:'Turkey',  homeCls:'flag-AUT', awayCls:'flag-TUR', date:'Jun 16', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:57, group:'J', home:'Cameroon',away:'Austria', homeCls:'flag-CMR', awayCls:'flag-AUT', date:'Jun 20', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:58, group:'J', home:'Ivory Coast',away:'Turkey',homeCls:'flag-CIV',awayCls:'flag-TUR', date:'Jun 20', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:59, group:'J', home:'Cameroon',away:'Turkey',  homeCls:'flag-CMR', awayCls:'flag-TUR', date:'Jun 24', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:60, group:'J', home:'Ivory Coast',away:'Austria',homeCls:'flag-CIV',awayCls:'flag-AUT',date:'Jun 24', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  // GROUP K
-  { id:61, group:'K', home:'Ghana',  away:'Egypt',    homeCls:'flag-GHA', awayCls:'flag-EGY', date:'Jun 16', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:62, group:'K', home:'Ukraine',away:'Scotland', homeCls:'flag-UKR', awayCls:'flag-SCO', date:'Jun 16', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:63, group:'K', home:'Ghana',  away:'Ukraine',  homeCls:'flag-GHA', awayCls:'flag-UKR', date:'Jun 20', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:64, group:'K', home:'Egypt',  away:'Scotland', homeCls:'flag-EGY', awayCls:'flag-SCO', date:'Jun 20', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:65, group:'K', home:'Ghana',  away:'Scotland', homeCls:'flag-GHA', awayCls:'flag-SCO', date:'Jun 24', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:66, group:'K', home:'Egypt',  away:'Ukraine',  homeCls:'flag-EGY', awayCls:'flag-UKR', date:'Jun 24', time:'21:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  // GROUP L (Netherlands B replaced with Romania)
-  { id:67, group:'L', home:'South Africa',away:'Tunisia',homeCls:'flag-RSA',awayCls:'flag-TUN',date:'Jun 17', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:68, group:'L', home:'Qatar',  away:'Romania',  homeCls:'flag-QAT', awayCls:'flag-ROM', date:'Jun 17', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:69, group:'L', home:'South Africa',away:'Qatar',homeCls:'flag-RSA',awayCls:'flag-QAT', date:'Jun 21', time:'12:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:70, group:'L', home:'Tunisia',away:'Romania',  homeCls:'flag-TUN', awayCls:'flag-ROM', date:'Jun 21', time:'15:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:71, group:'L', home:'South Africa',away:'Romania',homeCls:'flag-RSA',awayCls:'flag-ROM',date:'Jun 25', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
-  { id:72, group:'L', home:'Tunisia',away:'Qatar',    homeCls:'flag-TUN', awayCls:'flag-QAT', date:'Jun 25', time:'18:00', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null }
+  // GRUPO A
+  { id:1,  group:'A', home:'México',          away:'Sudáfrica',          homeCls:'flag-MEX', awayCls:'flag-RSA', date:'Jun 11', time:'2:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:2,  group:'A', home:'Corea del Sur',   away:'Chequia',            homeCls:'flag-KOR', awayCls:'flag-CZE', date:'Jun 11', time:'9:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:3,  group:'A', home:'Chequia',         away:'Sudáfrica',          homeCls:'flag-CZE', awayCls:'flag-RSA', date:'Jun 18', time:'11:00 AM', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:4,  group:'A', home:'México',          away:'Corea del Sur',      homeCls:'flag-MEX', awayCls:'flag-KOR', date:'Jun 18', time:'8:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:5,  group:'A', home:'Chequia',         away:'México',             homeCls:'flag-CZE', awayCls:'flag-MEX', date:'Jun 24', time:'8:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:6,  group:'A', home:'Sudáfrica',       away:'Corea del Sur',      homeCls:'flag-RSA', awayCls:'flag-KOR', date:'Jun 24', time:'8:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  // GRUPO B
+  { id:7,  group:'B', home:'Canadá',          away:'Bosnia y Herzegovina',homeCls:'flag-CAN', awayCls:'flag-BIH', date:'Jun 12', time:'2:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:8,  group:'B', home:'Catar',           away:'Suiza',              homeCls:'flag-QAT', awayCls:'flag-SUI', date:'Jun 13', time:'2:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:9,  group:'B', home:'Suiza',           away:'Bosnia y Herzegovina',homeCls:'flag-SUI', awayCls:'flag-BIH', date:'Jun 18', time:'2:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:10, group:'B', home:'Canadá',          away:'Catar',              homeCls:'flag-CAN', awayCls:'flag-QAT', date:'Jun 18', time:'5:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:11, group:'B', home:'Suiza',           away:'Canadá',             homeCls:'flag-SUI', awayCls:'flag-CAN', date:'Jun 24', time:'2:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:12, group:'B', home:'Bosnia y Herzegovina',away:'Catar',          homeCls:'flag-BIH', awayCls:'flag-QAT', date:'Jun 24', time:'2:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  // GRUPO C
+  { id:13, group:'C', home:'Brasil',          away:'Marruecos',          homeCls:'flag-BRA', awayCls:'flag-MAR', date:'Jun 13', time:'5:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:14, group:'C', home:'Haití',           away:'Escocia',            homeCls:'flag-HAI', awayCls:'flag-SCO', date:'Jun 13', time:'8:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:15, group:'C', home:'Escocia',         away:'Marruecos',          homeCls:'flag-SCO', awayCls:'flag-MAR', date:'Jun 19', time:'5:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:16, group:'C', home:'Brasil',          away:'Haití',              homeCls:'flag-BRA', awayCls:'flag-HAI', date:'Jun 19', time:'7:30 PM', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:17, group:'C', home:'Escocia',         away:'Brasil',             homeCls:'flag-SCO', awayCls:'flag-BRA', date:'Jun 24', time:'5:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:18, group:'C', home:'Marruecos',       away:'Haití',              homeCls:'flag-MAR', awayCls:'flag-HAI', date:'Jun 24', time:'5:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  // GRUPO D
+  { id:19, group:'D', home:'Estados Unidos',  away:'Paraguay',           homeCls:'flag-USA', awayCls:'flag-PAR', date:'Jun 12', time:'8:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:20, group:'D', home:'Australia',       away:'Turquía',            homeCls:'flag-AUS', awayCls:'flag-TUR', date:'Jun 13', time:'11:00 PM', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:21, group:'D', home:'Estados Unidos',  away:'Australia',          homeCls:'flag-USA', awayCls:'flag-AUS', date:'Jun 19', time:'2:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:22, group:'D', home:'Turquía',         away:'Paraguay',           homeCls:'flag-TUR', awayCls:'flag-PAR', date:'Jun 19', time:'8:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:23, group:'D', home:'Turquía',         away:'Estados Unidos',     homeCls:'flag-TUR', awayCls:'flag-USA', date:'Jun 25', time:'9:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:24, group:'D', home:'Paraguay',        away:'Australia',          homeCls:'flag-PAR', awayCls:'flag-AUS', date:'Jun 25', time:'9:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  // GRUPO E
+  { id:25, group:'E', home:'Alemania',        away:'Curazao',            homeCls:'flag-GER', awayCls:'flag-CUW', date:'Jun 14', time:'12:00 PM', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:26, group:'E', home:'Costa de Marfil', away:'Ecuador',            homeCls:'flag-CIV', awayCls:'flag-ECU', date:'Jun 14', time:'6:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:27, group:'E', home:'Alemania',        away:'Costa de Marfil',    homeCls:'flag-GER', awayCls:'flag-CIV', date:'Jun 20', time:'3:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:28, group:'E', home:'Ecuador',         away:'Curazao',            homeCls:'flag-ECU', awayCls:'flag-CUW', date:'Jun 20', time:'7:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:29, group:'E', home:'Curazao',         away:'Costa de Marfil',    homeCls:'flag-CUW', awayCls:'flag-CIV', date:'Jun 25', time:'3:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:30, group:'E', home:'Ecuador',         away:'Alemania',           homeCls:'flag-ECU', awayCls:'flag-GER', date:'Jun 25', time:'3:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  // GRUPO F
+  { id:31, group:'F', home:'Países Bajos',    away:'Japón',              homeCls:'flag-NED', awayCls:'flag-JPN', date:'Jun 14', time:'3:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:32, group:'F', home:'Suecia',          away:'Túnez',              homeCls:'flag-SWE', awayCls:'flag-TUN', date:'Jun 14', time:'9:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:33, group:'F', home:'Túnez',           away:'Japón',              homeCls:'flag-TUN', awayCls:'flag-JPN', date:'Jun 19', time:'11:00 PM', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:34, group:'F', home:'Países Bajos',    away:'Suecia',             homeCls:'flag-NED', awayCls:'flag-SWE', date:'Jun 20', time:'12:00 PM', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:35, group:'F', home:'Japón',           away:'Suecia',             homeCls:'flag-JPN', awayCls:'flag-SWE', date:'Jun 25', time:'6:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:36, group:'F', home:'Túnez',           away:'Países Bajos',       homeCls:'flag-TUN', awayCls:'flag-NED', date:'Jun 25', time:'6:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  // GRUPO G
+  { id:37, group:'G', home:'Bélgica',         away:'Egipto',             homeCls:'flag-BEL', awayCls:'flag-EGY', date:'Jun 15', time:'2:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:38, group:'G', home:'Irán',            away:'Nueva Zelanda',      homeCls:'flag-IRN', awayCls:'flag-NZL', date:'Jun 15', time:'8:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:39, group:'G', home:'Bélgica',         away:'Irán',               homeCls:'flag-BEL', awayCls:'flag-IRN', date:'Jun 21', time:'2:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:40, group:'G', home:'Nueva Zelanda',   away:'Egipto',             homeCls:'flag-NZL', awayCls:'flag-EGY', date:'Jun 21', time:'8:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:41, group:'G', home:'Egipto',          away:'Irán',               homeCls:'flag-EGY', awayCls:'flag-IRN', date:'Jun 26', time:'10:00 PM', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:42, group:'G', home:'Nueva Zelanda',   away:'Bélgica',            homeCls:'flag-NZL', awayCls:'flag-BEL', date:'Jun 26', time:'10:00 PM', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  // GRUPO H
+  { id:43, group:'H', home:'España',          away:'Cabo Verde',         homeCls:'flag-ESP', awayCls:'flag-CPV', date:'Jun 15', time:'11:00 AM', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:44, group:'H', home:'Arabia Saudí',    away:'Uruguay',            homeCls:'flag-KSA', awayCls:'flag-URY', date:'Jun 15', time:'5:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:45, group:'H', home:'España',          away:'Arabia Saudí',       homeCls:'flag-ESP', awayCls:'flag-KSA', date:'Jun 21', time:'11:00 AM', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:46, group:'H', home:'Uruguay',         away:'Cabo Verde',         homeCls:'flag-URY', awayCls:'flag-CPV', date:'Jun 21', time:'5:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:47, group:'H', home:'Cabo Verde',      away:'Arabia Saudí',       homeCls:'flag-CPV', awayCls:'flag-KSA', date:'Jun 26', time:'7:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:48, group:'H', home:'Uruguay',         away:'España',             homeCls:'flag-URY', awayCls:'flag-ESP', date:'Jun 26', time:'7:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  // GRUPO I
+  { id:49, group:'I', home:'Francia',         away:'Senegal',            homeCls:'flag-FRA', awayCls:'flag-SEN', date:'Jun 16', time:'2:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:50, group:'I', home:'Irak',            away:'Noruega',            homeCls:'flag-IRQ', awayCls:'flag-NOR', date:'Jun 16', time:'5:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:51, group:'I', home:'Francia',         away:'Irak',               homeCls:'flag-FRA', awayCls:'flag-IRQ', date:'Jun 22', time:'4:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:52, group:'I', home:'Noruega',         away:'Senegal',            homeCls:'flag-NOR', awayCls:'flag-SEN', date:'Jun 22', time:'7:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:53, group:'I', home:'Noruega',         away:'Francia',            homeCls:'flag-NOR', awayCls:'flag-FRA', date:'Jun 26', time:'2:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:54, group:'I', home:'Senegal',         away:'Irak',               homeCls:'flag-SEN', awayCls:'flag-IRQ', date:'Jun 26', time:'2:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  // GRUPO J
+  { id:55, group:'J', home:'Argentina',       away:'Argelia',            homeCls:'flag-ARG', awayCls:'flag-ALG', date:'Jun 16', time:'8:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:56, group:'J', home:'Austria',         away:'Jordania',           homeCls:'flag-AUT', awayCls:'flag-JOR', date:'Jun 16', time:'11:00 PM', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:57, group:'J', home:'Argentina',       away:'Austria',            homeCls:'flag-ARG', awayCls:'flag-AUT', date:'Jun 22', time:'12:00 PM', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:58, group:'J', home:'Jordania',        away:'Argelia',            homeCls:'flag-JOR', awayCls:'flag-ALG', date:'Jun 22', time:'10:00 PM', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:59, group:'J', home:'Jordania',        away:'Argentina',          homeCls:'flag-JOR', awayCls:'flag-ARG', date:'Jun 27', time:'9:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:60, group:'J', home:'Argelia',         away:'Austria',            homeCls:'flag-ALG', awayCls:'flag-AUT', date:'Jun 27', time:'9:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  // GRUPO K
+  { id:61, group:'K', home:'Portugal',        away:'DR Congo',           homeCls:'flag-POR', awayCls:'flag-COD', date:'Jun 17', time:'12:00 PM', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:62, group:'K', home:'Uzbekistán',      away:'Colombia',           homeCls:'flag-UZB', awayCls:'flag-COL', date:'Jun 17', time:'9:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:63, group:'K', home:'Portugal',        away:'Uzbekistán',         homeCls:'flag-POR', awayCls:'flag-UZB', date:'Jun 23', time:'12:00 PM', status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:64, group:'K', home:'Colombia',        away:'DR Congo',           homeCls:'flag-COL', awayCls:'flag-COD', date:'Jun 23', time:'9:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:65, group:'K', home:'Colombia',        away:'Portugal',           homeCls:'flag-COL', awayCls:'flag-POR', date:'Jun 27', time:'6:30 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:66, group:'K', home:'DR Congo',        away:'Uzbekistán',         homeCls:'flag-COD', awayCls:'flag-UZB', date:'Jun 27', time:'6:30 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  // GRUPO L
+  { id:67, group:'L', home:'Inglaterra',      away:'Croacia',            homeCls:'flag-ENG', awayCls:'flag-CRO', date:'Jun 17', time:'3:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:68, group:'L', home:'Ghana',           away:'Panamá',             homeCls:'flag-GHA', awayCls:'flag-PAN', date:'Jun 17', time:'6:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:69, group:'L', home:'Inglaterra',      away:'Ghana',              homeCls:'flag-ENG', awayCls:'flag-GHA', date:'Jun 23', time:'3:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:70, group:'L', home:'Panamá',          away:'Croacia',            homeCls:'flag-PAN', awayCls:'flag-CRO', date:'Jun 23', time:'6:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:71, group:'L', home:'Panamá',          away:'Inglaterra',         homeCls:'flag-PAN', awayCls:'flag-ENG', date:'Jun 27', time:'4:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null },
+  { id:72, group:'L', home:'Croacia',         away:'Ghana',              homeCls:'flag-CRO', awayCls:'flag-GHA', date:'Jun 27', time:'4:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null }
 ];
 
 var currentGroupFilter = 'all';
@@ -1356,88 +1358,122 @@ function predPoints(m) {
   return 0;
 }
 
-function matchCardHTML(m) {
+function matchRowHTML(m) {
   var statusLabel = STATUS_ES[m.status] || m.status;
   var locked = (m.status === 'cerrado' || m.status === 'finalizado');
   var hp = m.homePred === null ? '' : m.homePred;
   var ap = m.awayPred === null ? '' : m.awayPred;
   var dis = locked ? ' disabled' : '';
 
-  var html = '<div class="match-card" data-match="' + m.id + '">' +
-    '<div class="card-stripe"></div>' +
-    '<div class="match-card-header">' +
-      '<div class="match-meta">' +
-        '<span class="match-group-label">Grupo ' + m.group + '</span>' +
-        '<span>' + m.date + ' &middot; ' + m.time + '</span>' +
-      '</div>' +
-      '<span class="status-badge status-' + m.status + '">' + statusLabel + '</span>' +
-    '</div>' +
-    '<div class="match-card-body">' +
-      '<div class="teams-row">' +
-        '<div class="team"><span class="team-flag ' + m.homeCls + '">' + abbr(m.home) + '</span><span class="team-name">' + m.home + '</span></div>' +
-        '<div class="vs-divider"><span class="vs-text">VS</span><span class="vs-line"></span></div>' +
-        '<div class="team"><span class="team-flag ' + m.awayCls + '">' + abbr(m.away) + '</span><span class="team-name">' + m.away + '</span></div>' +
-      '</div>';
-
+  var inputsHtml = '';
   if (m.status === 'finalizado') {
-    html += '<div class="result-display">' +
-        '<div class="result-label">Resultado final</div>' +
-        '<div class="result-scores">' +
-          '<div class="result-item"><span class="result-item-label">' + m.home + '</span><span class="result-item-score">' + m.homeReal + '</span></div>' +
-          '<div class="result-item"><span class="result-item-label">' + m.away + '</span><span class="result-item-score">' + m.awayReal + '</span></div>' +
-        '</div></div>';
-    if (m.homePred !== null && m.awayPred !== null) {
-      html += '<div class="saved-pred"><span class="saved-pred-label">Tu predicción</span>' +
-        '<span class="saved-pred-score">' + m.homePred + ' &mdash; ' + m.awayPred + '</span></div>' +
-        '<div style="text-align:center"><span class="points-earned">+' + predPoints(m) + ' pts</span></div>';
-    }
+    inputsHtml = '<div class="match-inputs"><span class="match-result-score">' +
+      m.homeReal + ' &mdash; ' + m.awayReal + '</span></div>';
   } else {
-    html += '<div class="score-row">' +
-        '<input type="number" min="0" class="score-input" id="m' + m.id + '-local" value="' + hp + '" placeholder="0"' + dis + ' />' +
-        '<span class="score-dash">&mdash;</span>' +
-        '<input type="number" min="0" class="score-input" id="m' + m.id + '-visit" value="' + ap + '" placeholder="0"' + dis + ' />' +
-      '</div>' +
-      '<div class="save-feedback" id="m' + m.id + '-feedback">Predicción guardada</div>';
-
-    if (m.status === 'cerrado') {
-      if (m.homePred !== null && m.awayPred !== null) {
-        html += '<div class="saved-pred"><span class="saved-pred-label">Predicción enviada</span>' +
-          '<span class="saved-pred-score">' + m.homePred + ' &mdash; ' + m.awayPred + '</span></div>';
-      } else {
-        html += '<div class="saved-pred"><span class="saved-pred-label">Predicciones cerradas</span></div>';
-      }
-    } else {
-      var btnTxt = (m.homePred !== null) ? 'Editar predicción' : 'Guardar predicción';
-      html += '<button class="btn-save" id="m' + m.id + '-btn" onclick="saveMatch(' + m.id + ')">' + btnTxt + '</button>';
-    }
+    inputsHtml = '<div class="match-inputs">' +
+      '<input type="number" min="0" class="match-score-input" id="m' + m.id + '-local" value="' + hp + '" placeholder="0"' + dis + ' />' +
+      '<span class="match-score-dash">&mdash;</span>' +
+      '<input type="number" min="0" class="match-score-input" id="m' + m.id + '-visit" value="' + ap + '" placeholder="0"' + dis + ' />' +
+    '</div>';
   }
 
-  html += '</div></div>';
-  return html;
+  var rightHtml = '<span class="status-badge status-' + m.status + '">' + statusLabel + '</span>';
+  if (m.status === 'finalizado') {
+    if (m.homePred !== null) {
+      rightHtml += '<span class="match-pred-saved">' + m.homePred + '&mdash;' + m.awayPred + '</span>' +
+        '<span class="match-pts-earned">+' + predPoints(m) + ' pts</span>';
+    }
+  } else if (m.status === 'cerrado') {
+    if (m.homePred !== null) {
+      rightHtml += '<span class="match-pred-saved">' + m.homePred + '&mdash;' + m.awayPred + '</span>';
+    } else {
+      rightHtml += '<span class="match-pred-saved" style="color:var(--gray-400)">Sin pred.</span>';
+    }
+  } else {
+    var btnTxt = (m.homePred !== null) ? 'Editar' : 'Guardar';
+    rightHtml += '<button class="match-save-btn" id="m' + m.id + '-btn" onclick="saveMatch(' + m.id + ')">' + btnTxt + '</button>' +
+      '<span class="match-save-feedback" id="m' + m.id + '-feedback">Guardado</span>';
+  }
+
+  return '<div class="match-row" data-match="' + m.id + '">' +
+    '<div class="match-time-col">' +
+      '<div class="match-time-main">' + m.time + '</div>' +
+      '<div class="match-time-zone">COT</div>' +
+    '</div>' +
+    '<div class="match-center">' +
+      '<span class="match-group-pill">Grupo ' + m.group + '</span>' +
+      '<div class="match-teams-row">' +
+        '<div class="match-team">' +
+          '<span class="team-flag ' + m.homeCls + '">' + abbr(m.home) + '</span>' +
+          '<span class="match-team-name">' + m.home + '</span>' +
+        '</div>' +
+        '<span class="match-vs">VS</span>' +
+        '<div class="match-team">' +
+          '<span class="team-flag ' + m.awayCls + '">' + abbr(m.away) + '</span>' +
+          '<span class="match-team-name">' + m.away + '</span>' +
+        '</div>' +
+      '</div>' +
+      inputsHtml +
+    '</div>' +
+    '<div class="match-right-col">' + rightHtml + '</div>' +
+  '</div>';
 }
 
 function abbr(name) {
-  var map = { 'USA':'USA','Panama':'PAN','Morocco':'MAR','Belgium':'BEL','Mexico':'MEX','Jamaica':'JAM','Poland':'POL','Croatia':'CRO','Canada':'CAN','Honduras':'HON','France':'FRA','Australia':'AUS','Brazil':'BRA','Bolivia':'BOL','Serbia':'SRB','Switzerland':'SUI','Argentina':'ARG','Chile':'CHI','Japan':'JPN','Spain':'ESP','Colombia':'COL','Paraguay':'PAR','South Korea':'KOR','Germany':'GER','Uruguay':'URY','Venezuela':'VEN','Iran':'IRN','Portugal':'POR','Ecuador':'ECU','Peru':'PER','Saudi Arabia':'KSA','England':'ENG','Senegal':'SEN','Nigeria':'NGA','Netherlands':'NED','Denmark':'DEN','Cameroon':'CMR','Ivory Coast':'CIV','Austria':'AUT','Turkey':'TUR','Ghana':'GHA','Egypt':'EGY','Ukraine':'UKR','Scotland':'SCO','South Africa':'RSA','Tunisia':'TUN','Qatar':'QAT','Romania':'ROM' };
-  return map[name] || name.substring(0, 3).toUpperCase();
+  var map = {
+    'México':'MEX','Sudáfrica':'RSA','Corea del Sur':'KOR','Chequia':'CZE',
+    'Canadá':'CAN','Bosnia y Herzegovina':'BIH','Catar':'QAT','Suiza':'SUI',
+    'Brasil':'BRA','Marruecos':'MAR','Haití':'HAI','Escocia':'SCO',
+    'Estados Unidos':'USA','Paraguay':'PAR','Australia':'AUS','Turquía':'TUR',
+    'Alemania':'GER','Curazao':'CUW','Costa de Marfil':'CIV','Ecuador':'ECU',
+    'Países Bajos':'NED','Japón':'JPN','Suecia':'SWE','Túnez':'TUN',
+    'Bélgica':'BEL','Egipto':'EGY','Irán':'IRN','Nueva Zelanda':'NZL',
+    'España':'ESP','Cabo Verde':'CPV','Arabia Saudí':'KSA','Uruguay':'URY',
+    'Francia':'FRA','Senegal':'SEN','Irak':'IRQ','Noruega':'NOR',
+    'Argentina':'ARG','Argelia':'ALG','Austria':'AUT','Jordania':'JOR',
+    'Portugal':'POR','DR Congo':'COD','Uzbekistán':'UZB','Colombia':'COL',
+    'Inglaterra':'ENG','Croacia':'CRO','Ghana':'GHA','Panamá':'PAN'
+  };
+  return map[name] || name.substring(0,3).toUpperCase();
 }
+
+var DATE_LABELS = {
+  'Jun 11':'Jue 11 Jun','Jun 12':'Vie 12 Jun','Jun 13':'Sáb 13 Jun','Jun 14':'Dom 14 Jun',
+  'Jun 15':'Lun 15 Jun','Jun 16':'Mar 16 Jun','Jun 17':'Mié 17 Jun','Jun 18':'Jue 18 Jun',
+  'Jun 19':'Vie 19 Jun','Jun 20':'Sáb 20 Jun','Jun 21':'Dom 21 Jun','Jun 22':'Lun 22 Jun',
+  'Jun 23':'Mar 23 Jun','Jun 24':'Mié 24 Jun','Jun 25':'Jue 25 Jun','Jun 26':'Vie 26 Jun',
+  'Jun 27':'Sáb 27 Jun'
+};
 
 function renderMatches(groupFilter) {
   currentGroupFilter = groupFilter || 'all';
   var list = MATCHES.filter(function(m) {
     return currentGroupFilter === 'all' || m.group === currentGroupFilter;
   });
-  var grid = $('#matches-grid');
-  grid.innerHTML = list.map(matchCardHTML).join('');
 
-  var lbl = (currentGroupFilter === 'all') ? 'Fase de Grupos' : 'Grupo ' + currentGroupFilter;
-  $('#matches-count').textContent = list.length + ' partidos — ' + lbl;
-
-  // re-trigger fadeInUp animation
-  $all('#matches-grid .match-card').forEach(function(card, i) {
-    card.style.animation = 'none';
-    void card.offsetWidth;
-    card.style.animation = 'fadeInUp 0.5s ease both ' + (Math.min(i, 8) * 0.04) + 's';
+  var byDate = {};
+  var dateOrder = [];
+  list.forEach(function(m) {
+    if (!byDate[m.date]) { byDate[m.date] = []; dateOrder.push(m.date); }
+    byDate[m.date].push(m);
   });
+
+  var html = '';
+  dateOrder.forEach(function(date, idx) {
+    var matches = byDate[date];
+    var label = DATE_LABELS[date] || date;
+    html += '<div class="calendar-day" style="animation-delay:' + (idx * 0.05) + 's">' +
+      '<div class="calendar-day-header">' +
+        '<span class="cal-date-text">' + label + ' &bull; 2026</span>' +
+        '<span class="cal-day-count">' + matches.length + ' partido' + (matches.length > 1 ? 's' : '') + '</span>' +
+      '</div>' +
+      '<div class="calendar-matches">' + matches.map(matchRowHTML).join('') + '</div>' +
+    '</div>';
+  });
+
+  $('#matches-grid').innerHTML = html;
+  var lbl = currentGroupFilter === 'all' ? 'Fase de Grupos' : 'Grupo ' + currentGroupFilter;
+  $('#matches-count').textContent = list.length + ' partidos — ' + lbl;
 }
 
 function saveMatch(id) {
@@ -1454,10 +1490,9 @@ function saveMatch(id) {
 
   var btn = $('#m' + id + '-btn');
   var fb = $('#m' + id + '-feedback');
-  btn.classList.add('pulse');
-  setTimeout(function() { btn.classList.remove('pulse'); }, 500);
+  if (btn) { btn.classList.add('pulse'); setTimeout(function() { btn.classList.remove('pulse'); }, 500); }
   if (fb) fb.classList.add('show');
-  btn.textContent = 'Editar predicción';
+  if (btn) btn.textContent = 'Editar';
   toast('Predicción guardada (' + m.homePred + '-' + m.awayPred + ')');
   setTimeout(function() { if (fb) fb.classList.remove('show'); }, 2600);
 }
