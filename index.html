@@ -2429,6 +2429,26 @@ $all('.admin-tab-btn').forEach(function(b) {
 ============================================= */
 function renderMembers(filter) {
   var q = filter !== undefined ? filter : ($('#member-search') ? $('#member-search').value.trim().toLowerCase() : '');
+  // If we have cached members, filter immediately without an API round-trip
+  if (state.members && state.members.length && filter === undefined && q !== '') {
+    var list = state.members.filter(function(m) { return m.nombre.toLowerCase().includes(q); });
+    var html = list.length ? '' : '<tr><td colspan="5" style="text-align:center;color:var(--gray-500);padding:1.5rem">Sin resultados</td></tr>';
+    list.forEach(function(m, idx) {
+      var badgeClass = m.estado === 'Activo' ? 'badge-activo' : 'badge-inactivo';
+      html += '<tr data-id="' + m.id + '">' +
+        '<td>' + (idx + 1) + '</td>' +
+        '<td class="cell-nombre">' + m.nombre + '</td>' +
+        '<td class="cell-cedula">' + (m.cedula || '—') + '</td>' +
+        '<td class="cell-estado"><span class="badge-estado ' + badgeClass + '">' + m.estado + '</span></td>' +
+        '<td><div class="row-actions">' +
+          '<button class="btn-sm btn-edit" onclick="editMember(' + m.id + ')">Editar</button>' +
+          '<button class="btn-sm btn-delete" onclick="deleteMember(' + m.id + ')">Eliminar</button>' +
+        '</div></td>' +
+      '</tr>';
+    });
+    $('#members-tbody').innerHTML = html;
+    return;
+  }
   api.get('/api/admin/users').then(function(res) {
     if (!res.ok) { toast('Error cargando miembros'); return; }
     state.members = res.data;
@@ -2894,7 +2914,8 @@ function koSave(id) {
 
 function koUpdateStatus(id, status) {
   api.put('/api/admin/knockout/' + id, { status: status }).then(function(res) {
-    if (!res.ok) toast(res.data.error || 'Error');
+    if (!res.ok) { toast(res.data.error || 'Error'); return; }
+    renderAdminKnockout();
   });
 }
 
