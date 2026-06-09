@@ -451,6 +451,27 @@
     .cal-legend-item { display: flex; align-items: center; gap: 0.4rem; font-size: 0.62rem; font-weight: 600; color: var(--gray-600); }
     .cal-legend-swatch { width: 12px; height: 12px; border-radius: 4px; flex-shrink: 0; }
 
+    /* 1X2 RESULT PREDICTION BUTTONS */
+    .result-prediction { margin-bottom: 0.6rem; }
+    .result-prediction-label { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--gray-400); margin-bottom: 0.35rem; text-align: center; }
+    .result-btns { display: flex; align-items: stretch; gap: 0.4rem; }
+    .result-btn {
+      flex: 1; padding: 0.45rem 0.2rem; border: 2px solid var(--gray-200);
+      border-radius: 10px; background: var(--gray-100); color: var(--gray-600);
+      cursor: pointer; transition: all 0.15s; font-family: var(--font);
+      display: flex; flex-direction: column; align-items: center; gap: 1px;
+    }
+    .result-btn:hover:not(:disabled) { border-color: var(--red); color: var(--red); background: #fdecea; }
+    .result-btn.selected { background: var(--red); border-color: var(--red); color: #fff; box-shadow: 0 2px 10px rgba(227,6,19,0.3); }
+    .result-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .result-btn-num { font-size: 1rem; font-weight: 900; line-height: 1; }
+    .result-btn-lbl { font-size: 0.55rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; line-height: 1; }
+    .score-optional-label { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--gray-400); margin-bottom: 0.35rem; text-align: center; }
+    .pts-scheme { display: flex; align-items: center; justify-content: center; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+    .pts-badge { display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.6rem; font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 999px; }
+    .pts-badge-result { background: rgba(29,185,84,0.12); color: var(--green); }
+    .pts-badge-exact  { background: rgba(249,183,0,0.2); color: var(--yellow-dark); }
+
     .status-badge { display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.3rem 0.75rem; border-radius: 999px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
     .status-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
     .status-abierto { background: var(--green-bg); color: var(--green); }
@@ -1510,6 +1531,8 @@ var MATCHES = [
   { id:72, group:'L', home:'Croacia',         away:'Ghana',              homeCls:'flag-CRO', awayCls:'flag-GHA', date:'Jun 27', time:'4:00 PM',  status:'abierto', homePred:null, awayPred:null, homeReal:null, awayReal:null }
 ];
 
+MATCHES.forEach(function(m) { m.resultPred = null; });
+
 var currentGroupFilter = 'all';
 var adminGroupFilter = 'all';
 var currentDayFilter = null;
@@ -1677,10 +1700,18 @@ function animateBars() {
 ============================================= */
 function predPoints(m) {
   if (m.homeReal === null || m.awayReal === null || m.homePred === null || m.awayPred === null) return 0;
+  // Exact score: 10 pts
   if (m.homePred === m.homeReal && m.awayPred === m.awayReal) return 10;
+  // Correct result from score: 3 pts
   var realSign = Math.sign(m.homeReal - m.awayReal);
-  var predSign = Math.sign(m.homePred - m.awayPred);
-  if (realSign === predSign) return 5;
+  var realRes = realSign > 0 ? '1' : (realSign < 0 ? '2' : 'X');
+  if (m.homePred !== null && m.awayPred !== null) {
+    var predSign = Math.sign(m.homePred - m.awayPred);
+    var predRes = predSign > 0 ? '1' : (predSign < 0 ? '2' : 'X');
+    return predRes === realRes ? 3 : 0;
+  }
+  // Result-only prediction: 3 pts
+  if (m.resultPred !== null) return m.resultPred === realRes ? 3 : 0;
   return 0;
 }
 
@@ -1690,34 +1721,67 @@ function matchRowHTML(m) {
   var hp = m.homePred === null ? '' : m.homePred;
   var ap = m.awayPred === null ? '' : m.awayPred;
   var dis = locked ? ' disabled' : '';
+  var rp = m.resultPred || null;
 
+  // Build 1X2 buttons
+  var btnsHtml = '';
+  if (!locked) {
+    btnsHtml =
+      '<div class="result-prediction">' +
+        '<div class="result-prediction-label">Resultado</div>' +
+        '<div class="result-btns">' +
+          ['1','X','2'].map(function(v) {
+            var lbl = v === '1' ? 'Local' : (v === 'X' ? 'Empate' : 'Visitante');
+            return '<button class="result-btn' + (rp === v ? ' selected' : '') + '" ' +
+              'data-result="' + v + '" onclick="selectResult(' + m.id + ',\'' + v + '\')">' +
+              '<span class="result-btn-num">' + v + '</span>' +
+              '<span class="result-btn-lbl">' + lbl + '</span>' +
+            '</button>';
+          }).join('') +
+        '</div>' +
+      '</div>';
+  }
+
+  // Score inputs or result display
   var inputsHtml = '';
   if (m.status === 'finalizado') {
     inputsHtml = '<div class="match-inputs"><span class="match-result-score">' +
       m.homeReal + ' &mdash; ' + m.awayReal + '</span></div>';
   } else {
-    inputsHtml = '<div class="match-inputs">' +
-      '<input type="number" min="0" class="match-score-input" id="m' + m.id + '-local" value="' + hp + '" placeholder="0"' + dis + ' />' +
-      '<span class="match-score-dash">&mdash;</span>' +
-      '<input type="number" min="0" class="match-score-input" id="m' + m.id + '-visit" value="' + ap + '" placeholder="0"' + dis + ' />' +
-    '</div>';
+    inputsHtml =
+      '<div class="score-optional-label">Marcador exacto (+10 pts si aciertas)</div>' +
+      '<div class="match-inputs">' +
+        '<input type="number" min="0" class="match-score-input" id="m' + m.id + '-local" value="' + hp + '" placeholder="0"' + dis + ' />' +
+        '<span class="match-score-dash">&mdash;</span>' +
+        '<input type="number" min="0" class="match-score-input" id="m' + m.id + '-visit" value="' + ap + '" placeholder="0"' + dis + ' />' +
+      '</div>';
   }
 
   var rightHtml = '<span class="status-badge status-' + m.status + '">' + statusLabel + '</span>';
   if (m.status === 'finalizado') {
-    if (m.homePred !== null) {
-      rightHtml += '<span class="match-pred-saved">' + m.homePred + '&mdash;' + m.awayPred + '</span>' +
-        '<span class="match-pts-earned">+' + predPoints(m) + ' pts</span>';
+    var earned = predPoints(m);
+    if (m.homePred !== null || m.resultPred !== null) {
+      var predLabel = m.homePred !== null ? (m.homePred + '&mdash;' + m.awayPred) : ('Res. ' + m.resultPred);
+      rightHtml += '<span class="match-pred-saved">' + predLabel + '</span>' +
+        '<span class="match-pts-earned">+' + earned + ' pts</span>';
     }
   } else if (m.status === 'cerrado') {
-    if (m.homePred !== null) {
-      rightHtml += '<span class="match-pred-saved">' + m.homePred + '&mdash;' + m.awayPred + '</span>';
+    var hasPred = m.homePred !== null || m.resultPred !== null;
+    if (hasPred) {
+      var saved = m.homePred !== null ? (m.homePred + '&mdash;' + m.awayPred) : ('Res. ' + m.resultPred);
+      rightHtml += '<span class="match-pred-saved">' + saved + '</span>';
     } else {
       rightHtml += '<span class="match-pred-saved" style="color:var(--gray-400)">Sin pred.</span>';
     }
   } else {
-    var btnTxt = (m.homePred !== null) ? 'Editar' : 'Guardar';
-    rightHtml += '<button class="match-save-btn" id="m' + m.id + '-btn" onclick="saveMatch(' + m.id + ')">' + btnTxt + '</button>' +
+    var hasSaved = m.homePred !== null || m.resultPred !== null;
+    var btnTxt = hasSaved ? 'Guardar marcador' : 'Guardar marcador';
+    rightHtml +=
+      '<span class="pts-scheme">' +
+        '<span class="pts-badge pts-badge-result">Resultado: 3 pts</span>' +
+        '<span class="pts-badge pts-badge-exact">Exacto: 10 pts</span>' +
+      '</span>' +
+      '<button class="match-save-btn" id="m' + m.id + '-btn" onclick="saveMatch(' + m.id + ')">' + btnTxt + '</button>' +
       '<span class="match-save-feedback" id="m' + m.id + '-feedback">Guardado</span>';
   }
 
@@ -1739,6 +1803,7 @@ function matchRowHTML(m) {
           '<span class="match-team-name">' + m.away + '</span>' +
         '</div>' +
       '</div>' +
+      btnsHtml +
       inputsHtml +
     '</div>' +
     '<div class="match-right-col">' + rightHtml + '</div>' +
@@ -1876,25 +1941,47 @@ function renderMatches(groupFilter) {
   $('#matches-count').innerHTML = list.length + ' partidos &mdash; ' + lbl;
 }
 
+/* Auto-save result when 1X2 button is clicked */
+function selectResult(id, result) {
+  var m = MATCHES.filter(function(x) { return x.id === id; })[0];
+  if (!m || m.status !== 'abierto') return;
+  // Toggle off if same, otherwise set new
+  m.resultPred = (m.resultPred === result) ? null : result;
+  // Update button visuals without full re-render
+  var row = document.querySelector('[data-match="' + id + '"]');
+  if (row) {
+    row.querySelectorAll('.result-btn').forEach(function(btn) {
+      btn.classList.toggle('selected', btn.getAttribute('data-result') === m.resultPred);
+    });
+  }
+  if (m.resultPred) {
+    var label = m.resultPred === '1' ? 'Local' : (m.resultPred === 'X' ? 'Empate' : 'Visitante');
+    toast('Resultado guardado: ' + m.resultPred + ' (' + label + ')');
+  }
+}
+
 function saveMatch(id) {
   var m = MATCHES.filter(function(x) { return x.id === id; })[0];
   if (!m) return;
   var localEl = $('#m' + id + '-local');
   var visitEl = $('#m' + id + '-visit');
-  var local = localEl.value;
-  var visit = visitEl.value;
-  if (local === '' || visit === '') { toast('Ingresa ambos marcadores'); return; }
+  var local = localEl ? localEl.value : '';
+  var visit = visitEl ? visitEl.value : '';
+  if (local === '' || visit === '') { toast('Ingresa ambos marcadores para guardar el marcador exacto'); return; }
 
   m.homePred = parseInt(local, 10);
   m.awayPred = parseInt(visit, 10);
+  // Auto-derive resultPred from score if not set
+  if (!m.resultPred) {
+    var sign = Math.sign(m.homePred - m.awayPred);
+    m.resultPred = sign > 0 ? '1' : (sign < 0 ? '2' : 'X');
+  }
 
   var btn = $('#m' + id + '-btn');
   var fb = $('#m' + id + '-feedback');
   if (btn) { btn.classList.add('pulse'); setTimeout(function() { btn.classList.remove('pulse'); }, 500); }
-  if (fb) fb.classList.add('show');
-  if (btn) btn.textContent = 'Editar';
-  toast('Predicción guardada (' + m.homePred + '-' + m.awayPred + ')');
-  setTimeout(function() { if (fb) fb.classList.remove('show'); }, 2600);
+  if (fb) { fb.classList.add('show'); setTimeout(function() { fb.classList.remove('show'); }, 2600); }
+  toast('Marcador guardado: ' + m.homePred + ' - ' + m.awayPred + ' (+10 pts si aciertas!)');
 }
 
 /* group filter buttons */
