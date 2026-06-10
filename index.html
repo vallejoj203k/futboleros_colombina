@@ -3383,36 +3383,24 @@ setInterval(function() {
   try { saved = JSON.parse(raw); } catch(e) { localStorage.removeItem('mv_session'); hideLoader(); showView('view-login'); return; }
   if (!saved || !saved.nombre) { localStorage.removeItem('mv_session'); hideLoader(); showView('view-login'); return; }
 
+  // Restaurar sesión directamente con los datos guardados (sin re-login)
+  var first = saved.nombre ? saved.nombre.split(/\s+/)[0] : '';
+  var ini = getInitials(saved.nombre || '');
+  state.loggedIn = true;
+  state.isAdmin = false;
+  state.user = { id: saved.id, name: first, fullName: saved.nombre, initials: ini, pts: 0 };
+  $('#user-name').textContent = first;
+  $('#user-pts').textContent = '0 pts';
+  $('#nav-avatar').textContent = ini;
+  if ($('#drawer-avatar')) $('#drawer-avatar').textContent = ini;
+  if ($('#drawer-user-name')) $('#drawer-user-name').textContent = first;
   showLoader('Restaurando sesión...');
-  // Silently verify the user still exists and is active
-  api.post('/api/auth/login', { nombre: saved.nombre }).then(function(res) {
-    if (!res.ok) {
-      hideLoader();
-      localStorage.removeItem('mv_session');
-      showView('view-login');
-      return;
-    }
-    var user = res.data;
-    var first = user.nombre.split(/\s+/)[0];
-    var ini = getInitials(user.nombre);
-    state.loggedIn = true;
-    state.isAdmin = false;
-    state.user = { id: user.id, name: first, fullName: user.nombre, initials: ini, pts: 0 };
-    $('#user-name').textContent = first;
-    $('#user-pts').textContent = '0 pts';
-    $('#nav-avatar').textContent = ini;
-    showLoader('Restaurando sesión...');
-    loadAppData(user.id).then(function() {
-      updateUserPts();
-      hideLoader();
-      showView('app-shell');
-      switchTab('partidos');
-    }).catch(function() { hideLoader(); showView('app-shell'); switchTab('partidos'); });
-  }).catch(function() {
+  loadAppData(saved.id).then(function() {
+    updateUserPts();
     hideLoader();
-    localStorage.removeItem('mv_session');
-    showView('view-login');
-  });
+    showView('app-shell');
+    switchTab('partidos');
+  }).catch(function() { hideLoader(); showView('app-shell'); switchTab('partidos'); });
 })();
 </script>
 
