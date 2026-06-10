@@ -173,6 +173,9 @@ async function initDB() {
     // Make cedula nullable in case table was created with NOT NULL
     await client.query(`ALTER TABLE users ALTER COLUMN cedula DROP NOT NULL`).catch(() => {});
 
+    // ── NUEVO: agregar columna recomendado_por si no existe ──
+    await client.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS recomendado_por VARCHAR(255)`).catch(() => {});
+
     // Seed knockout slots
     const KNOCKOUT_SLOTS = [
       ...Array.from({length:16}, (_,i) => ['R32', i+1]),
@@ -220,6 +223,11 @@ function parseMatchUTC(dateStr, timeStr) {
   return new Date(Date.UTC(2026, MONTH_IDX[mon] ?? 5, parseInt(day), h + 5, m));
 }
 
+// ── NUEVO: devuelve solo el primer nombre para privacidad ──
+function primerNombre(nombre) {
+  return nombre.trim().split(/\s+/)[0];
+}
+
 /* ─────────────────────────────────────────────
    AUTO-CLOSE MATCHES (runs every 60 s)
 ───────────────────────────────────────────── */
@@ -265,7 +273,8 @@ app.post('/api/auth/login', async (req, res) => {
     if (!rows.length) return res.status(404).json({ error: 'Nombre no registrado. Contacta al administrador.' });
     if (rows.length > 1) return res.status(409).json({ error: 'Nombre duplicado en el sistema. Contacta al administrador.' });
     if (rows[0].estado !== 'Activo') return res.status(403).json({ error: 'Tu cuenta está inactiva. Contacta al administrador.' });
-    res.json(rows[0]);
+    // ── NUEVO: devolver solo el primer nombre para privacidad ──
+    res.json({ ...rows[0], nombre: primerNombre(rows[0].nombre) });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -358,7 +367,8 @@ app.get('/api/leaderboard', async (req, res) => {
       const ini = u.nombre.trim().split(/\s+/).reduce(function(acc, w, i, arr) {
         return i === 0 || i === arr.length - 1 ? acc + w[0].toUpperCase() : acc;
       }, '');
-      return { id: u.id, name: u.nombre, ini, pts, aciertos: exactas + resultados };
+      // ── NUEVO: solo primer nombre en el leaderboard para privacidad ──
+      return { id: u.id, name: primerNombre(u.nombre), ini, pts, aciertos: exactas + resultados };
     });
 
     board.sort(function(a, b) { return b.pts - a.pts || a.name.localeCompare(b.name); });
@@ -374,22 +384,26 @@ app.get('/api/leaderboard', async (req, res) => {
 ───────────────────────────────────────────── */
 app.get('/api/admin/users', async (req, res) => {
   try {
-    const { rows } = await pool.query('SELECT id, nombre, cedula, estado FROM users ORDER BY id');
+    // ── NUEVO: incluir recomendado_por en la respuesta ──
+    const { rows } = await pool.query('SELECT id, nombre, cedula, estado, recomendado_por FROM users ORDER BY id');
     res.json(rows);
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 app.post('/api/admin/users', async (req, res) => {
-  const { nombre, cedula, estado } = req.body;
+  // ── NUEVO: recibir recomendado_por del body ──
+  const { nombre, cedula, estado, recomendado_por } = req.body;
   if (!nombre || nombre.trim().length < 3) return res.status(400).json({ error: 'Nombre requerido' });
   const cedFinal = cedula ? cedula.trim() : null;
+  const recFinal = recomendado_por ? recomendado_por.trim() : null;
   try {
     // Check duplicate name
     const dup = await pool.query('SELECT id FROM users WHERE LOWER(nombre) = LOWER($1)', [nombre.trim()]);
     if (dup.rows.length) return res.status(400).json({ error: 'Ya existe un usuario con ese nombre' });
+    // ── NUEVO: guardar recomendado_por en el INSERT ──
     const { rows } = await pool.query(
-      'INSERT INTO users (nombre, cedula, estado) VALUES ($1, $2, $3) RETURNING *',
-      [nombre.trim(), cedFinal, estado || 'Activo']
+      'INSERT INTO users (nombre, cedula, estado, recomendado_por) VALUES ($1, $2, $3, $4) RETURNING *',
+      [nombre.trim(), cedFinal, estado || 'Activo', recFinal]
     );
     res.json(rows[0]);
   } catch (e) {
