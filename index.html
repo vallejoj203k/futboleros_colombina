@@ -1008,8 +1008,16 @@
       .main-content { padding-top: calc(var(--nav-h) + 1rem); }
 
       /* MATCH CARDS */
-      .match-row { grid-template-columns: 50px 1fr; gap: 0.5rem; padding: 0.65rem 0.75rem; }
-      .match-right-col { display: none; }
+      .match-row { display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0.65rem 0.75rem; }
+      .match-time-col { flex-shrink: 0; width: 50px; }
+      .match-center { flex: 1; min-width: 0; }
+      .match-right-col {
+        width: 100%; display: flex; flex-direction: row;
+        align-items: center; justify-content: flex-end; gap: 0.5rem;
+        flex-wrap: wrap; border-top: 1px solid var(--gray-100); padding-top: 0.4rem; margin-top: 0.1rem;
+      }
+      .match-right-col .pts-scheme { display: none; }
+      .match-save-btn { font-size: 0.75rem; padding: 0.45rem 1rem; }
       .match-team-name { max-width: 64px; font-size: 0.66rem; }
       .match-score-input { width: 36px; height: 36px; font-size: 1rem; }
       .match-score-dash { font-size: 1rem; }
