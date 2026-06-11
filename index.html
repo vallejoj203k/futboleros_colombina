@@ -1972,6 +1972,8 @@ $('#show-login-back').addEventListener('click', function() {
   $('#register-mode').style.display = 'none';
   $('#login-mode').style.display = 'block';
   $('#register-error').classList.remove('show');
+  $('#reg-name').value = '';
+  $('#reg-recomendado').value = '';
 });
 
 /* REGISTER FORM */
@@ -2885,11 +2887,25 @@ function editMember(id) {
   var m = state.members.filter(function(x) { return x.id === id; })[0];
   if (!m) return;
   var row = $('#members-tbody tr[data-id="' + id + '"]');
-  row.querySelector('.cell-nombre').innerHTML = '<input class="edit-input" value="' + m.nombre + '" />';
-  row.querySelector('.cell-cedula').innerHTML = '<input class="edit-input" value="' + (m.cedula || '') + '" />';
-  row.querySelector('.cell-estado').innerHTML =
-    '<select class="edit-input"><option' + (m.estado === 'Activo' ? ' selected' : '') + '>Activo</option>' +
-    '<option' + (m.estado === 'Inactivo' ? ' selected' : '') + '>Inactivo</option></select>';
+  if (!row) return;
+  var inNombre = document.createElement('input');
+  inNombre.className = 'edit-input'; inNombre.value = m.nombre;
+  var inCedula = document.createElement('input');
+  inCedula.className = 'edit-input'; inCedula.value = m.cedula || '';
+  var sel = document.createElement('select');
+  sel.className = 'edit-input';
+  ['Activo','Inactivo'].forEach(function(opt) {
+    var o = document.createElement('option');
+    o.value = opt; o.textContent = opt;
+    if (m.estado === opt) o.selected = true;
+    sel.appendChild(o);
+  });
+  row.querySelector('.cell-nombre').innerHTML = '';
+  row.querySelector('.cell-nombre').appendChild(inNombre);
+  row.querySelector('.cell-cedula').innerHTML = '';
+  row.querySelector('.cell-cedula').appendChild(inCedula);
+  row.querySelector('.cell-estado').innerHTML = '';
+  row.querySelector('.cell-estado').appendChild(sel);
   row.querySelector('.row-actions').innerHTML =
     '<button class="btn-sm btn-save-row" onclick="saveMember(' + id + ')">Guardar</button>' +
     '<button class="btn-sm btn-edit" onclick="renderMembers()">Cancelar</button>';
