@@ -1931,6 +1931,13 @@ var STATUS_ES = { abierto: 'Abierto', cerrado: 'Cerrado', finalizado: 'Finalizad
 function $(sel, ctx) { return (ctx || document).querySelector(sel); }
 function $all(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
 
+function maskName(nombre) {
+  if (!nombre) return '—';
+  var parts = nombre.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0];
+  return parts[0] + ' ' + parts[parts.length - 1][0] + '.';
+}
+
 function getInitials(full) {
   var parts = full.trim().split(/\s+/);
   if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
@@ -2838,7 +2845,7 @@ function renderMembers(filter) {
       var badgeClass = m.estado === 'Activo' ? 'badge-activo' : 'badge-inactivo';
       html += '<tr data-id="' + m.id + '">' +
         '<td>' + (idx + 1) + '</td>' +
-        '<td class="cell-nombre">' + m.nombre + '</td>' +
+        '<td class="cell-nombre">' + maskName(m.nombre) + '</td>' +
         '<td class="cell-cedula">' + (m.cedula || '—') + '</td>' +
         '<td class="cell-estado"><span class="badge-estado ' + badgeClass + '">' + m.estado + '</span></td>' +
         '<td><div class="row-actions">' +
@@ -2859,7 +2866,7 @@ function renderMembers(filter) {
       var badgeClass = m.estado === 'Activo' ? 'badge-activo' : 'badge-inactivo';
       html += '<tr data-id="' + m.id + '">' +
         '<td>' + (idx + 1) + '</td>' +
-        '<td class="cell-nombre">' + m.nombre + '</td>' +
+        '<td class="cell-nombre">' + maskName(m.nombre) + '</td>' +
         '<td class="cell-cedula">' + (m.cedula || '—') + '</td>' +
         '<td class="cell-estado"><span class="badge-estado ' + badgeClass + '">' + m.estado + '</span></td>' +
         '<td><div class="row-actions">' +
@@ -2960,7 +2967,7 @@ function renderReferidos() {
       if (!u.recomendado_por) return;
       var key = u.recomendado_por.trim();
       if (!mapa[key]) mapa[key] = [];
-      mapa[key].push(u.nombre);
+      mapa[key].push(maskName(u.nombre));
     });
     // Ordenar de mayor a menor
     var lista = Object.keys(mapa).map(function(k) {
@@ -3262,7 +3269,7 @@ function renderAdminPredictions() {
           else if (resOk) { pts = 3; ptsClass = 'pred-pts-3'; ptsLabel = '+3 pts'; }
           else { pts = 0; ptsClass = 'pred-pts-0'; ptsLabel = '0 pts'; }
         }
-        return '<tr><td>' + p.nombre + '</td><td>' + predStr + '</td>' +
+        return '<tr><td>' + maskName(p.nombre) + '</td><td>' + predStr + '</td>' +
           '<td><span class="pred-pts-badge ' + ptsClass + '">' + ptsLabel + '</span></td>' +
           '<td><button class="btn-sm btn-delete" onclick="adminDeletePred(' + p.user_id + ',' + id + ')" title="Borrar predicción">×</button></td></tr>';
       }).join('');
