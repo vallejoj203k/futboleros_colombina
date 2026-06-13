@@ -2651,6 +2651,19 @@ function clearDayFilter() {
   renderMonthCalendar();
 }
 
+function matchSortKey(m) {
+  var month = m.date.startsWith('Jul') ? 7 : 6;
+  var day = parseInt(m.date.split(' ')[1], 10);
+  // Convert time to 24h minutes
+  var t = m.time.match(/(\d+):(\d+)\s*(AM|PM)/i);
+  var h = t ? parseInt(t[1], 10) : 0;
+  var min = t ? parseInt(t[2], 10) : 0;
+  var isPM = t && t[3].toUpperCase() === 'PM';
+  if (isPM && h !== 12) h += 12;
+  if (!isPM && h === 12) h = 0;
+  return month * 100000 + day * 1000 + h * 60 + min;
+}
+
 function renderMatches(groupFilter) {
   currentGroupFilter = groupFilter || 'all';
 
@@ -2665,7 +2678,7 @@ function renderMatches(groupFilter) {
       if (m.homePred !== null || m.awayPred !== null || m.resultPred !== null) return false;
     }
     return true;
-  });
+  }).sort(function(a, b) { return matchSortKey(a) - matchSortKey(b); });
 
   // Update unpredicted counter (always from full open matches)
   var unpredCount = MATCHES.filter(function(m) {
@@ -2983,7 +2996,7 @@ function renderAdminMatches() {
   var html = '';
   MATCHES.filter(function(m) {
     return adminGroupFilter === 'all' || m.group === adminGroupFilter;
-  }).forEach(function(m) {
+  }).sort(function(a, b) { return matchSortKey(a) - matchSortKey(b); }).forEach(function(m) {
     var cls = 'status-' + m.status;
     var resultCell = '';
     if (m.status === 'finalizado') {
