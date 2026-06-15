@@ -3265,11 +3265,11 @@ function renderAdminPredictions() {
     var matchMap = {};
     res.data.forEach(function(row) {
       var key = row.match_id;
-      if (!matchMap[key]) matchMap[key] = { home: row.home, away: row.away, date: row.match_date, status: row.status, homeReal: row.home_real, awayReal: row.away_real, preds: [] };
+      if (!matchMap[key]) matchMap[key] = { home: row.home, away: row.away, date: row.match_date, time: row.match_time, status: row.status, homeReal: row.home_real, awayReal: row.away_real, preds: [] };
       matchMap[key].preds.push(row);
     });
 
-    var matchIds = Object.keys(matchMap).sort(function(a,b){ return parseInt(a)-parseInt(b); });
+    var matchIds = Object.keys(matchMap).sort(function(a,b){ return matchSortKey(matchMap[a]) - matchSortKey(matchMap[b]); });
     var filtered = matchIds.filter(function(id) {
       var m = matchMap[id];
       return !q || (m.home + ' ' + m.away).toLowerCase().includes(q);

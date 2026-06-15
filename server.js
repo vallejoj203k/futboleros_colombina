@@ -494,7 +494,7 @@ app.get('/api/admin/predictions', async (req, res) => {
       params = [matchId];
     } else {
       query = `
-        SELECT u.id as user_id, u.nombre, m.id as match_id, m.home, m.away, m.match_date,
+        SELECT u.id as user_id, u.nombre, m.id as match_id, m.home, m.away, m.match_date, m.match_time,
                p.home_pred, p.away_pred, p.result_pred,
                m.home_real, m.away_real, m.status
         FROM predictions p
