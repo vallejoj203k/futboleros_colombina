@@ -56,7 +56,7 @@ const MATCHES_SEED = [
   // GRUPO F
   { id:31, group:'F', home:'Países Bajos',         away:'Japón',               home_cls:'flag-NED', away_cls:'flag-JPN', match_date:'Jun 14', match_time:'3:00 PM' },
   { id:32, group:'F', home:'Suecia',               away:'Túnez',               home_cls:'flag-SWE', away_cls:'flag-TUN', match_date:'Jun 14', match_time:'9:00 PM' },
-  { id:33, group:'F', home:'Túnez',                away:'Japón',               home_cls:'flag-TUN', away_cls:'flag-JPN', match_date:'Jun 19', match_time:'11:00 PM' },
+  { id:33, group:'F', home:'Túnez',                away:'Japón',               home_cls:'flag-TUN', away_cls:'flag-JPN', match_date:'Jun 20', match_time:'11:00 PM' },
   { id:34, group:'F', home:'Países Bajos',         away:'Suecia',              home_cls:'flag-NED', away_cls:'flag-SWE', match_date:'Jun 20', match_time:'12:00 PM' },
   { id:35, group:'F', home:'Japón',                away:'Suecia',              home_cls:'flag-JPN', away_cls:'flag-SWE', match_date:'Jun 25', match_time:'6:00 PM' },
   { id:36, group:'F', home:'Túnez',                away:'Países Bajos',        home_cls:'flag-TUN', away_cls:'flag-NED', match_date:'Jun 25', match_time:'6:00 PM' },
