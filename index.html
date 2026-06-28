@@ -3257,14 +3257,22 @@ var predSearchFilter = '';
 
 function renderAdminPredictions() {
   var q = predSearchFilter.toLowerCase();
-  api.get('/api/admin/predictions').then(function(res) {
-    if (!res.ok) { toast('Error cargando predicciones'); return; }
+  Promise.all([api.get('/api/admin/predictions'), api.get('/api/matches')]).then(function(results) {
+    var predRes = results[0], matchRes = results[1];
+    if (!predRes.ok) { toast('Error cargando predicciones'); return; }
     var el = document.getElementById('pred-admin-body');
     if (!el) return;
 
-    // Group by match
+    // Seed matchMap with ALL matches (so zero-prediction matches also show)
     var matchMap = {};
-    res.data.forEach(function(row) {
+    if (matchRes.ok) {
+      matchRes.data.forEach(function(m) {
+        matchMap[m.id] = { home: m.home, away: m.away, date: m.date, time: m.time, status: m.status, homeReal: m.homeReal, awayReal: m.awayReal, preds: [] };
+      });
+    }
+
+    // Overlay predictions
+    predRes.data.forEach(function(row) {
       var key = row.match_id;
       if (!matchMap[key]) matchMap[key] = { home: row.home, away: row.away, date: row.match_date, time: row.match_time, status: row.status, homeReal: row.home_real, awayReal: row.away_real, preds: [] };
       matchMap[key].preds.push(row);
@@ -3277,7 +3285,7 @@ function renderAdminPredictions() {
     });
 
     if (!filtered.length) {
-      el.innerHTML = '<p style="color:var(--gray-500);padding:1rem">Sin predicciones' + (q ? ' para "' + predSearchFilter + '"' : '') + '.</p>';
+      el.innerHTML = '<p style="color:var(--gray-500);padding:1rem">Sin resultados' + (q ? ' para "' + predSearchFilter + '"' : '') + '.</p>';
       return;
     }
 
