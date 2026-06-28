@@ -205,6 +205,59 @@ async function initDB() {
         [round, num]
       );
     }
+
+    // Seed confirmed R32 matchups
+    const R32_SEED = [
+      { num:1,  home:'Sudáfrica',           away:'Canadá',               date:'Jun 28', time:'2:00 PM'  },
+      { num:2,  home:'Brasil',              away:'Japón',                date:'Jun 29', time:'12:00 PM' },
+      { num:3,  home:'Alemania',            away:'Paraguay',             date:'Jun 29', time:'3:30 PM'  },
+      { num:4,  home:'Países Bajos',        away:'Marruecos',            date:'Jun 29', time:'8:00 PM'  },
+      { num:5,  home:'Costa de Marfil',     away:'Noruega',              date:'Jun 30', time:'12:00 PM' },
+      { num:6,  home:'Francia',             away:'Suecia',               date:'Jun 30', time:'4:00 PM'  },
+      { num:7,  home:'México',              away:'Ecuador',              date:'Jun 30', time:'8:00 PM'  },
+      { num:8,  home:'Inglaterra',          away:'DR Congo',             date:'Jul 1',  time:'11:00 AM' },
+      { num:9,  home:'Bélgica',             away:'Senegal',              date:'Jul 1',  time:'3:00 PM'  },
+      { num:10, home:'Estados Unidos',      away:'Bosnia y Herzegovina', date:'Jul 1',  time:'7:00 PM'  },
+      { num:11, home:'España',              away:'Austria',              date:'Jul 2',  time:'2:00 PM'  },
+      { num:12, home:'Portugal',            away:'Croacia',              date:'Jul 2',  time:'6:00 PM'  },
+      { num:13, home:'Suiza',               away:'Argelia',              date:'Jul 2',  time:'10:00 PM' },
+      { num:14, home:'Australia',           away:'Egipto',               date:'Jul 3',  time:'1:00 PM'  },
+      { num:15, home:'Argentina',           away:'Cabo Verde',           date:'Jul 3',  time:'5:00 PM'  },
+      { num:16, home:'Colombia',            away:'Ghana',                date:'Jul 3',  time:'8:30 PM'  },
+    ];
+    for (const m of R32_SEED) {
+      await client.query(
+        `UPDATE knockout_matches SET home=$1, away=$2, match_date=$3, match_time=$4
+         WHERE round='R32' AND match_num=$5 AND (home IS NULL OR home != $1)`,
+        [m.home, m.away, m.date, m.time, m.num]
+      );
+    }
+
+    // Sync all knockout matches that have teams into the matches table
+    const { rows: koRows } = await client.query(
+      `SELECT * FROM knockout_matches WHERE home IS NOT NULL AND away IS NOT NULL`
+    );
+    const statusMap = { pendiente:'abierto', en_juego:'en_juego', finalizado:'cerrado' };
+    for (const km of koRows) {
+      const matchId = 1000 + km.id;
+      const homeFlag = FLAG_MAP[km.home] || '';
+      const awayFlag = FLAG_MAP[km.away] || '';
+      const matchStatus = statusMap[km.status] || 'abierto';
+      await client.query(`
+        INSERT INTO matches (id, grp, home, away, home_cls, away_cls, match_date, match_time, status, home_real, away_real)
+        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
+        ON CONFLICT (id) DO UPDATE SET
+          grp=EXCLUDED.grp, home=EXCLUDED.home, away=EXCLUDED.away,
+          home_cls=EXCLUDED.home_cls, away_cls=EXCLUDED.away_cls,
+          match_date=COALESCE(EXCLUDED.match_date, matches.match_date),
+          match_time=COALESCE(EXCLUDED.match_time, matches.match_time),
+          status=EXCLUDED.status,
+          home_real=EXCLUDED.home_real,
+          away_real=EXCLUDED.away_real
+      `, [matchId, km.round, km.home, km.away, homeFlag, awayFlag,
+          km.match_date || '', km.match_time || '', matchStatus,
+          km.home_score ?? null, km.away_score ?? null]);
+    }
   } finally {
     client.release();
   }
