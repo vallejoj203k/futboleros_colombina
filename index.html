@@ -2483,7 +2483,7 @@ function renderHistorial() {
       +   badge
       + '</div>'
       + '<div style="display:flex;gap:1rem;align-items:center;font-size:.88rem;color:var(--gray-600);">'
-      +   '<span>' + m.date + ' &middot; Grupo ' + m.group + '</span>'
+      +   '<span>' + m.date + ' &middot; ' + groupLabel(m.group) + '</span>'
       +   '<span>' + predStr + '</span>'
       +   realStr
       + '</div>'
@@ -2567,7 +2567,7 @@ function matchRowHTML(m) {
       '<div class="match-time-zone">COT</div>' +
     '</div>' +
     '<div class="match-center">' +
-      '<span class="match-group-pill">Grupo ' + m.group + '</span>' +
+      '<span class="match-group-pill">' + groupLabel(m.group) + '</span>' +
       '<div class="match-teams-row">' +
         '<div class="match-team">' +
           '<span class="team-flag ' + m.homeCls + '">' + abbr(m.home) + '</span>' +
@@ -3049,7 +3049,7 @@ function renderAdminMatches() {
       resultCell = '—';
     }
     html += '<tr data-id="' + m.id + '">' +
-      '<td>' + m.group + '</td>' +
+      '<td>' + groupLabel(m.group) + '</td>' +
       '<td>' + m.home + ' vs ' + m.away + '</td>' +
       '<td>' + m.date + ' &middot; ' + m.time + '</td>' +
       '<td class="cell-mstatus"><span class="status-badge ' + cls + '">' + (STATUS_ES[m.status] || m.status) + '</span></td>' +
@@ -3139,6 +3139,7 @@ var TEAM_FLAGS = {
 };
 
 var ROUND_LABELS = { R32:'Ronda de 32', R16:'Octavos de Final', QF:'Cuartos de Final', SF:'Semifinales', '3P':'Tercer Puesto', F:'Final' };
+function groupLabel(g) { return ROUND_LABELS[g] || ('Grupo ' + g); }
 var ROUND_ORDER  = ['R32','R16','QF','SF','3P','F'];
 var KNOCKOUT = [];
 var currentKoRound = 'R32';

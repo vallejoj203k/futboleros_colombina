@@ -14,6 +14,9 @@ const pool = new Pool({
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 
+// Map team name → flag CSS class, built from MATCHES_SEED at startup
+const FLAG_MAP = {};
+
 /* ─────────────────────────────────────────────
    DATABASE INIT + SEED
 ───────────────────────────────────────────── */
@@ -104,6 +107,12 @@ const MATCHES_SEED = [
   { id:72, group:'L', home:'Croacia',              away:'Ghana',               home_cls:'flag-CRO', away_cls:'flag-GHA', match_date:'Jun 27', match_time:'4:00 PM' }
 ];
 
+// Populate FLAG_MAP from seed data
+MATCHES_SEED.forEach(m => {
+  FLAG_MAP[m.home] = m.home_cls;
+  FLAG_MAP[m.away] = m.away_cls;
+});
+
 async function initDB() {
   const client = await pool.connect();
   try {
@@ -172,6 +181,12 @@ async function initDB() {
 
     // Make cedula nullable in case table was created with NOT NULL
     await client.query(`ALTER TABLE users ALTER COLUMN cedula DROP NOT NULL`).catch(() => {});
+
+    // Allow knockout matches to be stored in matches table (relax constraints)
+    await client.query(`ALTER TABLE matches ALTER COLUMN grp TYPE VARCHAR(5)`).catch(() => {});
+    await client.query(`ALTER TABLE matches ALTER COLUMN grp DROP NOT NULL`).catch(() => {});
+    await client.query(`ALTER TABLE matches ALTER COLUMN home_cls DROP NOT NULL`).catch(() => {});
+    await client.query(`ALTER TABLE matches ALTER COLUMN away_cls DROP NOT NULL`).catch(() => {});
 
     // ── NUEVO: agregar columna recomendado_por si no existe ──
     await client.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS recomendado_por VARCHAR(255)`).catch(() => {});
@@ -572,6 +587,34 @@ app.put('/api/admin/knockout/:id', async (req, res) => {
   vals.push(req.params.id);
   try {
     await pool.query(`UPDATE knockout_matches SET ${fields.join(',')} WHERE id=$${i}`, vals);
+
+    // Sync to matches table so users can predict on knockout matches
+    const { rows: [km] } = await pool.query('SELECT * FROM knockout_matches WHERE id=$1', [req.params.id]);
+    const matchId = 1000 + km.id;
+    if (km.home && km.away) {
+      const homeFlag = FLAG_MAP[km.home] || '';
+      const awayFlag = FLAG_MAP[km.away] || '';
+      const statusMap = { pendiente: 'abierto', en_juego: 'en_juego', finalizado: 'cerrado' };
+      const matchStatus = statusMap[km.status] || 'abierto';
+      await pool.query(`
+        INSERT INTO matches (id, grp, home, away, home_cls, away_cls, match_date, match_time, status, home_real, away_real)
+        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
+        ON CONFLICT (id) DO UPDATE SET
+          grp=EXCLUDED.grp, home=EXCLUDED.home, away=EXCLUDED.away,
+          home_cls=EXCLUDED.home_cls, away_cls=EXCLUDED.away_cls,
+          match_date=COALESCE(EXCLUDED.match_date, matches.match_date),
+          match_time=COALESCE(EXCLUDED.match_time, matches.match_time),
+          status=EXCLUDED.status,
+          home_real=EXCLUDED.home_real,
+          away_real=EXCLUDED.away_real
+      `, [matchId, km.round, km.home, km.away, homeFlag, awayFlag,
+          km.match_date || '', km.match_time || '', matchStatus,
+          km.home_score ?? null, km.away_score ?? null]);
+    } else {
+      // Teams not yet defined — remove from matches if exists (keep predictions safe)
+      await pool.query('DELETE FROM matches WHERE id=$1 AND NOT EXISTS (SELECT 1 FROM predictions WHERE match_id=$1)', [matchId]);
+    }
+
     res.json({ ok: true });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
