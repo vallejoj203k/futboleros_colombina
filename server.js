@@ -182,6 +182,12 @@ async function initDB() {
     // Make cedula nullable in case table was created with NOT NULL
     await client.query(`ALTER TABLE users ALTER COLUMN cedula DROP NOT NULL`).catch(() => {});
 
+    // Penalty columns
+    await client.query(`ALTER TABLE predictions ADD COLUMN IF NOT EXISTS home_pens_pred INTEGER`).catch(() => {});
+    await client.query(`ALTER TABLE predictions ADD COLUMN IF NOT EXISTS away_pens_pred INTEGER`).catch(() => {});
+    await client.query(`ALTER TABLE matches ADD COLUMN IF NOT EXISTS home_pens INTEGER`).catch(() => {});
+    await client.query(`ALTER TABLE matches ADD COLUMN IF NOT EXISTS away_pens INTEGER`).catch(() => {});
+
     // Allow knockout matches to be stored in matches table (relax constraints)
     await client.query(`ALTER TABLE matches ALTER COLUMN grp TYPE VARCHAR(5)`).catch(() => {});
     await client.query(`ALTER TABLE matches ALTER COLUMN grp DROP NOT NULL`).catch(() => {});
@@ -244,8 +250,8 @@ async function initDB() {
       const awayFlag = FLAG_MAP[km.away] || '';
       const matchStatus = statusMap[km.status] || 'abierto';
       await client.query(`
-        INSERT INTO matches (id, grp, home, away, home_cls, away_cls, match_date, match_time, status, home_real, away_real)
-        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
+        INSERT INTO matches (id, grp, home, away, home_cls, away_cls, match_date, match_time, status, home_real, away_real, home_pens, away_pens)
+        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)
         ON CONFLICT (id) DO UPDATE SET
           grp=EXCLUDED.grp, home=EXCLUDED.home, away=EXCLUDED.away,
           home_cls=EXCLUDED.home_cls, away_cls=EXCLUDED.away_cls,
@@ -253,10 +259,13 @@ async function initDB() {
           match_time=COALESCE(EXCLUDED.match_time, matches.match_time),
           status=EXCLUDED.status,
           home_real=EXCLUDED.home_real,
-          away_real=EXCLUDED.away_real
+          away_real=EXCLUDED.away_real,
+          home_pens=EXCLUDED.home_pens,
+          away_pens=EXCLUDED.away_pens
       `, [matchId, km.round, km.home, km.away, homeFlag, awayFlag,
           km.match_date || '', km.match_time || '', matchStatus,
-          km.home_score ?? null, km.away_score ?? null]);
+          km.home_score ?? null, km.away_score ?? null,
+          km.home_pens ?? null, km.away_pens ?? null]);
     }
   } finally {
     client.release();
@@ -269,13 +278,28 @@ async function initDB() {
 function calcPoints(p, m) {
   if (m.home_real === null || m.away_real === null) return 0;
   const realRes = m.home_real > m.away_real ? '1' : (m.home_real < m.away_real ? '2' : 'X');
+  let pts = 0;
   if (p.home_pred !== null && p.away_pred !== null) {
-    if (p.home_pred === m.home_real && p.away_pred === m.away_real) return 10;
-    const predRes = p.home_pred > p.away_pred ? '1' : (p.home_pred < p.away_pred ? '2' : 'X');
-    return predRes === realRes ? 3 : 0;
+    if (p.home_pred === m.home_real && p.away_pred === m.away_real) pts = 10;
+    else {
+      const predRes = p.home_pred > p.away_pred ? '1' : (p.home_pred < p.away_pred ? '2' : 'X');
+      if (predRes === realRes) pts = 3;
+    }
+  } else if (p.result_pred) {
+    pts = p.result_pred === realRes ? 3 : 0;
   }
-  if (p.result_pred) return p.result_pred === realRes ? 3 : 0;
-  return 0;
+  if (m.home_pens !== null && m.home_pens !== undefined &&
+      m.away_pens !== null && m.away_pens !== undefined &&
+      p.home_pens_pred !== null && p.home_pens_pred !== undefined &&
+      p.away_pens_pred !== null && p.away_pens_pred !== undefined) {
+    if (p.home_pens_pred === m.home_pens && p.away_pens_pred === m.away_pens) pts += 5;
+    else {
+      const predWin = p.home_pens_pred > p.away_pens_pred ? 'H' : 'A';
+      const realWin = m.home_pens > m.away_pens ? 'H' : 'A';
+      if (predWin === realWin) pts += 2;
+    }
+  }
+  return pts;
 }
 
 // Parse "Jun 11" + "2:00 PM" → UTC Date (matches are in COT = UTC-5)
@@ -354,7 +378,7 @@ app.post('/api/auth/login', async (req, res) => {
 app.get('/api/matches', async (req, res) => {
   try {
     const { rows } = await pool.query(
-      'SELECT id, grp as "group", home, away, home_cls as "homeCls", away_cls as "awayCls", match_date as date, match_time as time, status, home_real as "homeReal", away_real as "awayReal" FROM matches ORDER BY id'
+      'SELECT id, grp as "group", home, away, home_cls as "homeCls", away_cls as "awayCls", match_date as date, match_time as time, status, home_real as "homeReal", away_real as "awayReal", home_pens as "homePens", away_pens as "awayPens" FROM matches ORDER BY id'
     );
     res.json(rows);
   } catch (e) {
@@ -370,7 +394,8 @@ app.get('/api/predictions', async (req, res) => {
   if (!userId) return res.status(400).json({ error: 'userId requerido' });
   try {
     const { rows } = await pool.query(
-      `SELECT match_id as "matchId", home_pred as "homePred", away_pred as "awayPred", result_pred as "resultPred"
+      `SELECT match_id as "matchId", home_pred as "homePred", away_pred as "awayPred", result_pred as "resultPred",
+              home_pens_pred as "homePensPred", away_pens_pred as "awayPensPred"
        FROM predictions WHERE user_id = $1`,
       [userId]
     );
@@ -381,7 +406,7 @@ app.get('/api/predictions', async (req, res) => {
 });
 
 app.post('/api/predictions', async (req, res) => {
-  const { userId, matchId, homePred, awayPred, resultPred } = req.body;
+  const { userId, matchId, homePred, awayPred, resultPred, homePensPred, awayPensPred } = req.body;
   if (!userId || !matchId) return res.status(400).json({ error: 'userId y matchId requeridos' });
 
   // Verify match is still open
@@ -392,14 +417,17 @@ app.post('/api/predictions', async (req, res) => {
 
   try {
     await pool.query(
-      `INSERT INTO predictions (user_id, match_id, home_pred, away_pred, result_pred, updated_at)
-       VALUES ($1, $2, $3, $4, $5, NOW())
+      `INSERT INTO predictions (user_id, match_id, home_pred, away_pred, result_pred, home_pens_pred, away_pens_pred, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, NOW())
        ON CONFLICT (user_id, match_id) DO UPDATE
          SET home_pred = EXCLUDED.home_pred,
              away_pred = EXCLUDED.away_pred,
              result_pred = EXCLUDED.result_pred,
+             home_pens_pred = EXCLUDED.home_pens_pred,
+             away_pens_pred = EXCLUDED.away_pens_pred,
              updated_at = NOW()`,
-      [userId, matchId, homePred ?? null, awayPred ?? null, resultPred ?? null]
+      [userId, matchId, homePred ?? null, awayPred ?? null, resultPred ?? null,
+       homePensPred ?? null, awayPensPred ?? null]
     );
     res.json({ ok: true });
   } catch (e) {
@@ -417,7 +445,8 @@ app.get('/api/leaderboard', async (req, res) => {
     );
     const { rows: preds } = await pool.query(
       `SELECT p.user_id, p.match_id, p.home_pred, p.away_pred, p.result_pred,
-              m.home_real, m.away_real, m.status
+              p.home_pens_pred, p.away_pens_pred,
+              m.home_real, m.away_real, m.home_pens, m.away_pens, m.status
        FROM predictions p
        JOIN matches m ON m.id = p.match_id`
     );
@@ -426,8 +455,9 @@ app.get('/api/leaderboard', async (req, res) => {
       const userPreds = preds.filter(function(p) { return p.user_id === u.id; });
       let pts = 0, exactas = 0, resultados = 0;
       userPreds.forEach(function(p) {
-        const m = { home_real: p.home_real, away_real: p.away_real };
-        const pts_m = calcPoints({ home_pred: p.home_pred, away_pred: p.away_pred, result_pred: p.result_pred }, m);
+        const m = { home_real: p.home_real, away_real: p.away_real, home_pens: p.home_pens, away_pens: p.away_pens };
+        const pts_m = calcPoints({ home_pred: p.home_pred, away_pred: p.away_pred, result_pred: p.result_pred,
+          home_pens_pred: p.home_pens_pred, away_pens_pred: p.away_pens_pred }, m);
         pts += pts_m;
         if (pts_m === 10) exactas++;
         else if (pts_m === 3) resultados++;
@@ -563,8 +593,8 @@ app.get('/api/admin/predictions', async (req, res) => {
     } else {
       query = `
         SELECT u.id as user_id, u.nombre, m.id as match_id, m.home, m.away, m.match_date, m.match_time,
-               p.home_pred, p.away_pred, p.result_pred,
-               m.home_real, m.away_real, m.status
+               p.home_pred, p.away_pred, p.result_pred, p.home_pens_pred, p.away_pens_pred,
+               m.home_real, m.away_real, m.home_pens, m.away_pens, m.status
         FROM predictions p
         JOIN users u ON u.id = p.user_id
         JOIN matches m ON m.id = p.match_id
@@ -650,8 +680,8 @@ app.put('/api/admin/knockout/:id', async (req, res) => {
       const statusMap = { pendiente: 'abierto', en_juego: 'en_juego', finalizado: 'cerrado' };
       const matchStatus = statusMap[km.status] || 'abierto';
       await pool.query(`
-        INSERT INTO matches (id, grp, home, away, home_cls, away_cls, match_date, match_time, status, home_real, away_real)
-        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
+        INSERT INTO matches (id, grp, home, away, home_cls, away_cls, match_date, match_time, status, home_real, away_real, home_pens, away_pens)
+        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)
         ON CONFLICT (id) DO UPDATE SET
           grp=EXCLUDED.grp, home=EXCLUDED.home, away=EXCLUDED.away,
           home_cls=EXCLUDED.home_cls, away_cls=EXCLUDED.away_cls,
@@ -659,10 +689,13 @@ app.put('/api/admin/knockout/:id', async (req, res) => {
           match_time=COALESCE(EXCLUDED.match_time, matches.match_time),
           status=EXCLUDED.status,
           home_real=EXCLUDED.home_real,
-          away_real=EXCLUDED.away_real
+          away_real=EXCLUDED.away_real,
+          home_pens=EXCLUDED.home_pens,
+          away_pens=EXCLUDED.away_pens
       `, [matchId, km.round, km.home, km.away, homeFlag, awayFlag,
           km.match_date || '', km.match_time || '', matchStatus,
-          km.home_score ?? null, km.away_score ?? null]);
+          km.home_score ?? null, km.away_score ?? null,
+          km.home_pens ?? null, km.away_pens ?? null]);
     } else {
       // Teams not yet defined — remove from matches if exists (keep predictions safe)
       await pool.query('DELETE FROM matches WHERE id=$1 AND NOT EXISTS (SELECT 1 FROM predictions WHERE match_id=$1)', [matchId]);

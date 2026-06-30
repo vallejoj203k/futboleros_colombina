@@ -410,6 +410,14 @@
     .match-score-input:focus { border-color: var(--red); background: #fff; box-shadow: 0 0 0 3px rgba(0,166,80,0.1); }
     .match-score-input:disabled { opacity: 0.6; cursor: not-allowed; }
     .match-score-dash { font-size: 1.3rem; font-weight: 800; color: var(--gray-400); }
+    .pens-section { margin-top: 0.6rem; padding: 0.5rem 0.75rem; background: rgba(168,207,69,0.12); border: 1.5px dashed var(--yellow-dark); border-radius: var(--radius-sm); }
+    .pens-label { font-size: 0.7rem; font-weight: 700; color: var(--yellow-dark); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.35rem; }
+    .pens-inputs { display: flex; align-items: center; gap: 0.4rem; }
+    .pens-score-input { width: 36px; height: 36px; border: 2px solid var(--yellow-dark); border-radius: 8px; font-size: 1rem; font-weight: 900; color: var(--text); text-align: center; background: #fff; outline: none; -moz-appearance: textfield; appearance: textfield; font-family: var(--font); transition: box-shadow 0.2s; }
+    .pens-score-input::-webkit-inner-spin-button, .pens-score-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+    .pens-score-input:focus { box-shadow: 0 0 0 3px rgba(127,168,50,0.25); }
+    .pens-score-input:disabled { opacity: 0.5; cursor: not-allowed; }
+    .pens-hint { font-size: 0.62rem; color: var(--gray-600); margin-left: 0.3rem; }
     .match-right-col { display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; flex-shrink: 0; min-width: 80px; }
     .match-save-btn { padding: 0.45rem 0.85rem; border-radius: 999px; background: linear-gradient(135deg, var(--red) 0%, #007A3C 100%); color: #fff; font-size: 0.7rem; font-weight: 700; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,166,80,0.3); white-space: nowrap; font-family: var(--font); }
     .match-save-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,166,80,0.4); }
@@ -2137,9 +2145,13 @@ function loadAppData(userId) {
         date: m.date, time: m.time,
         status: m.status,
         homeReal: m.homeReal, awayReal: m.awayReal,
+        homePens: m.homePens != null ? m.homePens : null,
+        awayPens: m.awayPens != null ? m.awayPens : null,
         homePred: pred.homePred !== undefined ? pred.homePred : null,
         awayPred: pred.awayPred !== undefined ? pred.awayPred : null,
-        resultPred: pred.resultPred !== undefined ? pred.resultPred : null
+        resultPred: pred.resultPred !== undefined ? pred.resultPred : null,
+        homePensPred: pred.homePensPred !== undefined ? pred.homePensPred : null,
+        awayPensPred: pred.awayPensPred !== undefined ? pred.awayPensPred : null
       });
     });
   });
@@ -2396,20 +2408,32 @@ function animateBars() {
    MATCH PREDICTIONS — DYNAMIC RENDER
 ============================================= */
 function predPoints(m) {
-  if (m.homeReal === null || m.awayReal === null || m.homePred === null || m.awayPred === null) return 0;
-  // Exact score: 10 pts
-  if (m.homePred === m.homeReal && m.awayPred === m.awayReal) return 10;
-  // Correct result from score: 3 pts
+  if (m.homeReal === null || m.awayReal === null) return 0;
   var realSign = Math.sign(m.homeReal - m.awayReal);
   var realRes = realSign > 0 ? '1' : (realSign < 0 ? '2' : 'X');
+  var pts = 0;
   if (m.homePred !== null && m.awayPred !== null) {
-    var predSign = Math.sign(m.homePred - m.awayPred);
-    var predRes = predSign > 0 ? '1' : (predSign < 0 ? '2' : 'X');
-    return predRes === realRes ? 3 : 0;
+    if (m.homePred === m.homeReal && m.awayPred === m.awayReal) pts = 10;
+    else {
+      var predSign = Math.sign(m.homePred - m.awayPred);
+      var predRes = predSign > 0 ? '1' : (predSign < 0 ? '2' : 'X');
+      if (predRes === realRes) pts = 3;
+    }
+  } else if (m.resultPred !== null) {
+    pts = m.resultPred === realRes ? 3 : 0;
+  } else {
+    return 0;
   }
-  // Result-only prediction: 3 pts
-  if (m.resultPred !== null) return m.resultPred === realRes ? 3 : 0;
-  return 0;
+  if (m.homePens != null && m.awayPens != null &&
+      m.homePensPred != null && m.awayPensPred != null) {
+    if (m.homePensPred === m.homePens && m.awayPensPred === m.awayPens) pts += 5;
+    else {
+      var predWin = m.homePensPred > m.awayPensPred ? 'H' : 'A';
+      var realWin = m.homePens > m.awayPens ? 'H' : 'A';
+      if (predWin === realWin) pts += 2;
+    }
+  }
+  return pts;
 }
 
 /* =============================================
@@ -2530,7 +2554,18 @@ function matchRowHTML(m) {
         '<input type="number" min="0" class="match-score-input" id="m' + m.id + '-local" value="' + hp + '" placeholder="0"' + dis + ' />' +
         '<span class="match-score-dash">&mdash;</span>' +
         '<input type="number" min="0" class="match-score-input" id="m' + m.id + '-visit" value="' + ap + '" placeholder="0"' + dis + ' />' +
-      '</div>';
+      '</div>' +
+      (ROUND_LABELS[m.group] ? (
+        '<div class="pens-section">' +
+          '<div class="pens-label">Penales (opcional)</div>' +
+          '<div class="pens-inputs">' +
+            '<input type="number" min="0" max="20" class="pens-score-input" id="hp-' + m.id + '" value="' + (m.homePensPred !== null ? m.homePensPred : '') + '" placeholder="–"' + dis + ' />' +
+            '<span class="match-score-dash">–</span>' +
+            '<input type="number" min="0" max="20" class="pens-score-input" id="ap-' + m.id + '" value="' + (m.awayPensPred !== null ? m.awayPensPred : '') + '" placeholder="–"' + dis + ' />' +
+            '<span class="pens-hint">+5 exacto / +2 ganador</span>' +
+          '</div>' +
+        '</div>'
+      ) : '');
   }
 
   var rightHtml = '<span class="status-badge status-' + m.status + '">' + statusLabel + '</span>';
@@ -2818,8 +2853,15 @@ function saveMatch(id) {
   var fb = $('#m' + id + '-feedback');
   if (btn) { btn.classList.add('pulse'); setTimeout(function() { btn.classList.remove('pulse'); }, 500); }
   if (fb) { fb.classList.add('show'); setTimeout(function() { fb.classList.remove('show'); }, 2600); }
+  var hpEl = document.getElementById('hp-' + id);
+  var apEl = document.getElementById('ap-' + id);
+  var homePensPred = (hpEl && hpEl.value !== '') ? parseInt(hpEl.value, 10) : null;
+  var awayPensPred = (apEl && apEl.value !== '') ? parseInt(apEl.value, 10) : null;
+  m.homePensPred = homePensPred;
+  m.awayPensPred = awayPensPred;
+
   toast('Marcador guardado: ' + m.homePred + ' - ' + m.awayPred + ' (+10 pts si aciertas!)');
-  api.post('/api/predictions', { userId: state.user.id, matchId: id, homePred: m.homePred, awayPred: m.awayPred, resultPred: m.resultPred })
+  api.post('/api/predictions', { userId: state.user.id, matchId: id, homePred: m.homePred, awayPred: m.awayPred, resultPred: m.resultPred, homePensPred: homePensPred, awayPensPred: awayPensPred })
     .then(function(r) { if (!r.ok) toast('Error al guardar: ' + (r.data.error || 'intenta de nuevo')); });
 }
 
@@ -3267,7 +3309,7 @@ function renderAdminPredictions() {
     var matchMap = {};
     if (matchRes.ok) {
       matchRes.data.forEach(function(m) {
-        matchMap[m.id] = { home: m.home, away: m.away, date: m.date, time: m.time, status: m.status, homeReal: m.homeReal, awayReal: m.awayReal, preds: [] };
+        matchMap[m.id] = { home: m.home, away: m.away, date: m.date, time: m.time, status: m.status, homeReal: m.homeReal, awayReal: m.awayReal, homePens: m.homePens, awayPens: m.awayPens, preds: [] };
       });
     }
 
@@ -3307,11 +3349,21 @@ function renderAdminPredictions() {
             var pr = p.home_pred > p.away_pred ? '1' : p.home_pred < p.away_pred ? '2' : 'X';
             resOk = pr === realRes;
           } else if (p.result_pred) { resOk = p.result_pred === realRes; }
-          if (exact) { pts = 10; ptsClass = 'pred-pts-10'; ptsLabel = '+10 pts'; }
-          else if (resOk) { pts = 3; ptsClass = 'pred-pts-3'; ptsLabel = '+3 pts'; }
-          else { pts = 0; ptsClass = 'pred-pts-0'; ptsLabel = '0 pts'; }
+          if (exact) { pts = 10; ptsClass = 'pred-pts-10'; ptsLabel = '+10'; }
+          else if (resOk) { pts = 3; ptsClass = 'pred-pts-3'; ptsLabel = '+3'; }
+          else { pts = 0; ptsClass = 'pred-pts-0'; ptsLabel = '0'; }
+          // Penalty bonus
+          if (m.homePens != null && m.awayPens != null &&
+              p.home_pens_pred != null && p.away_pens_pred != null) {
+            var penExact = p.home_pens_pred === m.homePens && p.away_pens_pred === m.awayPens;
+            var penWinOk = !penExact && ((p.home_pens_pred > p.away_pens_pred) === (m.homePens > m.awayPens));
+            if (penExact) { pts += 5; ptsLabel += '+5P'; }
+            else if (penWinOk) { pts += 2; ptsLabel += '+2P'; }
+          }
+          ptsLabel = '+' + pts + ' pts';
         }
-        return '<tr><td>' + maskName(p.nombre) + '</td><td>' + predStr + '</td>' +
+        var pensStr = (p.home_pens_pred != null && p.away_pens_pred != null) ? (' <small style="color:var(--yellow-dark)">P:' + p.home_pens_pred + '-' + p.away_pens_pred + '</small>') : '';
+        return '<tr><td>' + maskName(p.nombre) + '</td><td>' + predStr + pensStr + '</td>' +
           '<td><span class="pred-pts-badge ' + ptsClass + '">' + ptsLabel + '</span></td>' +
           '<td><button class="btn-sm btn-delete" onclick="adminDeletePred(' + p.user_id + ',' + id + ')" title="Borrar predicción">×</button></td></tr>';
       }).join('');
