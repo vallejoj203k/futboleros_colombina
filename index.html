@@ -3093,8 +3093,14 @@ function renderAdminMatches() {
     if (m.status === 'finalizado') {
       var hr = m.homeReal !== null ? m.homeReal : '';
       var ar = m.awayReal !== null ? m.awayReal : '';
+      var isKo = m.id >= 1000;
+      var hp2 = m.homePens !== null && m.homePens !== undefined ? m.homePens : '';
+      var ap2 = m.awayPens !== null && m.awayPens !== undefined ? m.awayPens : '';
       resultCell = '<input type="number" min="0" max="99" class="edit-input" style="width:46px;text-align:center" value="' + hr + '" id="ar-h-' + m.id + '" placeholder="L">' +
         ' - <input type="number" min="0" max="99" class="edit-input" style="width:46px;text-align:center" value="' + ar + '" id="ar-a-' + m.id + '" placeholder="V">' +
+        (isKo ? ' <span style="color:var(--gray-500);font-size:.75rem;margin-left:.3rem">Pen:</span>' +
+          '<input type="number" min="0" max="20" class="edit-input" style="width:40px;text-align:center" value="' + hp2 + '" id="ar-hp-' + m.id + '" placeholder="L">' +
+          '-<input type="number" min="0" max="20" class="edit-input" style="width:40px;text-align:center" value="' + ap2 + '" id="ar-ap-' + m.id + '" placeholder="V">' : '') +
         ' <button class="btn-sm btn-save-row" onclick="saveResult(' + m.id + ')">Guardar</button>';
     } else {
       resultCell = '—';
@@ -3130,9 +3136,17 @@ function saveResult(id) {
   if (!hEl || !aEl || hEl.value === '' || aEl.value === '') { toast('Ingresa ambos marcadores'); return; }
   var hr = parseInt(hEl.value, 10);
   var ar = parseInt(aEl.value, 10);
-  api.put('/api/admin/matches/' + id, { homeReal: hr, awayReal: ar }).then(function(res) {
+  var payload = { homeReal: hr, awayReal: ar };
+  var hpEl = document.getElementById('ar-hp-' + id);
+  var apEl = document.getElementById('ar-ap-' + id);
+  if (hpEl && apEl) {
+    payload.homePens = hpEl.value !== '' ? parseInt(hpEl.value, 10) : null;
+    payload.awayPens = apEl.value !== '' ? parseInt(apEl.value, 10) : null;
+  }
+  api.put('/api/admin/matches/' + id, payload).then(function(res) {
     if (!res.ok) { toast(res.data.error || 'Error'); return; }
     m.homeReal = hr; m.awayReal = ar;
+    if (payload.homePens !== undefined) { m.homePens = payload.homePens; m.awayPens = payload.awayPens; }
     renderAdminMatches();
     toast('Resultado guardado: ' + hr + ' - ' + ar);
   });

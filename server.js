@@ -619,13 +619,15 @@ app.delete('/api/admin/predictions', async (req, res) => {
    ADMIN — MATCH MANAGEMENT
 ───────────────────────────────────────────── */
 app.put('/api/admin/matches/:id', async (req, res) => {
-  const { status, homeReal, awayReal } = req.body;
+  const { status, homeReal, awayReal, homePens, awayPens } = req.body;
   const fields = [];
   const vals = [];
   let idx = 1;
-  if (status !== undefined)  { fields.push(`status=$${idx++}`);    vals.push(status); }
+  if (status   !== undefined) { fields.push(`status=$${idx++}`);    vals.push(status); }
   if (homeReal !== undefined) { fields.push(`home_real=$${idx++}`); vals.push(homeReal); }
   if (awayReal !== undefined) { fields.push(`away_real=$${idx++}`); vals.push(awayReal); }
+  if (homePens !== undefined) { fields.push(`home_pens=$${idx++}`); vals.push(homePens !== '' ? homePens : null); }
+  if (awayPens !== undefined) { fields.push(`away_pens=$${idx++}`); vals.push(awayPens !== '' ? awayPens : null); }
   if (!fields.length) return res.status(400).json({ error: 'Nada que actualizar' });
   vals.push(req.params.id);
   try {
